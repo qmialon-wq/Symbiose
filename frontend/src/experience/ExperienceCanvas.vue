@@ -6,6 +6,7 @@ import {
   PCFSoftShadowMap,
   WebGLRenderer,
   Vector3,
+  PerspectiveCamera,
 } from "three";
 import { CameraController } from "./CameraController";
 import { AtmosphereController } from "./AtmosphereController";
@@ -32,6 +33,9 @@ import {
   type OfficeScreenProjection,
   type ScreenQuad,
 } from "./prologue/screen-projection";
+import { type ExcursionState } from "./excursions/route";
+import { sampleConnectedExcursion } from "./excursions/connected-camera";
+import { terrainY } from "./world-utils";
 const props = defineProps<{
   progress: number;
   reducedMotion: boolean;
@@ -40,6 +44,7 @@ const props = defineProps<{
   prologue?: number;
   prologueVideo?: HTMLVideoElement | null;
   prologueFocus?: boolean;
+  excursion?: ExcursionState;
 }>();
 const emit = defineEmits<{
   ready: [];
@@ -60,6 +65,7 @@ watch(
     props.prologue,
     props.prologueVideo,
     props.prologueFocus,
+    props.excursion,
   ],
   () => renderFrame?.(),
   { flush: "post", deep: true },
@@ -77,6 +83,93 @@ onMounted(async () => {
   let office: ReturnType<typeof createOfficeScene> | undefined;
   let officeLoading = false,
     screenFocus = 0;
+  let excursion:
+    | {
+        id: string;
+        scene: import("three").Scene;
+        update: (
+          local: number,
+          camera: PerspectiveCamera,
+        ) => { immersion: number; animals?: FrameReport["animals"] };
+        dispose: () => void;
+      }
+    | undefined;
+  let excursionLoading = "",
+    excursionVersion = 0;
+  async function selectExcursion(id: ExcursionState["id"]) {
+    if (excursion?.id === id || excursionLoading === id) return;
+    const version = ++excursionVersion;
+    excursionLoading = id;
+    excursion?.dispose();
+    excursion = undefined;
+    try {
+      const economy = quality === "eco";
+      const module =
+        id === "soil"
+          ? await import("./excursions/SoilScene")
+          : id === "drone"
+            ? await import("./excursions/DroneScene")
+            : await import("./excursions/MarineScene");
+      if (
+        abort.signal.aborted ||
+        version !== excursionVersion ||
+        props.excursion?.id !== id
+      )
+        return;
+      const next =
+        "createSoilScene" in module
+          ? module.createSoilScene(economy, true)
+          : "createDroneScene" in module
+            ? {
+                ...module.createDroneScene(economy),
+              }
+            : {
+                ...module.createMarineScene(economy, true),
+              };
+      if ("ready" in next) await next.ready;
+      if (
+        abort.signal.aborted ||
+        version !== excursionVersion ||
+        props.excursion?.id !== id
+      ) {
+        next.dispose();
+        return;
+      }
+      if (id === "soil") {
+        next.scene.position.set(1, terrainY(1, -12), -12);
+        next.scene.children.forEach((object) => {
+          if (
+            object.type === "HemisphereLight" ||
+            object.type === "DirectionalLight"
+          )
+            object.visible = false;
+        });
+      }
+      if ("connect" in next && typeof next.connect === "function")
+        next.connect(new Vector3(48, terrainY(48, -620), -620));
+      next.scene.background = null;
+      next.scene.fog = null;
+      world!.scene.add(next.scene);
+      excursion = {
+        id,
+        ...next,
+        dispose() {
+          next.scene.removeFromParent();
+          next.dispose();
+        },
+      };
+      world!.scene.updateMatrixWorld(true);
+    } catch {
+      if (!abort.signal.aborted)
+        emit(
+          "error",
+          "Ce nouveau paysage n’a pas pu être chargé. Le voyage reste accessible en aperçu simplifié.",
+        );
+    } finally {
+      if (version === excursionVersion) excursionLoading = "";
+      invalidate();
+    }
+  }
   async function ensureOffice() {
     if (office || officeLoading || abort.signal.aborted) return;
     officeLoading = true;
@@ -163,6 +256,17 @@ onMounted(async () => {
         : props.progress,
       layers = props.layers ?? defaultLayers;
     let pose = camera.update(progress);
+    if (props.excursion) {
+      pose = sampleConnectedExcursion(
+        props.excursion.id,
+        props.reducedMotion ? 0.5 : props.excursion.local,
+      );
+      camera.camera.position.set(...pose.position);
+      camera.camera.lookAt(...pose.target);
+      camera.camera.fov = pose.fov;
+      camera.camera.updateProjectionMatrix();
+      camera.camera.updateMatrixWorld(true);
+    }
     if (props.prologue !== undefined) {
       void ensureOffice();
       screenFocus = props.reducedMotion
@@ -194,17 +298,33 @@ onMounted(async () => {
         office = undefined;
       }
     }
-    const state = world.apply(progress, camera.camera, layers);
+    const state = world.apply(progress, camera.camera, layers, props.excursion);
     atmosphere.update(renderer, state.effects.night);
     if (props.prologue !== undefined)
       renderer.toneMappingExposure =
         0.95 + 0.17 * Math.min(1, props.prologue / 0.8);
+    let activeImmersion = state.effects.immersion;
+    let animalBoxes = props.excursion ? [] : state.animals;
+    if (props.excursion) void selectExcursion(props.excursion.id);
+    else if (excursion || excursionLoading) {
+      excursionVersion++;
+      excursionLoading = "";
+      excursion?.dispose();
+      excursion = undefined;
+    }
+    if (props.excursion && excursion?.id === props.excursion.id) {
+      const local = props.reducedMotion ? 0.5 : props.excursion.local;
+      const effects = excursion.update(local, camera.camera);
+      activeImmersion = effects.immersion;
+      animalBoxes = effects.animals ?? [];
+      renderer.shadowMap.needsUpdate = true;
+    }
     world.renderReflection(renderer, camera.camera);
     pass!.render(
       renderer,
       world.scene,
       camera.camera,
-      layers.water ? state.effects.immersion : 0,
+      layers.water ? activeImmersion : 0,
       state.effects.time,
     );
     if (props.prologue !== undefined && office) {
@@ -242,7 +362,7 @@ onMounted(async () => {
       position: [...pose.position],
       target: [...pose.target],
       fov: pose.fov,
-      immersion: state.effects.immersion,
+      immersion: activeImmersion,
       night: state.effects.night,
       logo: state.effects.logo,
       observation: state.effects.observation,
@@ -258,10 +378,17 @@ onMounted(async () => {
       geometryCount: renderer.info.memory.geometries,
       residentImages: preloader.residentCount,
       estimatedImageBytes: preloader.estimatedImageBytes,
-      postProcessing: layers.water && state.effects.immersion > 0,
+      postProcessing: layers.water && activeImmersion > 0,
       cpuSubmitMs: performance.now() - began,
-      assetsPending: assetsPending || world.pending,
-      animals: state.animals,
+      assetsPending: assetsPending || world.pending || !!excursionLoading,
+      animals: animalBoxes,
+      excursion: props.excursion
+        ? {
+            id: props.excursion.id,
+            local: props.excursion.local,
+            connected: true,
+          }
+        : undefined,
     };
     host.value.dataset.cameraY = pose.position[1].toFixed(3);
     host.value.dataset.progress = progress.toFixed(5);
@@ -270,6 +397,10 @@ onMounted(async () => {
     host.value.dataset.state = JSON.stringify(report);
     host.value.dataset.prologue =
       props.prologue === undefined ? "" : props.prologue.toFixed(5);
+    host.value.dataset.excursion = props.excursion?.id ?? "";
+    host.value.dataset.excursionLocal = props.excursion?.local.toFixed(6) ?? "";
+    host.value.dataset.renderScene = "journey-world";
+    host.value.dataset.cameraMode = props.excursion ? "connected" : "original";
     monitor.frame(performance.now(), !props.reducedMotion);
     emit("frame", report);
   }
@@ -330,6 +461,8 @@ onMounted(async () => {
     document.removeEventListener("visibilitychange", visibility);
     renderer?.domElement.removeEventListener("webglcontextlost", lost);
     pass?.dispose();
+    excursionVersion++;
+    excursion?.dispose();
     office?.dispose();
     world?.dispose();
     preloader.dispose();
@@ -342,6 +475,7 @@ onMounted(async () => {
       antialias: true,
       powerPreference: "default",
     });
+    renderer.localClippingEnabled = true;
     renderer.toneMapping = ACESFilmicToneMapping;
     renderer.info.autoReset = false;
     const gl = renderer.getContext(),

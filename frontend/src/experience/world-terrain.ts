@@ -112,6 +112,7 @@ export function createTerrain(economy: boolean) {
     phase: { value: 0 },
     night: { value: 0 },
     coast: { value: 0 },
+    connectedMarine: { value: 0 },
     sunDirection: { value: new T.Vector3(-0.42, 0.68, -0.6).normalize() },
     reflectionMap: { value: null as T.Texture | null },
     reflectionMatrix: { value: new T.Matrix4() },

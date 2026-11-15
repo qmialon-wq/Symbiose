@@ -1,5 +1,15 @@
 import { expect, test, type Page } from "@playwright/test";
 
+function routeAtOriginal(progress: number) {
+  const units = progress * 210;
+  const inserted = [
+    [12, 35],
+    [165, 30],
+    [180, 40],
+  ].reduce((sum, [anchor, length]) => sum + (units >= anchor ? length : 0), 0);
+  return (units + inserted) / 315;
+}
+
 async function seek(page: Page, index: number, chapter: string) {
   await page
     .locator(".sx-chapter-nav button")
@@ -16,7 +26,7 @@ async function seek(page: Page, index: number, chapter: string) {
       input.step = "any";
       input.value = String(progress * 100);
       input.dispatchEvent(new Event("input", { bubbles: true }));
-    }, expected);
+    }, routeAtOriginal(expected));
   await page.waitForFunction((expected) => {
     const state =
       document.querySelector<HTMLElement>(".sx-canvas")?.dataset.state;

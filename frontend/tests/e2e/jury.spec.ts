@@ -57,11 +57,16 @@ test("standalone jury starts without any authentication or business API", async 
     .getByRole("button", { name: "Passer l’introduction", exact: true })
     .click();
   await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".sx-experience")).toHaveAttribute(
+    "data-excursion",
+    "soil",
+  );
+  await page.keyboard.press("ArrowRight");
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     "sky",
   );
-  await expect(page.locator(".sx-counter")).toHaveText("0:35 / 5:00");
+  await expect(page.locator(".sx-counter")).toHaveText("1:25 / 7:30");
   expect(api).toEqual([]);
   expect(errors).toEqual([]);
 });

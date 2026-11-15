@@ -14,7 +14,7 @@ gl_FragColor=vec4(mix(color,nocturnal,night),1.);
 }`;
 export const waterVertex = `varying vec3 vWorld;void main(){vec4 w=modelMatrix*vec4(position,1.);vWorld=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`;
 export const waterFragment = `
-varying vec3 vWorld;uniform float phase;uniform float night;uniform float coast;uniform vec3 sunDirection;
+varying vec3 vWorld;uniform float phase;uniform float night;uniform float coast;uniform float connectedMarine;uniform vec3 sunDirection;
 uniform sampler2D reflectionMap;uniform mat4 reflectionMatrix;uniform float reflectionEnabled;
 uniform vec3 fogColor;uniform float fogDensity;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -44,7 +44,7 @@ void main(){
  color=mix(color,color*.22+vec3(.008,.02,.025),night);
  if(!gl_FrontFacing)color=mix(deep,color,.35);
  float distanceToCamera=length(cameraPosition-vWorld);float fog=1.-exp(-fogDensity*fogDensity*distanceToCamera*distanceToCamera);
- gl_FragColor=vec4(color,gl_FrontFacing?mix(.92,1.,coast):.68);
+ gl_FragColor=vec4(color,gl_FrontFacing?mix(.92,1.,coast):mix(.68,1.,connectedMarine));
  #include <tonemapping_fragment>
  #include <colorspace_fragment>
  gl_FragColor.rgb=mix(gl_FragColor.rgb,linearToOutputTexel(vec4(fogColor,1.)).rgb,clamp(fog,0.,1.));

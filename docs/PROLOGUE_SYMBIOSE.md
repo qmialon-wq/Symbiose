@@ -1,5 +1,10 @@
 # Symbiose — Du bureau au vivant
 
+Avec les [trois explorations supplémentaires](EXPLORATIONS_SYMBIOSE.md), le bureau
+occupe toujours trois hauteurs de scroll, sur un total de 42. Son raccord à la
+forêt et son lecteur restent conservés ; la présentation complète dure désormais
+7 min 30 hors prologue.
+
 Le prologue ajoute un bureau d’études en amont des huit atmosphères existantes.
 Le mobilier, les parois, la baie, les équipements et l’écran sont des objets
 Three.js. Le travelling passe par une ouverture réelle entre les vitrages,

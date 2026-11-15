@@ -1,6 +1,17 @@
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+// The range spans the expanded route; GPU assertions below retain original poses.
+function routeAtOriginal(progress: number) {
+  const units = progress * 210;
+  const inserted = [
+    [12, 35],
+    [165, 30],
+    [180, 40],
+  ].reduce((sum, [anchor, length]) => sum + (units >= anchor ? length : 0), 0);
+  return (units + inserted) / 315;
+}
+
 async function publicSession(page: Page) {
   await page.route("**/api/**", (route) =>
     route.fulfill(
@@ -14,9 +25,14 @@ const canvas = (page: Page) => page.getByTestId("experience-canvas");
 const altitude = async (page: Page) =>
   Number(await canvas(page).getAttribute("data-camera-y"));
 async function seek(page: Page, percent: number) {
-  await page
-    .getByRole("slider", { name: "Position dans le récit" })
-    .fill(String(percent));
+  await page.getByRole("slider", { name: "Position dans le récit" }).evaluate(
+    (input: HTMLInputElement, value) => {
+      input.step = "any";
+      input.value = String(value * 100);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    },
+    routeAtOriginal(percent / 100),
+  );
   await expect
     .poll(async () => Number(await canvas(page).getAttribute("data-progress")))
     .toBeCloseTo(percent / 100, 3);
@@ -51,10 +67,13 @@ test("continuous camera, native wheel reversal, resize and strictly local resour
   await page.goto("/");
   await ready(page);
   await expect(canvas(page)).toHaveAttribute("data-camera-y", "2.100");
-  await page.mouse.wheel(0, 1600);
-  await expect.poll(() => altitude(page)).toBeGreaterThan(10);
+  await page.mouse.wheel(0, 800);
+  await expect.poll(() => altitude(page)).toBeGreaterThan(2.1);
+  await expect
+    .poll(async () => Number(await canvas(page).getAttribute("data-progress")))
+    .toBeCloseTo(((800 / (900 * 39)) * 315) / 210, 3);
   const raised = await altitude(page);
-  await page.mouse.wheel(0, -800);
+  await page.mouse.wheel(0, -400);
   await expect.poll(() => altitude(page)).toBeLessThan(raised - 1);
   await seek(page, 8.3);
   const middle = await altitude(page);
@@ -125,9 +144,17 @@ test("reduced motion uses eight fixed viewpoints, responsive layout and accessib
   await expect(
     page.getByText("Mouvements réduits · points de vue fixes"),
   ).toBeVisible();
-  await page.getByRole("slider").fill("5");
+  await page.getByRole("slider").evaluate((input: HTMLInputElement, value) => {
+    input.step = "any";
+    input.value = String(value * 100);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }, routeAtOriginal(0.05));
   await expect(canvas(page)).toHaveAttribute("data-camera-y", "2.100");
-  await page.getByRole("slider").fill("20");
+  await page.getByRole("slider").evaluate((input: HTMLInputElement, value) => {
+    input.step = "any";
+    input.value = String(value * 100);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }, routeAtOriginal(0.2));
   await expect(canvas(page)).toHaveAttribute("data-camera-y", "65.000");
   await page.getByRole("button", { name: "Mode exploration" }).click();
   await expect(page.getByRole("button", { name: "Lire le récit" })).toHaveCount(

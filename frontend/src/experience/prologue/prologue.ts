@@ -1,9 +1,11 @@
 import { clamp01, smoothstep } from "../journey";
 import { cameraKeys, type Vec3 } from "../config";
+import { expandedScrollScreens } from "../excursions/route";
 
 /** Three additional scroll screens; the original 21-screen journey keeps its scale. */
 export const prologueScreens = 3;
-export const prologueFraction = prologueScreens / (21 + prologueScreens);
+export const prologueFraction =
+  prologueScreens / (expandedScrollScreens + prologueScreens);
 export const prologueTravelSeconds = 14;
 export const toJourney = (total: number, prefix = prologueFraction) =>
   clamp01((total - prefix) / (1 - prefix));

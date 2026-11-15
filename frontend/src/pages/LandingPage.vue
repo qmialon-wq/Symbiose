@@ -31,6 +31,18 @@ import FallbackScene from "../experience/FallbackScene.vue";
 import PrologueOverlay from "../experience/prologue/PrologueOverlay.vue";
 import PrologueFallback from "../experience/prologue/PrologueFallback.vue";
 import type { OfficeScreenProjection } from "../experience/prologue/screen-projection";
+import ExcursionOverlay from "../experience/excursions/ExcursionOverlay.vue";
+import ExcursionFallback from "../experience/excursions/ExcursionFallback.vue";
+import {
+  expandedScrollScreens,
+  sampleRoute,
+  routeAtOriginal,
+  excursionProgress,
+  adjacentStop,
+  routeClock,
+  expandedTime,
+  type ExcursionId,
+} from "../experience/excursions/route";
 import {
   prologueScreens,
   prologueFraction,
@@ -103,7 +115,20 @@ const debug = ["experience", "transitions"].includes(
 );
 // Existing renderers and editorial content retain their original 0–1 coordinates.
 const prefix = debug ? 0 : prologueFraction;
-const progress = computed(() => toJourney(totalProgress.value, prefix));
+const routeProgress = computed(() => toJourney(totalProgress.value, prefix));
+const route = computed(() =>
+  debug
+    ? {
+        progress: routeProgress.value,
+        excursion: undefined,
+        seconds: pitchSeconds(routeProgress.value),
+      }
+    : sampleRoute(routeProgress.value),
+);
+const progress = computed(() => route.value.progress);
+const excursion = computed(() =>
+  !inPrologue.value ? route.value.excursion : undefined,
+);
 const prologueLocal = computed(() =>
   debug ? 1 : prologueAt(totalProgress.value),
 );
@@ -209,6 +234,8 @@ let resizeFrame = 0;
 const originalTitle = document.title;
 const originalScrollRestoration = history.scrollRestoration;
 function buildTimeline() {
+  const destination = totalProgress.value;
+  const rebuilding = !!timeline;
   timeline?.dispose();
   if (root.value)
     timeline = new NarrativeTimeline(
@@ -217,7 +244,9 @@ function buildTimeline() {
       updateProgress,
       () => (playing.value = false),
       prefix,
+      debug ? undefined : routeClock,
     );
+  if (rebuilding) timeline?.seek(destination, true);
 }
 function mediaChanged() {
   systemReduced.value = media.matches;
@@ -228,9 +257,26 @@ function toggleMotion() {
   buildTimeline();
 }
 function seek(value: number, immediate = props.jury) {
+  seekRoute(debug ? value : routeAtOriginal(value), immediate);
+}
+function seekRoute(value: number, immediate = props.jury) {
   prologueOverlay.value?.pause();
   approachingScreen.value = leavingScreen.value = false;
   timeline?.seek(toTotal(value, prefix), immediate);
+}
+function visitExcursion(id: ExcursionId) {
+  seekRoute(excursionProgress(id), true);
+}
+function nextChapter(direction: number) {
+  if (inPrologue.value) {
+    intro();
+    return;
+  }
+  if (direction < 0 && routeProgress.value < 1e-5) {
+    backToPrologue();
+    return;
+  }
+  seekRoute(adjacentStop(routeProgress.value, direction));
 }
 function restart() {
   timeline?.pause();
@@ -243,6 +289,12 @@ function restart() {
 function skipAnimation() {
   if (inPrologue.value) {
     intro(true);
+    return;
+  }
+  if (!debug) {
+    if (excursion.value)
+      seekRoute(excursionProgress(excursion.value.id, 1), true);
+    else nextChapter(1);
     return;
   }
   const index = pitchIndex(progress.value);
@@ -341,10 +393,11 @@ function presentationKey(event: KeyboardEvent) {
   const index = pitchIndex(progress.value);
   if (["ArrowRight", "ArrowDown", "PageDown"].includes(event.key)) {
     event.preventDefault();
-    seek(index === 7 ? 1 : chapterProgress(index + 1));
+    if (!debug) nextChapter(1);
+    else seek(index === 7 ? 1 : chapterProgress(index + 1));
   } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) {
     event.preventDefault();
-    if (!debug && index === 0) backToPrologue();
+    if (!debug) nextChapter(-1);
     else seek(chapterProgress(index - 1));
   } else if (event.key === "Home" || event.key === "End") {
     event.preventDefault();
@@ -407,13 +460,18 @@ onBeforeUnmount(() => {
     :data-mode="mode"
     :data-reduced-motion="reducedMotion"
     :data-progress="progress.toFixed(6)"
+    :data-route-progress="routeProgress.toFixed(6)"
+    :data-excursion="excursion?.id ?? ''"
+    :data-excursion-local="excursion?.local.toFixed(6) ?? ''"
     :data-prologue="prologueLocal.toFixed(6)"
     :data-prologue-active="inPrologue"
     :data-prologue-video-focus="prologueFocus"
     :data-screen-focus="(officeScreen?.focus ?? 0).toFixed(5)"
     :data-jury="jury"
     :style="{
-      '--sx-scroll-screens': scrollScreens + (debug ? 0 : prologueScreens),
+      '--sx-scroll-screens': debug
+        ? scrollScreens
+        : expandedScrollScreens + prologueScreens,
       '--sx-flow': `${-progress * 96}px`,
     }"
   >
@@ -432,6 +490,7 @@ onBeforeUnmount(() => {
         :prologue="inPrologue ? prologueLocal : undefined"
         :prologue-video="prologueVideo"
         :prologue-focus="prologueFocus"
+        :excursion="excursion"
         :suspended="dialogOpen"
         @ready="ready = true"
         @error="showFallback"
@@ -449,6 +508,10 @@ onBeforeUnmount(() => {
       <PrologueFallback
         v-if="inPrologue && (error || forced2d)"
         :local="prologueLocal"
+      />
+      <ExcursionFallback
+        v-if="excursion && (error || forced2d)"
+        :state="excursion"
       />
       <div class="sx-vignette" aria-hidden="true" />
       <header class="sx-header">
@@ -472,15 +535,24 @@ onBeforeUnmount(() => {
         </nav>
       </header>
       <NarrativeOverlay
-        v-if="!debug && !inPrologue"
+        v-if="!debug && !inPrologue && !excursion"
         :key="restartGeneration"
         :progress="progress"
         :reduced-motion="reducedMotion"
         :suspended="dialogOpen"
         :app-href="applicationHref"
+        :time-map="expandedTime"
         @begin="seek(chapterProgress(1))"
         @sources="openProject"
       />
+      <ExcursionOverlay
+        v-if="excursion"
+        :state="excursion"
+        @leave="seekRoute(excursionProgress(excursion.id, 1), true)"
+      />
+      <h1 v-if="excursion" class="sx-sr-only">
+        Symbiose — nouvelles explorations
+      </h1>
       <PrologueOverlay
         v-if="!debug"
         ref="prologueOverlay"
@@ -504,7 +576,11 @@ onBeforeUnmount(() => {
         :visible="layers.observation"
       />
       <FaunaAnnotations
-        v-if="!inPrologue && frame?.animals?.length"
+        v-if="
+          !inPrologue &&
+          (!excursion || excursion.id === 'marine') &&
+          frame?.animals?.length
+        "
         :animals="frame.animals"
       />
       <div class="sx-location">
@@ -514,7 +590,7 @@ onBeforeUnmount(() => {
         }}</span>
       </div>
       <div class="sx-prototype">
-        <span>VOYAGE · 8 ATMOSPHÈRES</span
+        <span>VOYAGE · 8 ATMOSPHÈRES · 3 EXPLORATIONS</span
         ><button @click="openProject">
           {{
             error || forced2d
@@ -550,6 +626,9 @@ onBeforeUnmount(() => {
         :fallback="!!error || forced2d"
         :prologue="inPrologue"
         :include-prologue="!debug"
+        :route-progress="debug ? undefined : routeProgress"
+        :route-seconds="debug ? undefined : route.seconds"
+        :excursion="excursion?.id"
         :resume-label="
           checkpoint
             ? pitchChapters[pitchIndex(checkpoint.progress)].subject
@@ -565,6 +644,10 @@ onBeforeUnmount(() => {
         @resume="resume"
         @renderer="toggleRenderer"
         @prologue="backToPrologue"
+        @route-seek="seekRoute"
+        @excursion="visitExcursion"
+        @next="nextChapter(1)"
+        @previous="nextChapter(-1)"
       />
       <p v-if="fullscreenNote" class="sx-fullscreen-note" role="status">
         {{ fullscreenNote }}
