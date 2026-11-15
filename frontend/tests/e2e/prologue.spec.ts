@@ -1,0 +1,259 @@
+import { expect, test, type Page } from "@playwright/test";
+
+async function open(page: Page) {
+  await page.route("**/api/**", (route) =>
+    route.fulfill(
+      new URL(route.request().url()).pathname.endsWith("/auth/me")
+        ? { status: 401, json: { detail: "Connexion requise" } }
+        : { json: { setup_required: false, registration_open: true } },
+    ),
+  );
+  await page.goto("/jury/?render=2d");
+  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
+    timeout: 45000,
+  });
+  await expect(page.locator(".sx-experience")).toHaveAttribute(
+    "data-prologue-active",
+    "true",
+  );
+}
+const root = (page: Page) => page.locator(".sx-experience");
+const chapter = (page: Page, name: string) =>
+  page.getByRole("button", { name, exact: true });
+
+test("le poster du nouveau prologue reste disponible après installation hors ligne", async ({
+  page,
+  context,
+}) => {
+  test.skip(
+    !process.env.E2E_PRODUCTION,
+    "Nécessite le service worker du build de production",
+  );
+  test.setTimeout(90000);
+  await open(page);
+  await page.locator(".jury-installation summary").click();
+  await page
+    .getByRole("button", { name: "Installer hors ligne", exact: true })
+    .click();
+  await expect(page.locator(".jury-installation [role=status]")).toContainText(
+    "Installation locale prête",
+    { timeout: 65000 },
+  );
+  await context.setOffline(true);
+  await page.reload();
+  const poster = page.locator(".sx-prologue-fallback img");
+  await expect(poster).toBeVisible();
+  await expect
+    .poll(() =>
+      poster.evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBe(1440);
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await chapter(page, "0. Bureau d’études — Prologue").click();
+  await expect(poster).toBeVisible();
+});
+
+test("le bureau ouvre le récit, peut être passé et reste accessible depuis 00", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await open(page);
+  await expect(
+    page.getByRole("heading", { name: "Du bureau au vivant." }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Vidéo provisoire · YouTube · lecture manuelle", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await expect(page.locator(".sx-prologue-fallback img")).toBeVisible();
+  await expect(page.locator(".sx-prologue-media")).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-chapter",
+    "forest",
+  );
+  await chapter(page, "0. Bureau d’études — Prologue").click();
+  await expect(root(page)).toHaveAttribute("data-prologue", "0.000000");
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "true");
+  await expect(chapter(page, "0. Bureau d’études — Prologue")).toHaveAttribute(
+    "aria-current",
+    "step",
+  );
+  expect(errors).toEqual([]);
+});
+
+test("le travelling rejoint la forêt et le scroll natif permet de revenir au bureau", async ({
+  page,
+}) => {
+  await open(page);
+  await page
+    .getByRole("button", { name: "Entrer dans le vivant", exact: false })
+    .click();
+  await expect
+    .poll(async () => Number(await root(page).getAttribute("data-prologue")))
+    .toBeGreaterThan(0.1);
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false", {
+    timeout: 20000,
+  });
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-chapter",
+    "forest",
+  );
+  await page.mouse.move(700, 500);
+  await page.mouse.wheel(0, -600);
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "true");
+  await expect
+    .poll(async () => Number(await root(page).getAttribute("data-prologue")))
+    .toBeLessThan(0.95);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect
+    .poll(async () => Number(await root(page).getAttribute("data-prologue")))
+    .toBeLessThan(0.001);
+  await expect(
+    page.getByRole("button", { name: "Entrer dans le vivant", exact: false }),
+  ).toBeVisible();
+});
+
+test("les mouvements réduits rejoignent immédiatement les huit chapitres préservés et le lien final", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await open(page);
+  await page
+    .getByRole("button", { name: "Entrer dans le vivant", exact: false })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+  const chapters = [
+    ["1. Forêt", "forest"],
+    ["2. Ciel et nuages", "sky"],
+    ["3. Rivières", "rivers"],
+    ["4. Monde sous-marin", "underwater"],
+    ["5. Zone humide", "wetland"],
+    ["6. Prairie et bocage", "meadow"],
+    ["7. Littoral — Étretat", "coast"],
+    ["8. Forêt nocturne", "night-forest"],
+  ];
+  for (const [name, id] of chapters) {
+    await chapter(page, name).click();
+    await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+      "data-chapter",
+      id,
+    );
+    await expect(chapter(page, name)).toHaveAttribute("aria-current", "step");
+  }
+  await page
+    .getByRole("slider", { name: "Position dans le récit", exact: true })
+    .fill("100");
+  await expect(root(page)).toHaveAttribute("data-progress", "1.000000");
+  const applicationHref = await page
+    .locator(".sx-app-link")
+    .getAttribute("href");
+  expect(applicationHref).toBeTruthy();
+  await expect(
+    page.getByRole("link", {
+      name: "Commencer l’expérience Symbiose",
+      exact: true,
+    }),
+  ).toHaveAttribute("href", applicationHref!);
+  await chapter(page, "0. Bureau d’études — Prologue").click();
+  await root(page).focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await page.keyboard.press("ArrowLeft");
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "true");
+  await expect(
+    page.getByRole("link", { name: "Accéder à l’application", exact: false }),
+  ).toHaveAttribute("href", applicationHref!);
+  await page.route("**/connexion", (route) =>
+    route.fulfill({ contentType: "text/html", body: "<h1>Connexion</h1>" }),
+  );
+  await page
+    .getByRole("link", { name: "Accéder à l’application", exact: false })
+    .click();
+  await expect(page).toHaveURL(/\/connexion$/);
+});
+
+test("le fichier de test est lu manuellement, verrouille le scroll, se met en pause et libère la suite à sa fin", async ({
+  page,
+}) => {
+  await open(page);
+  await page.locator(".sx-prologue-file summary").click();
+  await page
+    .getByLabel("Choisir une vidéo locale pour le prologue", { exact: true })
+    .setInputFiles("tests/fixtures/media-signal.webm");
+  const video = page.locator(".sx-prologue-media");
+  await expect(video).toBeVisible();
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.readyState),
+    )
+    .toBeGreaterThanOrEqual(1);
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  expect(await video.getAttribute("autoplay")).toBeNull();
+  await video.evaluate((element: HTMLVideoElement) => {
+    element.loop = true;
+  });
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "true",
+  );
+  await page.mouse.move(700, 500);
+  await page.mouse.wheel(0, 1600);
+  await expect(root(page)).toHaveAttribute("data-prologue", "0.000000");
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await page
+    .getByRole("button", { name: "Mettre la vidéo en pause", exact: true })
+    .click();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "false",
+  );
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Le projet", exact: false }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "false",
+  );
+  await page
+    .getByRole("button", { name: "Fermer le projet", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await video.evaluate((element: HTMLVideoElement) => {
+    element.loop = false;
+    element.currentTime = Math.max(0, element.duration - 0.02);
+  });
+  await expect(page.locator(".sx-prologue-ended")).toBeVisible();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "false",
+  );
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+});

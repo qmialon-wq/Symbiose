@@ -23,6 +23,7 @@ export class NarrativeTimeline {
     private reduced: boolean,
     private onUpdate: (value: number) => void,
     private onPause: () => void,
+    private prefix = 0,
   ) {
     this.context = gsap.context(() => {
       // Reuse a tween created before playback. Replacing it on each playback
@@ -211,12 +212,13 @@ export class NarrativeTimeline {
   playPresentation() {
     if (this.reduced) return;
     this.pause();
-    const cursor = { seconds: pitchSeconds(this.trigger.progress) };
+    const prefix = this.prefix || 0;
+    const cursor = { seconds: pitchSeconds(clamp01((this.trigger.progress - prefix) / (1 - prefix))) };
     this.playback = gsap.to(cursor, {
       seconds: pitchDuration,
       duration: Math.max(.01, pitchDuration - cursor.seconds),
       ease: "none",
-      onUpdate: () => this.scrollTo(progressAtSeconds(cursor.seconds)),
+      onUpdate: () => this.scrollTo(prefix + progressAtSeconds(cursor.seconds) * (1 - prefix)),
       onComplete: () => { this.scrollTo(1); this.snap(1); this.pause(); },
     });
   }

@@ -5,6 +5,7 @@ import {
   onBeforeUnmount,
   onMounted,
   ref,
+  shallowRef,
   watch,
 } from "vue";
 import { RouterLink } from "vue-router";
@@ -27,6 +28,17 @@ import "../experience/pitch.css";
 import "../experience/finishing.css";
 import symbioseLogo from "../assets/symbiose-logo.png";
 import FallbackScene from "../experience/FallbackScene.vue";
+import PrologueOverlay from "../experience/prologue/PrologueOverlay.vue";
+import PrologueFallback from "../experience/prologue/PrologueFallback.vue";
+import type { OfficeScreenProjection } from "../experience/prologue/screen-projection";
+import {
+  prologueScreens,
+  prologueFraction,
+  prologueAt,
+  toJourney,
+  toTotal,
+  prologueTravelSeconds,
+} from "../experience/prologue/prologue";
 import JourneyAnnotations from "../experience/JourneyAnnotations.vue";
 import FaunaAnnotations from "../experience/FaunaAnnotations.vue";
 import {
@@ -60,8 +72,8 @@ const forced2d = ref(
 );
 
 const root = ref<HTMLElement>();
-const progress = ref(0),
-  ready = ref(false),
+const totalProgress = ref(0);
+const ready = ref(false),
   error = ref("");
 const mode = ref<"exploration" | "presentation">(
   props.jury ? "presentation" : "exploration",
@@ -89,6 +101,103 @@ function showFallback(message: string) {
 const debug = ["experience", "transitions"].includes(
   new URLSearchParams(window.location.search).get("debug") ?? "",
 );
+// Existing renderers and editorial content retain their original 0–1 coordinates.
+const prefix = debug ? 0 : prologueFraction;
+const progress = computed(() => toJourney(totalProgress.value, prefix));
+const prologueLocal = computed(() =>
+  debug ? 1 : prologueAt(totalProgress.value),
+);
+const inPrologue = computed(
+  () => !debug && totalProgress.value < prefix - 1e-8,
+);
+const prologueVideo = ref<HTMLVideoElement | null>(null);
+const prologuePlaying = ref(false),
+  prologueFocus = ref(false);
+const prologueOverlay = ref<InstanceType<typeof PrologueOverlay>>();
+const officeScreen = shallowRef<OfficeScreenProjection>();
+const approachingScreen = ref(false),
+  leavingScreen = ref(false);
+const mediaLocked = computed(
+  () => prologuePlaying.value || approachingScreen.value || leavingScreen.value,
+);
+watch(
+  () => [forced2d.value, !!error.value, reducedMotion.value],
+  () => {
+    if (forced2d.value || error.value || reducedMotion.value) {
+      approachingScreen.value = false;
+      if (forced2d.value || error.value) officeScreen.value = undefined;
+      if (leavingScreen.value) {
+        leavingScreen.value = false;
+        travelOutside();
+      }
+    }
+  },
+);
+let lockedProgress = 0;
+function focusScreen() {
+  timeline?.pause();
+  lockedProgress = totalProgress.value;
+  prologueFocus.value = true;
+  approachingScreen.value =
+    !reducedMotion.value && !error.value && !forced2d.value;
+}
+function screenChanged(value: OfficeScreenProjection | undefined) {
+  officeScreen.value = value;
+  if (value && value.focus >= 0.995) approachingScreen.value = false;
+  if (leavingScreen.value && value && value.focus < 0.005) {
+    leavingScreen.value = false;
+    travelOutside();
+  }
+}
+function videoPlaying(value: boolean) {
+  prologuePlaying.value = value;
+  if (value) {
+    timeline?.pause();
+    lockedProgress = totalProgress.value;
+    prologueFocus.value = true;
+  }
+}
+function updateProgress(value: number) {
+  if (mediaLocked.value && Math.abs(value - lockedProgress) > 1e-7) {
+    timeline?.seek(lockedProgress, true);
+    return;
+  }
+  totalProgress.value = value;
+  if (!inPrologue.value) prologueFocus.value = false;
+}
+function intro(skip = false) {
+  prologueOverlay.value?.pause();
+  approachingScreen.value = false;
+  if (
+    !skip &&
+    prologueFocus.value &&
+    !reducedMotion.value &&
+    !error.value &&
+    !forced2d.value
+  ) {
+    lockedProgress = totalProgress.value;
+    leavingScreen.value = true;
+    prologueFocus.value = false;
+    return;
+  }
+  leavingScreen.value = false;
+  prologueFocus.value = false;
+  if (skip || reducedMotion.value) timeline?.seek(prefix, true);
+  else travelOutside();
+}
+function travelOutside() {
+  timeline?.playTo(prefix, prologueTravelSeconds * (1 - prologueLocal.value));
+  playing.value = true;
+}
+function backToPrologue() {
+  prologueOverlay.value?.resetScreen();
+  prologueFocus.value = false;
+  approachingScreen.value = leavingScreen.value = false;
+  timeline?.seek(0, true);
+}
+function holdVideoScroll(event: WheelEvent | TouchEvent) {
+  if (mediaLocked.value) event.preventDefault();
+}
 const reference = computed(() => referenceScene(progress.value));
 function setLayer(key: keyof JourneyLayers, value: boolean) {
   layers.value = { ...layers.value, [key]: value };
@@ -105,8 +214,9 @@ function buildTimeline() {
     timeline = new NarrativeTimeline(
       root.value,
       reducedMotion.value,
-      (value) => (progress.value = value),
+      updateProgress,
       () => (playing.value = false),
+      prefix,
     );
 }
 function mediaChanged() {
@@ -118,17 +228,23 @@ function toggleMotion() {
   buildTimeline();
 }
 function seek(value: number, immediate = props.jury) {
-  timeline?.seek(value, immediate);
+  prologueOverlay.value?.pause();
+  approachingScreen.value = leavingScreen.value = false;
+  timeline?.seek(toTotal(value, prefix), immediate);
 }
 function restart() {
   timeline?.pause();
   restartGeneration.value++;
   checkpoint.value = undefined;
-  seek(0, true);
+  backToPrologue();
   if (props.jury) saveCheckpoint(0, mode.value);
   root.value?.focus({ preventScroll: true });
 }
 function skipAnimation() {
+  if (inPrologue.value) {
+    intro(true);
+    return;
+  }
   const index = pitchIndex(progress.value);
   seek(index === 7 ? 1 : chapterProgress(index + 1), true);
 }
@@ -160,6 +276,10 @@ function setMode(value: "exploration" | "presentation") {
   mode.value = value;
 }
 function play() {
+  if (inPrologue.value) {
+    intro();
+    return;
+  }
   if (!reducedMotion.value) {
     if (progress.value >= 0.999) {
       seek(0);
@@ -193,6 +313,22 @@ async function toggleFullscreen() {
   }
 }
 function presentationKey(event: KeyboardEvent) {
+  if (inPrologue.value && ownsPresentationKey(event)) {
+    // Native media controls keep keyboard ownership; navigation first pauses the film.
+    if (mediaLocked.value) {
+      event.preventDefault();
+      if (event.key === " ") prologueOverlay.value?.pause();
+      return;
+    }
+    if (
+      ["ArrowRight", "ArrowDown", "PageDown"].includes(event.key) &&
+      mode.value === "presentation"
+    ) {
+      event.preventDefault();
+      intro();
+      return;
+    }
+  }
   if (
     mode.value !== "presentation" ||
     dialogOpen.value ||
@@ -208,10 +344,11 @@ function presentationKey(event: KeyboardEvent) {
     seek(index === 7 ? 1 : chapterProgress(index + 1));
   } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) {
     event.preventDefault();
-    seek(chapterProgress(index - 1));
+    if (!debug && index === 0) backToPrologue();
+    else seek(chapterProgress(index - 1));
   } else if (event.key === "Home" || event.key === "End") {
     event.preventDefault();
-    seek(event.key === "Home" ? 0 : 1);
+    event.key === "Home" ? backToPrologue() : seek(1);
   } else if (event.key === " ") {
     event.preventDefault();
     playing.value ? timeline?.pause() : play();
@@ -231,6 +368,8 @@ onMounted(() => {
   buildTimeline();
   window.addEventListener("pagehide", persist);
   window.addEventListener("keydown", presentationKey);
+  window.addEventListener("wheel", holdVideoScroll, { passive: false });
+  window.addEventListener("touchmove", holdVideoScroll, { passive: false });
   document.addEventListener("fullscreenchange", fullscreenChanged);
   const query = new URLSearchParams(location.search),
     id = transitions.find((t) => t.id === query.get("transition"))?.id;
@@ -247,6 +386,8 @@ onBeforeUnmount(() => {
   cancelAnimationFrame(resizeFrame);
   media?.removeEventListener("change", mediaChanged);
   window.removeEventListener("keydown", presentationKey);
+  window.removeEventListener("wheel", holdVideoScroll);
+  window.removeEventListener("touchmove", holdVideoScroll);
   window.removeEventListener("pagehide", persist);
   document.removeEventListener("fullscreenchange", fullscreenChanged);
   if (fullscreenOwned && document.fullscreenElement)
@@ -266,9 +407,13 @@ onBeforeUnmount(() => {
     :data-mode="mode"
     :data-reduced-motion="reducedMotion"
     :data-progress="progress.toFixed(6)"
+    :data-prologue="prologueLocal.toFixed(6)"
+    :data-prologue-active="inPrologue"
+    :data-prologue-video-focus="prologueFocus"
+    :data-screen-focus="(officeScreen?.focus ?? 0).toFixed(5)"
     :data-jury="jury"
     :style="{
-      '--sx-scroll-screens': scrollScreens,
+      '--sx-scroll-screens': scrollScreens + (debug ? 0 : prologueScreens),
       '--sx-flow': `${-progress * 96}px`,
     }"
   >
@@ -284,18 +429,26 @@ onBeforeUnmount(() => {
         :progress="progress"
         :reduced-motion="reducedMotion"
         :layers="layers"
+        :prologue="inPrologue ? prologueLocal : undefined"
+        :prologue-video="prologueVideo"
+        :prologue-focus="prologueFocus"
         :suspended="dialogOpen"
         @ready="ready = true"
         @error="showFallback"
         @performance="performance = $event"
         @frame="frame = $event"
         @assets="assetIssues = $event"
+        @screen="screenChanged"
       />
       <FallbackScene
         v-else
         :progress="progress"
         :reduced-motion="reducedMotion"
         @ready="ready = true"
+      />
+      <PrologueFallback
+        v-if="inPrologue && (error || forced2d)"
+        :local="prologueLocal"
       />
       <div class="sx-vignette" aria-hidden="true" />
       <header class="sx-header">
@@ -319,7 +472,7 @@ onBeforeUnmount(() => {
         </nav>
       </header>
       <NarrativeOverlay
-        v-if="!debug"
+        v-if="!debug && !inPrologue"
         :key="restartGeneration"
         :progress="progress"
         :reduced-motion="reducedMotion"
@@ -328,13 +481,32 @@ onBeforeUnmount(() => {
         @begin="seek(chapterProgress(1))"
         @sources="openProject"
       />
+      <PrologueOverlay
+        v-if="!debug"
+        ref="prologueOverlay"
+        :local="prologueLocal"
+        :active="inPrologue"
+        :reduced-motion="reducedMotion"
+        :suspended="dialogOpen"
+        :fallback="!!error || forced2d"
+        :focused="prologueFocus"
+        :screen="officeScreen"
+        @video="prologueVideo = $event"
+        @playing="videoPlaying"
+        @focus="focusScreen"
+        @enter="intro()"
+        @skip="intro(true)"
+      />
       <h1 v-else class="sx-sr-only">Symbiose — Le vivant nous relie</h1>
       <JourneyAnnotations
         v-if="debug"
         :frame="frame"
         :visible="layers.observation"
       />
-      <FaunaAnnotations v-if="frame?.animals?.length" :animals="frame.animals" />
+      <FaunaAnnotations
+        v-if="!inPrologue && frame?.animals?.length"
+        :animals="frame.animals"
+      />
       <div class="sx-location">
         <span class="sx-location-mark" aria-hidden="true">⌖</span> NORMANDIE,
         FRANCE<span class="sx-location-rule" aria-hidden="true" /><span>{{
@@ -376,6 +548,8 @@ onBeforeUnmount(() => {
         :reduced-motion="reducedMotion"
         :fullscreen="fullscreen"
         :fallback="!!error || forced2d"
+        :prologue="inPrologue"
+        :include-prologue="!debug"
         :resume-label="
           checkpoint
             ? pitchChapters[pitchIndex(checkpoint.progress)].subject
@@ -390,6 +564,7 @@ onBeforeUnmount(() => {
         @skip="skipAnimation"
         @resume="resume"
         @renderer="toggleRenderer"
+        @prologue="backToPrologue"
       />
       <p v-if="fullscreenNote" class="sx-fullscreen-note" role="status">
         {{ fullscreenNote }}

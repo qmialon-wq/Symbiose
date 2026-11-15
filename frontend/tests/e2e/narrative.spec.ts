@@ -25,6 +25,11 @@ async function ready(page: Page) {
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
+  const skip = page.getByRole("button", {
+    name: "Passer l’introduction",
+    exact: true,
+  });
+  if (await skip.isVisible()) await skip.click();
 }
 
 test("continuous camera, native wheel reversal, resize and strictly local resources", async ({

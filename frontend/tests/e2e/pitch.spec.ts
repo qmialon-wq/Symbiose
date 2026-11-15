@@ -25,6 +25,9 @@ async function openPitch(page: Page, fallback = true) {
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
 }
 async function chapter(page: Page, name: string, id: string) {
   await page.getByRole("button", { name }).click();
@@ -137,7 +140,7 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   expect(errors).toEqual([]);
 });
 
-test("presentation keyboard, narrative stops, reverse navigation and reduced motion", async ({
+test("presentation keyboard, continuous narrative, reverse navigation and reduced motion", async ({
   page,
 }) => {
   await openPitch(page);
@@ -162,7 +165,7 @@ test("presentation keyboard, narrative stops, reverse navigation and reduced mot
   await expect(
     page.getByRole("button", { name: "Lire le récit", exact: true }),
   ).toBeVisible();
-  // Start just before the first chapter boundary to check its actual automatic stop.
+  // The existing five-minute clock continues across chapter boundaries.
   await page.getByRole("slider").fill("8.2");
   await expect
     .poll(async () =>
@@ -179,15 +182,18 @@ test("presentation keyboard, narrative stops, reverse navigation and reduced mot
     "sky",
   );
   await expect(
-    page.getByRole("button", { name: "Lire le récit", exact: true }),
+    page.getByRole("button", { name: "Mettre en pause", exact: true }),
   ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Mettre en pause", exact: true })
+    .click();
   await page
     .getByRole("button", { name: "Démonstration", exact: true })
     .click();
   await expect(page.locator(".sx-counter")).toHaveText("2:30 / 5:00");
   await expect(
     page.getByRole("button", { name: "Lire le récit" }),
-  ).toBeDisabled();
+  ).toBeEnabled();
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.getByRole("button", { name: "Lire le récit" })).toHaveCount(
     0,
@@ -196,7 +202,11 @@ test("presentation keyboard, narrative stops, reverse navigation and reduced mot
   await page.keyboard.press("End");
   await expect(page.locator(".sx-counter")).toHaveText("5:00 / 5:00");
   await page.keyboard.press("Home");
-  await expect(page.locator(".sx-counter")).toHaveText("0:00 / 5:00");
+  await expect(page.locator(".sx-counter")).toHaveText("00 / 08");
+  await expect(page.locator(".sx-experience")).toHaveAttribute(
+    "data-prologue-active",
+    "true",
+  );
 });
 
 test("a real local media file stays manual, pauses for sources and releases on chapter departure", async ({

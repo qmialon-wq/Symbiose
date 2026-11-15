@@ -16,6 +16,8 @@ const props = defineProps<{
   fullscreen: boolean;
   fallback?: boolean;
   resumeLabel?: string;
+  prologue?: boolean;
+  includePrologue?: boolean;
 }>();
 const emit = defineEmits<{
   seek: [progress: number];
@@ -27,6 +29,7 @@ const emit = defineEmits<{
   skip: [];
   resume: [];
   renderer: [];
+  prologue: [];
 }>();
 const chapterIndex = computed(() => pitchIndex(props.progress));
 const seek = (event: Event) =>
@@ -35,10 +38,19 @@ const seek = (event: Event) =>
 <template>
   <nav class="sx-chapter-nav" aria-label="Environnements du voyage">
     <button
+      v-if="includePrologue"
+      aria-label="0. Bureau d’études — Prologue"
+      :aria-current="prologue ? 'step' : undefined"
+      @click="emit('prologue')"
+    >
+      <span>00</span><span class="sx-chapter-name">Le prologue</span
+      ><i aria-hidden="true" />
+    </button>
+    <button
       v-for="(chapter, index) in chapters"
       :key="chapter.id"
       :aria-label="`${index + 1}. ${chapter.name}`"
-      :aria-current="chapterIndex === index ? 'step' : undefined"
+      :aria-current="!prologue && chapterIndex === index ? 'step' : undefined"
       @click="emit('seek', chapterProgress(index))"
     >
       <span>0{{ index + 1 }}</span
@@ -52,9 +64,13 @@ const seek = (event: Event) =>
     aria-label="Commandes du pitch"
   >
     <button
-      :disabled="chapterIndex === 0"
+      :disabled="prologue || (!includePrologue && chapterIndex === 0)"
       aria-label="Chapitre précédent"
-      @click="emit('seek', chapterProgress(chapterIndex - 1))"
+      @click="
+        includePrologue && chapterIndex === 0
+          ? emit('prologue')
+          : emit('seek', chapterProgress(chapterIndex - 1))
+      "
     >
       ← <span>Précédent</span>
     </button>
@@ -62,7 +78,14 @@ const seek = (event: Event) =>
       :disabled="chapterIndex === 7 && progress >= 0.999"
       aria-label="Chapitre suivant"
       @click="
-        emit('seek', chapterIndex === 7 ? 1 : chapterProgress(chapterIndex + 1))
+        emit(
+          'seek',
+          prologue
+            ? 0
+            : chapterIndex === 7
+              ? 1
+              : chapterProgress(chapterIndex + 1),
+        )
       "
     >
       <span>Suivant</span> →
@@ -90,9 +113,11 @@ const seek = (event: Event) =>
   <footer class="sx-controls">
     <div class="sx-scroll-cue">
       <span class="sx-scroll-line" aria-hidden="true" /><span>{{
-        mode === "presentation"
-          ? "Lecture continue · 5 minutes · Espace lecture/pause"
-          : "Défilez librement pour explorer"
+        prologue
+          ? "Du bureau au vivant · défilez pour sortir"
+          : mode === "presentation"
+            ? "Lecture continue · 5 minutes · Espace lecture/pause"
+            : "Défilez librement pour explorer"
       }}</span>
     </div>
     <div class="sx-transport">
@@ -113,14 +138,20 @@ const seek = (event: Event) =>
           max="100"
           step="0.1"
           :value="progress * 100"
-          :aria-valuetext="`${clock(pitchSeconds(progress))} sur 5:00, ${pitchChapters[chapterIndex].subject}`"
+          :aria-valuetext="
+            prologue
+              ? 'Prologue · Bureau d’études, avant le récit de cinq minutes'
+              : `${clock(pitchSeconds(progress))} sur 5:00, ${pitchChapters[chapterIndex].subject}`
+          "
           @input="seek"
           :style="{ '--sx-progress': `${progress * 100}%` }"
       /></label>
       <span class="sx-counter">{{
-        mode === "presentation"
-          ? `${clock(pitchSeconds(progress))} / 5:00`
-          : `0${chapterIndex + 1} / 08`
+        prologue
+          ? "00 / 08"
+          : mode === "presentation"
+            ? `${clock(pitchSeconds(progress))} / 5:00`
+            : `0${chapterIndex + 1} / 08`
       }}</span>
     </div>
     <button

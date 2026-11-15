@@ -25,7 +25,12 @@ test("software renderer automatically releases WebGL and keeps the complete jury
     );
     await expect(
       page.getByRole("link", { name: "Commencer l’expérience Symbiose" }),
-    ).toHaveAttribute("href", "/connexion");
+    ).toHaveAttribute(
+      "href",
+      (await page
+        .getByRole("link", { name: "Accéder à l’application" })
+        .getAttribute("href"))!,
+    );
   } finally {
     await browser.close();
   }
@@ -48,6 +53,9 @@ test("standalone jury starts without any authentication or business API", async 
   await expect(
     page.getByRole("button", { name: "Mode présentation", exact: true }),
   ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
   await page.keyboard.press("ArrowRight");
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
@@ -97,10 +105,13 @@ test("jury recovers a saved chapter and supports immediate skip, restart and 2D 
   await page
     .getByRole("button", { name: "Recommencer le récit", exact: true })
     .click();
-  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
-    "data-chapter",
-    "forest",
+  await expect(page.locator(".sx-experience")).toHaveAttribute(
+    "data-prologue-active",
+    "true",
   );
+  await expect(
+    page.getByRole("heading", { name: "Du bureau au vivant." }),
+  ).toBeVisible();
 });
 
 test("forced 2D never creates a WebGL context and keeps the sources and application CTA", async ({
@@ -163,7 +174,10 @@ test("installed production jury reloads all eight chapters and sources with the 
   await page.reload();
   await expect(page.getByTestId("experience-fallback")).toBeVisible();
   for (let index = 0; index < 8; index++) {
-    await page.locator(".sx-chapter-nav button").nth(index).click();
+    await page
+      .locator(".sx-chapter-nav button")
+      .nth(index + 1)
+      .click();
     await expect(page.locator(".sx-pitch-scene h2")).toHaveCount(1);
     await expect(page.locator(".sx-fallback-scene [role=status]")).toHaveCount(
       0,

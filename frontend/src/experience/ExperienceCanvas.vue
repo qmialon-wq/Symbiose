@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { gsap } from "gsap";
-import { ACESFilmicToneMapping, PCFSoftShadowMap, WebGLRenderer } from "three";
+import {
+  ACESFilmicToneMapping,
+  PCFSoftShadowMap,
+  WebGLRenderer,
+  Vector3,
+} from "three";
 import { CameraController } from "./CameraController";
 import { AtmosphereController } from "./AtmosphereController";
 import { AssetPreloader } from "./AssetPreloader";
@@ -20,11 +25,21 @@ import {
 import type { FrameReport } from "./telemetry";
 import { pitchIndex } from "./pitch";
 import { textureWindow } from "./runtime-assets";
+import { samplePrologue } from "./prologue/prologue";
+import type { createOfficeScene } from "./prologue/OfficeScene";
+import {
+  screenTransform,
+  type OfficeScreenProjection,
+  type ScreenQuad,
+} from "./prologue/screen-projection";
 const props = defineProps<{
   progress: number;
   reducedMotion: boolean;
   layers?: JourneyLayers;
   suspended?: boolean;
+  prologue?: number;
+  prologueVideo?: HTMLVideoElement | null;
+  prologueFocus?: boolean;
 }>();
 const emit = defineEmits<{
   ready: [];
@@ -32,11 +47,20 @@ const emit = defineEmits<{
   performance: [sample: PerformanceSample];
   frame: [frame: FrameReport];
   assets: [issues: string[]];
+  screen: [projection: OfficeScreenProjection | undefined];
 }>();
 const host = ref<HTMLDivElement>();
 let renderFrame: (() => void) | undefined, teardown: (() => void) | undefined;
 watch(
-  () => [props.progress, props.reducedMotion, props.layers, props.suspended],
+  () => [
+    props.progress,
+    props.reducedMotion,
+    props.layers,
+    props.suspended,
+    props.prologue,
+    props.prologueVideo,
+    props.prologueFocus,
+  ],
   () => renderFrame?.(),
   { flush: "post", deep: true },
 );
@@ -50,6 +74,30 @@ onMounted(async () => {
     world: ReturnType<typeof createWorld> | undefined,
     pass: RefractionPass | undefined,
     observer: ResizeObserver | undefined;
+  let office: ReturnType<typeof createOfficeScene> | undefined;
+  let officeLoading = false,
+    screenFocus = 0;
+  async function ensureOffice() {
+    if (office || officeLoading || abort.signal.aborted) return;
+    officeLoading = true;
+    try {
+      const { createOfficeScene } = await import("./prologue/OfficeScene");
+      if (!abort.signal.aborted && props.prologue !== undefined) {
+        office = createOfficeScene(world!.scene, quality === "eco", invalidate);
+        office.setVideo(props.prologueVideo ?? null);
+        renderer!.shadowMap.needsUpdate = true;
+        invalidate();
+      }
+    } catch {
+      if (!abort.signal.aborted)
+        emit(
+          "error",
+          "Le décor du prologue n’a pas pu être chargé. Le voyage reste disponible en version simplifiée.",
+        );
+    } finally {
+      officeLoading = false;
+    }
+  }
   let scheduled = false,
     dirty = false,
     initialized = false,
@@ -113,10 +161,44 @@ onMounted(async () => {
     const progress = props.reducedMotion
         ? reducedProgress(props.progress)
         : props.progress,
-      pose = camera.update(progress),
       layers = props.layers ?? defaultLayers;
+    let pose = camera.update(progress);
+    if (props.prologue !== undefined) {
+      void ensureOffice();
+      screenFocus = props.reducedMotion
+        ? Number(!!props.prologueFocus)
+        : screenFocus + (Number(!!props.prologueFocus) - screenFocus) * 0.09;
+      pose = samplePrologue(
+        props.prologue,
+        props.reducedMotion,
+        screenFocus,
+        camera.camera.aspect,
+      );
+      camera.camera.position.set(...pose.position);
+      camera.camera.lookAt(...pose.target);
+      camera.camera.fov = pose.fov;
+      camera.camera.updateProjectionMatrix();
+      camera.camera.updateMatrixWorld(true);
+      office?.setVideo(props.prologueVideo ?? null);
+      office?.update(
+        props.prologue,
+        performance.now() / 1000,
+        props.reducedMotion,
+      );
+    } else if (office) {
+      office.update(1, 0, true);
+      screenFocus = 0;
+      // Rebuild on reverse navigation rather than retaining office textures throughout the voyage.
+      if (props.progress > 0.09) {
+        office.dispose();
+        office = undefined;
+      }
+    }
     const state = world.apply(progress, camera.camera, layers);
     atmosphere.update(renderer, state.effects.night);
+    if (props.prologue !== undefined)
+      renderer.toneMappingExposure =
+        0.95 + 0.17 * Math.min(1, props.prologue / 0.8);
     world.renderReflection(renderer, camera.camera);
     pass!.render(
       renderer,
@@ -125,6 +207,33 @@ onMounted(async () => {
       layers.water ? state.effects.immersion : 0,
       state.effects.time,
     );
+    if (props.prologue !== undefined && office) {
+      office.screen.updateWorldMatrix(true, false);
+      const box = host.value.getBoundingClientRect();
+      const points = [
+        [-2.8, 1.575],
+        [2.8, 1.575],
+        [2.8, -1.575],
+        [-2.8, -1.575],
+      ].map(([x, y]) =>
+        new Vector3(x, y, 0)
+          .applyMatrix4(office!.screen.matrixWorld)
+          .project(camera.camera),
+      );
+      const quad = points.map((p) => ({
+        x: ((p.x + 1) * box.width) / 2,
+        y: ((1 - p.y) * box.height) / 2,
+      })) as unknown as ScreenQuad;
+      const transform = screenTransform(quad);
+      emit("screen", {
+        transform: transform ?? "",
+        visible:
+          !!transform &&
+          props.prologue < 0.22 &&
+          points.every((p) => p.z > -1 && p.z < 1),
+        focus: screenFocus,
+      });
+    } else emit("screen", undefined);
     const rig = transitionAt(progress);
     const report: FrameReport = {
       progress,
@@ -159,6 +268,8 @@ onMounted(async () => {
     host.value.dataset.drawCalls = String(report.drawCalls);
     host.value.dataset.renderCount = String(renderCount);
     host.value.dataset.state = JSON.stringify(report);
+    host.value.dataset.prologue =
+      props.prologue === undefined ? "" : props.prologue.toFixed(5);
     monitor.frame(performance.now(), !props.reducedMotion);
     emit("frame", report);
   }
@@ -171,6 +282,7 @@ onMounted(async () => {
     }
     dirty = false;
     draw();
+    if (props.prologue !== undefined && !props.reducedMotion) dirty = true;
   }
   function stopRendering() {
     gsap.ticker.remove(tick);
@@ -218,6 +330,7 @@ onMounted(async () => {
     document.removeEventListener("visibilitychange", visibility);
     renderer?.domElement.removeEventListener("webglcontextlost", lost);
     pass?.dispose();
+    office?.dispose();
     world?.dispose();
     preloader.dispose();
     renderer?.dispose();
@@ -253,13 +366,16 @@ onMounted(async () => {
       /SwiftShader|llvmpipe|software/i.test(device) ||
       window.matchMedia("(max-width: 600px)").matches;
     quality = economy ? "eco" : "standard";
-    renderer.shadowMap.enabled = !economy; renderer.shadowMap.type = PCFSoftShadowMap; renderer.shadowMap.autoUpdate = false;
+    renderer.shadowMap.enabled = !economy;
+    renderer.shadowMap.type = PCFSoftShadowMap;
+    renderer.shadowMap.autoUpdate = false;
     renderer.setPixelRatio(economy ? 0.65 : Math.min(devicePixelRatio, 1.5));
     monitor = new PerformanceMonitor(
       (sample) => emit("performance", sample),
       () => {
         quality = "eco";
-        world?.setEconomy(true); renderer!.shadowMap.enabled = false;
+        world?.setEconomy(true);
+        renderer!.shadowMap.enabled = false;
         renderer!.setPixelRatio(
           Math.max(0.5, renderer!.getPixelRatio() * 0.72),
         );
@@ -279,6 +395,7 @@ onMounted(async () => {
     await selectAssets(pitchIndex(props.progress));
     await world.loadInitial();
     world.prepareEnvironment(renderer);
+    if (props.prologue !== undefined) await ensureOffice();
     if (abort.signal.aborted) return;
     if (
       !(await preloader.prepare(
