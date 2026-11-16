@@ -1,7 +1,20 @@
 import { expect, test, type Page } from "@playwright/test";
 
+function routeAtOriginal(progress: number) {
+  const units = progress * 210;
+  const inserted = [
+    [12, 35],
+    [165, 30],
+    [180, 40],
+  ].reduce((sum, [anchor, length]) => sum + (units >= anchor ? length : 0), 0);
+  return (units + inserted) / 315;
+}
+
 async function seek(page: Page, index: number, chapter: string) {
-  await page.locator(".sx-chapter-nav button").nth(index).click();
+  await page
+    .locator(".sx-chapter-nav button")
+    .nth(index + 1)
+    .click();
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     chapter,
@@ -13,13 +26,13 @@ async function seek(page: Page, index: number, chapter: string) {
       input.step = "any";
       input.value = String(progress * 100);
       input.dispatchEvent(new Event("input", { bubbles: true }));
-    }, expected);
+    }, routeAtOriginal(expected));
   await page.waitForFunction((expected) => {
     const state =
       document.querySelector<HTMLElement>(".sx-canvas")?.dataset.state;
     return (
       state &&
-      Math.abs(JSON.parse(state).progress - expected) < 0.000001 &&
+      Math.abs(JSON.parse(state).progress - expected) < 0.000000000001 &&
       !JSON.parse(state).assetsPending
     );
   }, expected);
@@ -37,6 +50,10 @@ test("supplied animals track their projected volumes, reverse deterministically 
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(page.locator(".sx-canvas")).toHaveAttribute("data-prologue", "");
   const first = await state(page);
   expect(first.animals.map((a: any) => a.label)).toEqual(
     expect.arrayContaining(["Chevreuil", "Sanglier", "Pigeon"]),

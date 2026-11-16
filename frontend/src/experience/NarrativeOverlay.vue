@@ -15,6 +15,7 @@ const props = withDefaults(
     reducedMotion: boolean;
     suspended: boolean;
     appHref?: string;
+    timeMap?: (seconds: number) => number;
   }>(),
   { appHref: appUrl },
 );
@@ -45,8 +46,11 @@ watch(
       <p class="sx-eyebrow">
         {{ chapter.subject.toLocaleUpperCase("fr") }}
         <span
-          >{{ clock(chapter.start) }}—{{
-            clock(chapter.start + chapter.duration)
+          >{{ clock(timeMap?.(chapter.start) ?? chapter.start) }}—{{
+            clock(
+              timeMap?.(chapter.start + chapter.duration) ??
+                chapter.start + chapter.duration,
+            )
           }}</span
         >
       </p>

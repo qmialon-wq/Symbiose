@@ -1,0 +1,119 @@
+.sx-experience .sx-excursion-copy {
+  position: absolute;
+  z-index: 2;
+  left: var(--sx-gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(410px, 34vw);
+  max-height: calc(100svh - 340px);
+  overflow: auto;
+  color: #f5f8ef;
+  text-shadow: 0 2px 18px #06150dc9;
+  padding-right: 12px;
+}
+.sx-experience .sx-excursion-eyebrow {
+  color: #d8f0bc;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.sx-experience .sx-excursion-copy h2 {
+  white-space: pre-line;
+  font:
+    400 clamp(34px, 4.2vw, 66px) / 1.05 Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  margin: 20px 0;
+  color: #faf9ed;
+}
+.sx-experience .sx-excursion-intro {
+  color: #eef2e6;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.sx-experience .sx-excursion-copy ul {
+  padding-left: 18px;
+  font-size: 12px;
+  color: #e4edda;
+  line-height: 1.7;
+  margin: 20px 0;
+}
+.sx-experience .sx-excursion-disclaimer {
+  color: #d8e2ca;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.sx-experience .sx-excursion-leave {
+  color: #c7eea1;
+  font-size: 12px;
+  margin-top: 15px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.sx-experience .sx-excursion-leave span {
+  margin-left: 20px;
+}
+.sx-experience .sx-excursion-fallback {
+  position: absolute;
+  inset: 0;
+  background: #152c25;
+}
+.sx-experience .sx-excursion-fallback svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.sx-experience .sx-excursion-fallback-label {
+  position: absolute;
+  bottom: 165px;
+  right: var(--sx-gutter);
+  color: #f5f8ef;
+  font-size: 10px;
+}
+.sx-experience .sx-excursion-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  left: var(--sx-gutter);
+  top: 153px;
+  z-index: 4;
+}
+.sx-experience .sx-excursion-nav button {
+  color: #e1ebd5;
+  border-bottom: 1px solid #c1d3ab6e;
+  padding: 5px 0;
+  font-size: 10px;
+}
+.sx-experience .sx-excursion-nav [aria-current] {
+  color: #b9ef84;
+  border-color: #b9ef84;
+}
+@media (max-width: 760px) {
+  .sx-experience .sx-excursion-copy {
+    width: calc(100% - 2 * var(--sx-gutter) - 26px);
+    max-width: 390px;
+    top: auto;
+    bottom: 175px;
+    transform: none;
+    max-height: calc(100svh - 390px);
+  }
+  .sx-experience .sx-excursion-copy h2 {
+    font-size: 38px;
+    margin: 12px 0;
+  }
+  .sx-experience .sx-excursion-intro {
+    font-size: 13px;
+  }
+  .sx-experience .sx-excursion-copy ul {
+    font-size: 11px;
+    margin: 12px 0;
+  }
+  .sx-experience .sx-excursion-nav {
+    top: 146px;
+    gap: 14px;
+  }
+  .sx-experience .sx-excursion-nav button {
+    font-size: 9px;
+  }
+}

@@ -39,6 +39,14 @@ export function createJourneyWorld(
     vegetation = createVegetation(economy),
     coast = createCoast(),
     observation = createObservation();
+  const soilOpening = [
+    new T.Plane(new T.Vector3(-1, 0, 0), -13),
+    new T.Plane(new T.Vector3(1, 0, 0), -15),
+    new T.Plane(new T.Vector3(0, 0, -1), -17),
+    new T.Plane(new T.Vector3(0, 0, 1), 3),
+  ];
+  let soilOpen = false;
+  const soilFog = new T.Color("#554634");
   const reflection = new PlanarWaterReflection(economy);
   terrain.waterUniforms.reflectionMap.value = reflection.texture;
   terrain.waterUniforms.reflectionMatrix.value = reflection.matrix;
@@ -223,9 +231,24 @@ export function createJourneyWorld(
     progress: number,
     camera: T.PerspectiveCamera,
     layers: JourneyLayers,
+    excursion?: { id: string; local: number },
   ) {
     const fx = sampleEffects(progress, camera.position.y),
       z = camera.position.z;
+    if (excursion?.id === "marine")
+      fx.immersion = 1 - smoothstep(-0.55, 0.45, camera.position.y);
+    const open = excursion?.id === "soil";
+    if (open !== soilOpen) {
+      soilOpen = open;
+      terrain.terrain.traverse((object) => {
+        if (!(object instanceof T.Mesh)) return;
+        for (const material of [object.material].flat()) {
+          material.clippingPlanes = open ? soilOpening : null;
+          material.clipIntersection = open;
+          material.needsUpdate = true;
+        }
+      });
+    }
     terrain.terrain.visible = layers.terrain;
     // Enter the culling window while still extinguished by fog, before silhouettes can pop into view.
     coast.group.visible = layers.terrain && z < -350;
@@ -288,9 +311,16 @@ export function createJourneyWorld(
           fx.immersion,
         )
       : 0;
+    if (open && layers.atmosphere) {
+      const depth = 1 - smoothstep(-0.3, 1.5, camera.position.y);
+      fog.color.lerp(soilFog, depth);
+      fog.density = T.MathUtils.lerp(fog.density, 0.025, depth);
+    }
     fogMaterial.uniforms.strength.value = fx.night * 0.7 + 1;
     terrain.waterUniforms.night.value = fx.night;
     terrain.waterUniforms.coast.value = coastWeight;
+    terrain.waterUniforms.connectedMarine.value =
+      excursion?.id === "marine" ? fx.immersion : 0;
     terrain.waterUniforms.phase.value = fx.time * 0.42;
     terrain.waterUniforms.fogColor.value.copy(fog.color);
     terrain.waterUniforms.fogDensity.value = fog.density;

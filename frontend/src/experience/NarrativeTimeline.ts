@@ -23,6 +23,8 @@ export class NarrativeTimeline {
     private reduced: boolean,
     private onUpdate: (value: number) => void,
     private onPause: () => void,
+    private prefix = 0,
+    private presentationClock?: { duration: number; seconds: (p: number) => number; progress: (seconds: number) => number },
   ) {
     this.context = gsap.context(() => {
       // Reuse a tween created before playback. Replacing it on each playback
@@ -207,16 +209,18 @@ export class NarrativeTimeline {
       onComplete: () => this.pause(),
     });
   }
-  /** Advance one continuous five-minute clock, including the demonstration chapter. */
+  /** Advance the configured presentation clock, defaulting to the original five minutes. */
   playPresentation() {
     if (this.reduced) return;
     this.pause();
-    const cursor = { seconds: pitchSeconds(this.trigger.progress) };
+    const prefix = this.prefix || 0;
+    const clock = this.presentationClock ?? { duration: pitchDuration, seconds: pitchSeconds, progress: progressAtSeconds };
+    const cursor = { seconds: clock.seconds(clamp01((this.trigger.progress - prefix) / (1 - prefix))) };
     this.playback = gsap.to(cursor, {
-      seconds: pitchDuration,
-      duration: Math.max(.01, pitchDuration - cursor.seconds),
+      seconds: clock.duration,
+      duration: Math.max(.01, clock.duration - cursor.seconds),
       ease: "none",
-      onUpdate: () => this.scrollTo(progressAtSeconds(cursor.seconds)),
+      onUpdate: () => this.scrollTo(prefix + clock.progress(cursor.seconds) * (1 - prefix)),
       onComplete: () => { this.scrollTo(1); this.snap(1); this.pause(); },
     });
   }

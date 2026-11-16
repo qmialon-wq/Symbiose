@@ -28,4 +28,5 @@ export interface FrameReport {
   cpuSubmitMs: number;
   assetsPending: boolean;
   animals?: AnimalBox[];
+  excursion?: { id: string; local: number; connected?: boolean };
 }
