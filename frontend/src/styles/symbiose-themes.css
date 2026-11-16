@@ -10,6 +10,10 @@
   --sym-primary: var(--sym-environment-primary);
   --sym-secondary: var(--sym-environment-secondary);
   --sym-accent: var(--sym-environment-accent);
+  --sym-card-description: rgb(from var(--sym-text) r g b / 88%);
+  --sym-card-icon: var(--sym-accent);
+  --sym-card-link: var(--sym-lime-bright);
+  --sym-card-link-hover: color-mix(in srgb, var(--sym-card-link) 75%, white);
   transition: --sym-environment-primary 650ms ease-in-out, --sym-environment-secondary 650ms ease-in-out, --sym-environment-accent 650ms ease-in-out, --sym-environment-strength 650ms ease-in-out;
   --sym-shade-accent-98f753: color-mix(in srgb, #98f753 calc((1 - var(--sym-environment-strength)) * 100%), var(--sym-environment-accent));
   --sym-shade-accent-9ff63b: color-mix(in srgb, #9ff63b calc((1 - var(--sym-environment-strength)) * 100%), var(--sym-environment-accent));

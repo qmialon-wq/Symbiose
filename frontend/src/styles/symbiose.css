@@ -106,6 +106,47 @@
   outline: 2px solid var(--sym-focus);
   outline-offset: 5px;
 }
+/* Cible du lien d’évitement et du retour de focus après connexion :
+   conserver le focus sans encadrer toute la zone de contenu. */
+.symbiose-shell main#main-content:focus {
+  outline: none;
+}
+.symbiose-shell .journey-card p {
+  color: var(--sym-card-description);
+}
+.symbiose-shell .journey-card > .pi {
+  color: var(--sym-card-icon);
+}
+.symbiose-shell .journey-card > .journey-action {
+  color: var(--sym-card-link);
+  transition: color 150ms ease;
+}
+.symbiose-shell .journey-card:is(:hover, :focus-visible) > .journey-action {
+  color: var(--sym-card-link-hover);
+}
+.symbiose-shell .journey-arrow {
+  display: inline-block;
+  transition: transform 150ms ease;
+}
+.symbiose-shell .journey-card:is(:hover, :focus-visible) .journey-arrow {
+  transform: translateX(3px);
+}
+.symbiose-shell.sym-reduced-motion .journey-action,
+.symbiose-shell.sym-reduced-motion .journey-arrow {
+  transition: none;
+}
+.sym-reduced-motion .journey-card:is(:hover, :focus-visible) .journey-arrow {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .symbiose-shell .journey-card > .journey-action,
+  .symbiose-shell .journey-arrow {
+    transition: none;
+  }
+  .symbiose-shell .journey-card:is(:hover, :focus-visible) .journey-arrow {
+    transform: none;
+  }
+}
 .symbiose-shell button {
   font: inherit;
 }
