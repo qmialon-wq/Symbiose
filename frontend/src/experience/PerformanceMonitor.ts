@@ -10,19 +10,23 @@ export class PerformanceMonitor {
   private frames = 0;
   private slowWindows = 0;
   private lastFrame = 0;
+  private criticalWindows = 0;
+  private recovered = false;
   private quality: "standard" | "eco" = "standard";
   constructor(
     private report: (sample: PerformanceSample) => void,
     private downgrade: () => void,
     quality: "standard" | "eco" = "standard",
+    private struggling?: () => void,
   ) {
     this.quality = quality;
   }
   frame(now: number, moving: boolean) {
-    if (!moving || document.hidden || now - this.lastFrame > 150) {
+    if (!moving || document.hidden || now - this.lastFrame > 500) {
       this.start = 0;
       this.frames = 0;
       this.slowWindows = 0;
+      this.criticalWindows = 0;
     }
     this.lastFrame = now;
     if (!moving || document.hidden) return;
@@ -35,6 +39,13 @@ export class PerformanceMonitor {
     if (this.slowWindows >= 2 && this.quality === "standard") {
       this.quality = "eco";
       this.downgrade();
+      this.criticalWindows = 0;
+    } else if (this.quality === "eco") {
+      this.criticalWindows = fps < 16 ? this.criticalWindows + 1 : 0;
+      if (this.criticalWindows >= 3 && !this.recovered) {
+        this.recovered = true;
+        this.struggling?.();
+      }
     }
     this.report({
       fps: Math.round(fps),

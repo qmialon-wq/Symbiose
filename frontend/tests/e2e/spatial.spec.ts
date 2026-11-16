@@ -42,72 +42,84 @@ const state = (page: Page) =>
     .locator(".sx-canvas")
     .evaluate((el) => JSON.parse((el as HTMLElement).dataset.state!));
 
-test("supplied animals track their projected volumes, reverse deterministically and release skeletal GPU textures", async ({
-  page,
-}) => {
-  test.setTimeout(120000);
-  await page.goto("/jury/");
-  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
-    timeout: 45000,
-  });
-  await page
-    .getByRole("button", { name: "Passer l’introduction", exact: true })
-    .click();
-  await expect(page.locator(".sx-canvas")).toHaveAttribute("data-prologue", "");
-  const first = await state(page);
-  expect(first.animals.map((a: any) => a.label)).toEqual(
-    expect.arrayContaining(["Chevreuil", "Sanglier", "Pigeon"]),
-  );
-  await seek(page, 1, "sky");
-  expect(
-    (await state(page)).animals.filter((a: any) => a.label === "Buse"),
-  ).toHaveLength(2);
-  await seek(page, 3, "underwater");
-  const submerged = await state(page);
-  expect(submerged.animals).toHaveLength(3);
-  expect(
-    submerged.animals.every(
-      (a: any) => a.label === "Poisson · espèce à confirmer",
-    ),
-  ).toBe(true);
-  await seek(page, 4, "wetland");
-  await seek(page, 7, "night-forest");
-  await seek(page, 3, "underwater");
-  const reverse = await state(page);
-  expect(
-    reverse.animals.map((a: any) => [a.id, a.x, a.y, a.width, a.height]),
-  ).toEqual(
-    submerged.animals.map((a: any) => [a.id, a.x, a.y, a.width, a.height]),
-  );
-  await seek(page, 0, "forest");
-
-  // First use initializes persistent cliff maps and the shared reflection target.
-  // Compare the same pose after warming every scene; repeated trips must not grow GPU resources.
-  const chapters = [
-    "forest",
-    "sky",
-    "rivers",
-    "underwater",
-    "wetland",
-    "meadow",
-    "coast",
-    "night-forest",
-  ];
-  for (let i = 1; i < chapters.length; i++) await seek(page, i, chapters[i]);
-  await seek(page, 0, "forest");
-  const warm = await state(page);
-  for (let cycle = 0; cycle < 2; cycle++) {
-    for (let i = 1; i < chapters.length; i++) await seek(page, i, chapters[i]);
+for (const quality of ["standard", "eco"] as const) {
+  test(`supplied animals track their projected volumes, reverse deterministically and release skeletal GPU textures (${quality})`, async ({
+    page,
+  }) => {
+    test.setTimeout(120000);
+    await page.goto(`/jury/?quality=${quality}`);
+    await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
+      timeout: 45000,
+    });
+    await page
+      .getByRole("button", { name: "Passer l’introduction", exact: true })
+      .click();
+    await expect(page.locator(".sx-canvas")).toHaveAttribute(
+      "data-prologue",
+      "",
+    );
+    await expect
+      .poll(async () => !(await state(page)).assetsPending, { timeout: 45000 })
+      .toBe(true);
+    const first = await state(page);
+    expect(first.animals.map((a: any) => a.label)).toEqual(
+      expect.arrayContaining(["Chevreuil", "Sanglier", "Pigeon"]),
+    );
+    await seek(page, 1, "sky");
+    expect(
+      (await state(page)).animals.filter((a: any) => a.label === "Buse"),
+    ).toHaveLength(2);
+    await seek(page, 3, "underwater");
+    const submerged = await state(page);
+    expect(submerged.animals).toHaveLength(3);
+    expect(
+      submerged.animals.every(
+        (a: any) => a.label === "Poisson · espèce à confirmer",
+      ),
+    ).toBe(true);
+    await seek(page, 4, "wetland");
+    await seek(page, 7, "night-forest");
+    await seek(page, 3, "underwater");
+    const reverse = await state(page);
+    expect(
+      reverse.animals.map((a: any) => [a.id, a.x, a.y, a.width, a.height]),
+    ).toEqual(
+      submerged.animals.map((a: any) => [a.id, a.x, a.y, a.width, a.height]),
+    );
     await seek(page, 0, "forest");
-    const repeated = await state(page);
-    expect(repeated.textureCount).toBeLessThanOrEqual(warm.textureCount);
-    expect(repeated.geometryCount).toBeLessThanOrEqual(warm.geometryCount);
-  }
-  const settled = await state(page);
-  const before = settled.renderCount;
-  await page.waitForTimeout(500); // Idle observation, never an animation delay.
-  expect((await state(page)).renderCount).toBeLessThanOrEqual(before + 1);
-});
+
+    // Progressive loading initializes skin/material caches on their first visible
+    // poses. Warm two complete trips before checking that subsequent trips stay bounded.
+    const chapters = [
+      "forest",
+      "sky",
+      "rivers",
+      "underwater",
+      "wetland",
+      "meadow",
+      "coast",
+      "night-forest",
+    ];
+    for (let lap = 0; lap < 2; lap++) {
+      for (let i = 1; i < chapters.length; i++)
+        await seek(page, i, chapters[i]);
+      await seek(page, 0, "forest");
+    }
+    const warm = await state(page);
+    for (let cycle = 0; cycle < 2; cycle++) {
+      for (let i = 1; i < chapters.length; i++)
+        await seek(page, i, chapters[i]);
+      await seek(page, 0, "forest");
+      const repeated = await state(page);
+      expect(repeated.textureCount).toBeLessThanOrEqual(warm.textureCount);
+      expect(repeated.geometryCount).toBeLessThanOrEqual(warm.geometryCount);
+    }
+    const settled = await state(page);
+    const before = settled.renderCount;
+    await page.waitForTimeout(500); // Idle observation, never an animation delay.
+    expect((await state(page)).renderCount).toBeLessThanOrEqual(before + 1);
+  });
+}
 
 test("production offline installation includes the GLB models and PBR textures", async ({
   page,

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import poster from "./office-poster.webp";
 defineProps<{ local: number }>();
+defineEmits<{ ready: [] }>();
 </script>
 <template>
   <div
     class="sx-prologue-fallback"
+    data-testid="experience-fallback"
     aria-hidden="true"
     :style="{ opacity: local > 0.9 ? Math.max(0, (1 - local) * 10) : 1 }"
   >
-    <img :src="poster" alt="" />
+    <img :src="poster" alt="" @load="$emit('ready')" @error="$emit('ready')" />
     <span>Prologue · vue fixe sans WebGL</span>
   </div>
 </template>

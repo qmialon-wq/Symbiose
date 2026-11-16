@@ -713,3 +713,19 @@
     font-size: 46px;
   }
 }
+.sx-experience .sx-quality-choice {
+  display: grid;
+  gap: 6px;
+  padding: 6px 0;
+  color: #e3ead7;
+  font-size: 12px;
+}
+.sx-experience .sx-quality-choice select {
+  min-height: 40px;
+  padding: 7px 10px;
+  border: 1px solid #c7dcad66;
+  border-radius: 2px;
+  background: #20392e;
+  color: #f5f8ef;
+  font: inherit;
+}

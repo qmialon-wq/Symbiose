@@ -17,6 +17,8 @@ export class NarrativeTimeline {
   private requestedProgress?: number;
   private nativeScrollOrigin?: number;
   private requestedScrollY = 0;
+  private scrollTop = 0;
+  private scrollRange = 0;
   private smooth!: gsap.QuickToFunc;
   constructor(
     private root: HTMLElement,
@@ -24,7 +26,11 @@ export class NarrativeTimeline {
     private onUpdate: (value: number) => void,
     private onPause: () => void,
     private prefix = 0,
-    private presentationClock?: { duration: number; seconds: (p: number) => number; progress: (seconds: number) => number },
+    private presentationClock?: {
+      duration: number;
+      seconds: (p: number) => number;
+      progress: (seconds: number) => number;
+    },
   ) {
     this.context = gsap.context(() => {
       // Reuse a tween created before playback. Replacing it on each playback
@@ -54,16 +60,12 @@ export class NarrativeTimeline {
         },
         onRefresh: (trigger) => {
           this.trigger = trigger;
+          this.measureBounds();
           // GSAP also refreshes after its own resize debounce. Preserve an
           // explicit seek across that refresh, even when it arrives later.
           if (this.requestedProgress !== undefined) {
-            const bounds = root.getBoundingClientRect();
             window.scrollTo({
-              top:
-                bounds.top +
-                window.scrollY +
-                this.requestedProgress *
-                  Math.max(0, bounds.height - innerHeight),
+              top: this.scrollTop + this.requestedProgress * this.scrollRange,
               behavior: "instant",
             });
             this.requestedScrollY = window.scrollY;
@@ -74,6 +76,7 @@ export class NarrativeTimeline {
       });
     }, root);
     this.trigger = ScrollTrigger.getById("symbiose-narrative")!;
+    this.measureBounds();
     // User input always takes back control; no wheel/touch event is prevented.
     window.addEventListener("wheel", this.interrupt, { passive: true });
     window.addEventListener("touchstart", this.interrupt, { passive: true });
@@ -96,7 +99,10 @@ export class NarrativeTimeline {
       // A wheel may only scroll the editorial panel. Keep exact chapter/video
       // ownership until the document actually moves, rather than sampling its
       // rounded physical position on pointer intent alone.
-      this.nativeScrollOrigin = this.requestedProgress === undefined ? window.scrollY : this.requestedScrollY;
+      this.nativeScrollOrigin =
+        this.requestedProgress === undefined
+          ? window.scrollY
+          : this.requestedScrollY;
       this.pause();
       // With passive listeners Chromium may deliver the wheel event after its
       // compositor has already scrolled the document.
@@ -172,6 +178,11 @@ export class NarrativeTimeline {
     this.scrollTo(progress);
     if (immediate) this.snap(progress);
   }
+  private measureBounds() {
+    const bounds = this.root.getBoundingClientRect();
+    this.scrollTop = bounds.top + window.scrollY;
+    this.scrollRange = Math.max(0, bounds.height - window.innerHeight);
+  }
   private scrollTo(progress: number) {
     this.nativeScrollOrigin = undefined;
     this.requestedProgress = clamp01(progress);
@@ -180,12 +191,8 @@ export class NarrativeTimeline {
       this.viewportHeight !== window.innerHeight
     )
       this.refresh();
-    const bounds = this.root.getBoundingClientRect();
     window.scrollTo({
-      top:
-        bounds.top +
-        window.scrollY +
-        clamp01(progress) * Math.max(0, bounds.height - window.innerHeight),
+      top: this.scrollTop + clamp01(progress) * this.scrollRange,
       behavior: "instant",
     });
     this.requestedScrollY = window.scrollY;
@@ -214,14 +221,27 @@ export class NarrativeTimeline {
     if (this.reduced) return;
     this.pause();
     const prefix = this.prefix || 0;
-    const clock = this.presentationClock ?? { duration: pitchDuration, seconds: pitchSeconds, progress: progressAtSeconds };
-    const cursor = { seconds: clock.seconds(clamp01((this.trigger.progress - prefix) / (1 - prefix))) };
+    const clock = this.presentationClock ?? {
+      duration: pitchDuration,
+      seconds: pitchSeconds,
+      progress: progressAtSeconds,
+    };
+    const cursor = {
+      seconds: clock.seconds(
+        clamp01((this.trigger.progress - prefix) / (1 - prefix)),
+      ),
+    };
     this.playback = gsap.to(cursor, {
       seconds: clock.duration,
-      duration: Math.max(.01, clock.duration - cursor.seconds),
+      duration: Math.max(0.01, clock.duration - cursor.seconds),
       ease: "none",
-      onUpdate: () => this.scrollTo(prefix + clock.progress(cursor.seconds) * (1 - prefix)),
-      onComplete: () => { this.scrollTo(1); this.snap(1); this.pause(); },
+      onUpdate: () =>
+        this.scrollTo(prefix + clock.progress(cursor.seconds) * (1 - prefix)),
+      onComplete: () => {
+        this.scrollTo(1);
+        this.snap(1);
+        this.pause();
+      },
     });
   }
   /** Advance to a specified position. */

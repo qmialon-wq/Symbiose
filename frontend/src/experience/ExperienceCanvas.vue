@@ -36,6 +36,13 @@ import {
 import { type ExcursionState } from "./excursions/route";
 import { sampleConnectedExcursion } from "./excursions/connected-camera";
 import { terrainY } from "./world-utils";
+import {
+  deviceHints,
+  initialQuality,
+  renderPixelRatio,
+  type QualityPreference,
+  type LoadingState,
+} from "./render-quality";
 const props = defineProps<{
   progress: number;
   reducedMotion: boolean;
@@ -45,6 +52,7 @@ const props = defineProps<{
   prologueVideo?: HTMLVideoElement | null;
   prologueFocus?: boolean;
   excursion?: ExcursionState;
+  qualityPreference?: QualityPreference;
 }>();
 const emit = defineEmits<{
   ready: [];
@@ -53,6 +61,7 @@ const emit = defineEmits<{
   frame: [frame: FrameReport];
   assets: [issues: string[]];
   screen: [projection: OfficeScreenProjection | undefined];
+  loading: [state: LoadingState];
 }>();
 const host = ref<HTMLDivElement>();
 let renderFrame: (() => void) | undefined, teardown: (() => void) | undefined;
@@ -68,7 +77,7 @@ watch(
     props.excursion,
   ],
   () => renderFrame?.(),
-  { flush: "post", deep: true },
+  { flush: "post" },
 );
 onMounted(async () => {
   if (!host.value) return;
@@ -83,6 +92,21 @@ onMounted(async () => {
   let office: ReturnType<typeof createOfficeScene> | undefined;
   let officeLoading = false,
     screenFocus = 0;
+  let landscapeLoading: Promise<unknown> | undefined;
+  let lastPose = "";
+  let viewportWidth = 1,
+    viewportHeight = 1;
+  let landscapeIdle = 0,
+    landscapeTimer = 0;
+  const hints = deviceHints();
+  const initial = initialQuality(props.qualityPreference ?? "auto", hints);
+  const loading = (progress: number, label: string) =>
+    emit("loading", { progress, label });
+  function ensureLandscape() {
+    if (!landscapeLoading)
+      landscapeLoading = world!.loadInitial().finally(invalidate);
+    return landscapeLoading;
+  }
   let excursion:
     | {
         id: string;
@@ -202,6 +226,10 @@ onMounted(async () => {
     activeIndex = -1,
     assetsPending = true;
   const attached = new Set<string>();
+  const modelIssues = new Set<string>();
+  let imageIssues: string[] = [];
+  const publishAssetIssues = () =>
+    emit("assets", [...modelIssues, ...imageIssues]);
   let wanted: string[] = [];
   async function selectAssets(index: number) {
     activeIndex = index;
@@ -232,7 +260,8 @@ onMounted(async () => {
       }
     // Logo pixels have been sampled into particle coordinates; no GPU texture or retained bitmap is needed.
     preloader.releaseExcept(wanted.filter((id) => id !== "logo"));
-    emit("assets", assets.issues);
+    imageIssues = assets.issues;
+    publishAssetIssues();
     assetsPending = false;
     invalidate();
   }
@@ -255,6 +284,9 @@ onMounted(async () => {
         ? reducedProgress(props.progress)
         : props.progress,
       layers = props.layers ?? defaultLayers;
+    // The bureau can open before any outdoor models/textures are downloaded.
+    if (props.prologue === undefined || props.prologue > 0.35)
+      void ensureLandscape();
     let pose = camera.update(progress);
     if (props.excursion) {
       pose = sampleConnectedExcursion(
@@ -263,8 +295,10 @@ onMounted(async () => {
       );
       camera.camera.position.set(...pose.position);
       camera.camera.lookAt(...pose.target);
-      camera.camera.fov = pose.fov;
-      camera.camera.updateProjectionMatrix();
+      if (camera.camera.fov !== pose.fov) {
+        camera.camera.fov = pose.fov;
+        camera.camera.updateProjectionMatrix();
+      }
       camera.camera.updateMatrixWorld(true);
     }
     if (props.prologue !== undefined) {
@@ -272,6 +306,8 @@ onMounted(async () => {
       screenFocus = props.reducedMotion
         ? Number(!!props.prologueFocus)
         : screenFocus + (Number(!!props.prologueFocus) - screenFocus) * 0.09;
+      if (Math.abs(Number(!!props.prologueFocus) - screenFocus) < 0.0001)
+        screenFocus = Number(!!props.prologueFocus);
       pose = samplePrologue(
         props.prologue,
         props.reducedMotion,
@@ -280,8 +316,10 @@ onMounted(async () => {
       );
       camera.camera.position.set(...pose.position);
       camera.camera.lookAt(...pose.target);
-      camera.camera.fov = pose.fov;
-      camera.camera.updateProjectionMatrix();
+      if (camera.camera.fov !== pose.fov) {
+        camera.camera.fov = pose.fov;
+        camera.camera.updateProjectionMatrix();
+      }
       camera.camera.updateMatrixWorld(true);
       office?.setVideo(props.prologueVideo ?? null);
       office?.update(
@@ -329,7 +367,6 @@ onMounted(async () => {
     );
     if (props.prologue !== undefined && office) {
       office.screen.updateWorldMatrix(true, false);
-      const box = host.value.getBoundingClientRect();
       const points = [
         [-2.8, 1.575],
         [2.8, 1.575],
@@ -341,8 +378,8 @@ onMounted(async () => {
           .project(camera.camera),
       );
       const quad = points.map((p) => ({
-        x: ((p.x + 1) * box.width) / 2,
-        y: ((1 - p.y) * box.height) / 2,
+        x: ((p.x + 1) * viewportWidth) / 2,
+        y: ((1 - p.y) * viewportHeight) / 2,
       })) as unknown as ScreenQuad;
       const transform = screenTransform(quad);
       emit("screen", {
@@ -380,7 +417,10 @@ onMounted(async () => {
       estimatedImageBytes: preloader.estimatedImageBytes,
       postProcessing: layers.water && activeImmersion > 0,
       cpuSubmitMs: performance.now() - began,
-      assetsPending: assetsPending || world.pending || !!excursionLoading,
+      assetsPending:
+        assetsPending ||
+        (!!landscapeLoading && world.pending) ||
+        !!excursionLoading,
       animals: animalBoxes,
       excursion: props.excursion
         ? {
@@ -401,7 +441,12 @@ onMounted(async () => {
     host.value.dataset.excursionLocal = props.excursion?.local.toFixed(6) ?? "";
     host.value.dataset.renderScene = "journey-world";
     host.value.dataset.cameraMode = props.excursion ? "connected" : "original";
-    monitor.frame(performance.now(), !props.reducedMotion);
+    const poseKey = `${pose.position.join(",")}:${pose.target.join(",")}:${pose.fov}`;
+    monitor.frame(
+      performance.now(),
+      !props.reducedMotion && lastPose !== poseKey,
+    );
+    lastPose = poseKey;
     emit("frame", report);
   }
   // Share the animation clock with the scroll timeline. Scheduling a second RAF
@@ -413,12 +458,25 @@ onMounted(async () => {
     }
     dirty = false;
     draw();
-    if (props.prologue !== undefined && !props.reducedMotion) dirty = true;
+    // Render again only while the camera approaches/recedes from the monitor,
+    // or while an actual local video supplies new pixels. A still bureau sleeps.
+    if (
+      props.prologue !== undefined &&
+      !props.reducedMotion &&
+      (screenFocus !== Number(!!props.prologueFocus) ||
+        (props.prologueVideo &&
+          !props.prologueVideo.paused &&
+          !props.prologueVideo.ended))
+    )
+      dirty = true;
   }
   function stopRendering() {
     gsap.ticker.remove(tick);
     scheduled = false;
     dirty = false;
+    // A settled seek is not a slow animation. Start the next measurement window
+    // only when a real sequence of moving frames resumes.
+    monitor?.frame(performance.now(), false);
   }
   function invalidate() {
     if (!initialized || document.hidden || props.suspended) return;
@@ -431,6 +489,11 @@ onMounted(async () => {
   function resize() {
     if (!renderer || !host.value) return;
     const box = host.value.getBoundingClientRect();
+    viewportWidth = box.width;
+    viewportHeight = box.height;
+    renderer.setPixelRatio(
+      renderPixelRatio(quality, box.width, box.height, devicePixelRatio),
+    );
     renderer.setSize(box.width, box.height, false);
     camera.resize(box.width, box.height);
     pass?.resize(
@@ -443,6 +506,8 @@ onMounted(async () => {
     event.preventDefault();
     abort.abort();
     stopRendering();
+    if (landscapeIdle) window.cancelIdleCallback(landscapeIdle);
+    clearTimeout(landscapeTimer);
     emit(
       "error",
       "Le contexte graphique a été interrompu. Le parcours reste disponible en version 2D simplifiée.",
@@ -455,6 +520,8 @@ onMounted(async () => {
   };
   teardown = () => {
     abort.abort();
+    if (landscapeIdle) window.cancelIdleCallback(landscapeIdle);
+    clearTimeout(landscapeTimer);
     initialized = false;
     stopRendering();
     observer?.disconnect();
@@ -471,9 +538,10 @@ onMounted(async () => {
     renderer?.domElement.remove();
   };
   try {
+    loading(0.12, "Préparation du moteur graphique…");
     renderer = new WebGLRenderer({
-      antialias: true,
-      powerPreference: "default",
+      antialias: initial !== "eco",
+      powerPreference: initial === "eco" ? "low-power" : "default",
     });
     renderer.localClippingEnabled = true;
     renderer.toneMapping = ACESFilmicToneMapping;
@@ -497,40 +565,56 @@ onMounted(async () => {
       return;
     }
     const economy =
+      initial === "eco" ||
       /SwiftShader|llvmpipe|software/i.test(device) ||
       window.matchMedia("(max-width: 600px)").matches;
     quality = economy ? "eco" : "standard";
     renderer.shadowMap.enabled = !economy;
     renderer.shadowMap.type = PCFSoftShadowMap;
     renderer.shadowMap.autoUpdate = false;
-    renderer.setPixelRatio(economy ? 0.65 : Math.min(devicePixelRatio, 1.5));
     monitor = new PerformanceMonitor(
       (sample) => emit("performance", sample),
       () => {
         quality = "eco";
         world?.setEconomy(true);
         renderer!.shadowMap.enabled = false;
-        renderer!.setPixelRatio(
-          Math.max(0.5, renderer!.getPixelRatio() * 0.72),
-        );
         resize();
       },
       quality,
+      () => {
+        emit(
+          "error",
+          "Cet appareil bénéficie du mode léger sans 3D pour garder une navigation fluide. Les chapitres et les explorations restent accessibles.",
+        );
+      },
     );
     renderer.domElement.setAttribute("aria-hidden", "true");
     renderer.domElement.addEventListener("webglcontextlost", lost);
     host.value.append(renderer.domElement);
-    world = createWorld(economy, abort.signal, invalidate, (message) =>
-      emit("assets", [message]),
-    );
+    loading(0.28, "Création du paysage…");
+    world = createWorld(economy, abort.signal, invalidate, (message) => {
+      modelIssues.add(message);
+      publishAssetIssues();
+    });
     pass = new RefractionPass();
     camera.update(props.progress);
     resize();
-    await selectAssets(pitchIndex(props.progress));
-    await world.loadInitial();
+    // Logo particles are only needed outdoors. Do not block the office on them.
+    if (props.prologue === undefined) {
+      loading(0.42, "Chargement des éléments du paysage…");
+      await Promise.all([
+        selectAssets(pitchIndex(props.progress)),
+        ensureLandscape(),
+      ]);
+    }
+    loading(0.7, "Préparation de la lumière…");
     world.prepareEnvironment(renderer);
-    if (props.prologue !== undefined) await ensureOffice();
+    if (props.prologue !== undefined) {
+      loading(0.78, "Préparation du bureau d’études…");
+      await ensureOffice();
+    }
     if (abort.signal.aborted) return;
+    loading(0.9, "Préparation du premier affichage…");
     if (
       !(await preloader.prepare(
         renderer,
@@ -546,8 +630,21 @@ onMounted(async () => {
     observer.observe(host.value);
     document.addEventListener("visibilitychange", visibility);
     renderer.info.reset();
-    invalidate();
+    draw();
+    loading(1, "Le voyage est prêt.");
     emit("ready");
+    // After the bureau is visible, prepare the outdoors without holding the
+    // initial reveal hostage. Explicit data-saving waits for an actual departure.
+    if (props.prologue !== undefined && !hints.connection?.saveData) {
+      const prepareLandscape = () => {
+        if (!abort.signal.aborted) void ensureLandscape();
+      };
+      if (typeof window.requestIdleCallback === "function")
+        landscapeIdle = window.requestIdleCallback(prepareLandscape, {
+          timeout: 1200,
+        });
+      else landscapeTimer = window.setTimeout(prepareLandscape, 300);
+    }
   } catch {
     const interrupted = abort.signal.aborted;
     teardown();

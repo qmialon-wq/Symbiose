@@ -32,6 +32,81 @@ npm.cmd run dev -- --port 4173
 
 Aucun CDN, police distante, modèle téléchargé ou service graphique n’est nécessaire au lancement après installation. La vérification de session existante reste active. Les ressources sont servies par le même serveur local.
 
+## Chargement et fluidité — 16 novembre 2026
+
+Le chevreuil vectoriel de connexion accompagne maintenant l’ouverture de la
+landing, y compris pendant le téléchargement de son composant. La barre suit
+les étapes terminées du moteur : création du monde, lumière, bureau, compilation
+et premier affichage. Ce sont des jalons de préparation, pas un pourcentage
+fictif des octets téléchargés. Aucun délai minimum ne retient une scène prête.
+Une sortie vers la version sans 3D reste disponible pendant l’initialisation.
+Les mouvements réduits affichent le chevreuil immobile.
+
+Le bureau s’ouvre avant les modèles extérieurs. Ceux-ci se préparent ensuite
+pendant une période inactive du navigateur ; avec l’économie de données activée,
+ils attendent le départ du bureau. Les assets restent locaux et partagés avec
+le mode jury. L’installation hors ligne explicite conserve le pack complet,
+y compris les ressources détaillées.
+
+Dans **Régie du récit → Qualité visuelle**, le visiteur peut choisir
+**Automatique**, **3D légère** ou **3D détaillée**. Ce choix est mémorisé ; le
+changement conserve la position dans le récit. `?quality=eco` et
+`?quality=standard` permettent aussi un essai direct. Le mode automatique démarre
+léger sur mobile, avec peu de mémoire/cœurs signalés, une connexion limitée ou
+l’économie de données. Ces indications servent à choisir une qualité initiale,
+elles ne constituent pas un benchmark matériel.
+
+Le mode léger utilise l’atlas existant pour les arbres proches et lointains,
+évite les GLB de décors les plus lourds et les cartes PBR secondaires, réduit
+la taille des textures décodées et plafonne le rendu à 900 000 pixels. Les ombres
+dynamiques et le reflet planaire sont désactivés. La mer, le drone, la coupe du
+sol, les animaux et leurs cadres restent parcourables dans le même monde 3D.
+Les cadres légers sont enveloppants, avec des bornes animées rafraîchies, afin
+d’éviter de reparcourir chaque sommet à chaque image.
+
+Le bureau immobile ne conserve plus de boucle de rendu permanente. Le moteur
+se réveille pour le scroll, l’approche de l’écran, une vidéo locale active, un
+redimensionnement ou un asset terminé. Les limites du défilement sont mesurées
+au rafraîchissement, plutôt qu’à chaque image. La télémétrie Vue reste superficielle.
+Deux fenêtres de déplacement lent réduisent la qualité ; si le mode léger reste
+durablement sous 16 images/s, le parcours passe automatiquement au rendu 2D.
+Les sauts ponctuels entre chapitres et les périodes inactives sont exclus de
+cette mesure.
+
+Mesure locale du début du parcours `/jury/`, cache navigateur neuf, indications
+de 4 threads/4 Go simulées et CPU Chrome ralenti ×4. Le GPU reste la NVIDIA
+matérielle de la machine de test ; ce protocole ne simule pas un GPU ancien.
+
+| Mesure | Avant | Après, mode léger automatique |
+| --- | ---: | ---: |
+| Transfert observé jusqu’au début de la forêt | 22,1 Mo | 5,3 Mo |
+| Premier affichage prêt | 4,42 s | 1,44 s |
+| Triangles dans la forêt | 2 670 173 | 55 318 |
+| Soumission CPU médiane par image | 6,4 ms | 3,9 ms |
+| Soumission CPU au 95e percentile | 10,1 ms | 6,0 ms |
+
+Ces mesures correspondent à ce scénario, pas à une promesse de cadence sur tous
+les appareils. Les rapports, profils CPU et captures de contrôle sont conservés
+dans `output/symbiose/performance-review/`, ignoré par Git.
+
+Vérifications dédiées : `render-quality.test.ts` (18 tests) et
+`landing-performance.spec.ts` (5 scénarios). Le contrôle de fuite de ressources
+parcourt plusieurs fois les huit chapitres en qualité détaillée et légère.
+TypeScript, le build et 42 scénarios navigateur sont validés, dont quatre
+contrôles hors ligne du build déployé. La suite unitaire compte 212 réussites et
+retrouve l’échec préexistant de l’inventaire de
+`tree-atlas-metadata.json` : 43 octets présents contre 44 déclarés. Ni ce fichier
+ni son inventaire ne sont modifiés ici.
+
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.ngrok.yml up -d --no-deps --build --wait frontend
+# Landing publique : http://localhost:8081/ ; présentation autonome : /jury/
+
+cd frontend
+npm.cmd test -- tests/unit/render-quality.test.ts
+npm.cmd run test:e2e -- landing-performance.spec.ts spatial.spec.ts
+```
+
 ## Architecture et isolation
 
 `App.vue` garde sa condition d’accueil public et son import asynchrone de `LandingPage.vue`. Le moteur se monte uniquement sur cette landing. Ses styles sont sous `.sx-experience`, sans mutation des styles `body`, des gardes de routes ou des appels métier. Aucun fichier backend, base de données, stockage vidéo ou worker n’est modifié par cette phase.

@@ -42,7 +42,7 @@ function stone(geometry: T.BufferGeometry, detail = 2.8) {
   result.setAttribute("uv", new T.Float32BufferAttribute(uv, 2));
   return result;
 }
-export function createCoast() {
+export function createCoast(economy = false) {
   const group = new T.Group();
   group.name = "etretat-evocation";
   const chalk = surfaceMaterial("#edeee2", "chalk");
@@ -61,20 +61,28 @@ export function createCoast() {
     stone(
       new T.ExtrudeGeometry(shape, {
         depth: 13,
-        steps: 4,
+        steps: economy ? 2 : 4,
         bevelEnabled: true,
         bevelThickness: 1,
         bevelSize: 1,
-        bevelSegments: 3,
-        curveSegments: 32,
+        bevelSegments: economy ? 2 : 3,
+        curveSegments: economy ? 16 : 32,
       }),
+      economy ? 8 : 2.8,
     ),
     chalk,
   );
   arch.position.set(0, -0.6, -753);
   arch.name = "porte-d-aval";
   group.add(arch);
-  const head = new T.BoxGeometry(140, 46, 125, 32, 20, 32),
+  const head = new T.BoxGeometry(
+      140,
+      46,
+      125,
+      economy ? 16 : 32,
+      economy ? 8 : 20,
+      economy ? 16 : 32,
+    ),
     hp = head.attributes.position;
   for (let i = 0; i < hp.count; i++) {
     const x = hp.getX(i),
@@ -90,7 +98,7 @@ export function createCoast() {
       z + Math.sin(x * 0.07) * 2.5 + erosion(x, y, z),
     );
   }
-  const headland = new T.Mesh(stone(head, 4), chalk);
+  const headland = new T.Mesh(stone(head, economy ? 12 : 4), chalk);
   headland.position.set(-114, 20.8, -805);
   group.add(headland);
   const profile = Array.from({ length: 25 }, (_, i) => {
@@ -104,7 +112,10 @@ export function createCoast() {
     );
   });
   profile.push(new T.Vector2(0.01, 44.5));
-  const needle = new T.Mesh(stone(new T.LatheGeometry(profile, 40), 2), chalk);
+  const needle = new T.Mesh(
+    stone(new T.LatheGeometry(profile, economy ? 20 : 40), economy ? 5 : 2),
+    chalk,
+  );
   needle.position.set(23, -0.9, -753);
   needle.rotation.z = 0.025;
   needle.name = "aiguille";

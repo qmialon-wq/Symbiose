@@ -8,6 +8,7 @@ import {
 import { woodlandPlacements, hedgerowPlacements } from "./woodland-layout";
 import { seededRandom, riverX, riverWidth, terrainY } from "./world-utils";
 import type { GLTF } from "three/addons/loaders/GLTFLoader.js";
+import { textureBitmap } from "./texture-bitmap";
 
 export function createWoodland(signal: AbortSignal, economy: boolean) {
   const group = new T.Group();
@@ -20,20 +21,26 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
     locations: ReturnType<typeof woodlandPlacements>;
     slots: T.InstancedBufferAttribute;
     aspect: number;
+    nearStart: number;
   }[] = [];
   let atlas: T.Texture | undefined,
     cardMaterial: T.MeshBasicMaterial | undefined;
+  let lightweight = economy;
   async function load() {
     const [tree, grass, atlasResponse, metaResponse] = await Promise.all([
-      loadSpatial("tree-near", signal),
-      loadSpatial("grass-medium", signal),
+      economy ? undefined : loadSpatial("tree-near", signal),
+      economy ? undefined : loadSpatial("grass-medium", signal),
       fetch(spatialInventory.assets["tree-atlas"].url, { signal }),
       fetch(spatialInventory.assets["tree-atlas-metadata"].url, { signal }),
     ]);
-    models.push(tree, grass);
+    if (tree) models.push(tree);
+    if (grass) models.push(grass);
     if (!atlasResponse.ok || !metaResponse.ok)
       throw new Error("Woodland atlas unavailable");
-    const bitmap = await createImageBitmap(await atlasResponse.blob());
+    const bitmap = await textureBitmap(
+      await atlasResponse.blob(),
+      economy ? 1024 : Infinity,
+    );
     if (signal.aborted) {
       bitmap.close();
       return;
@@ -42,7 +49,7 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
     atlas = new T.Texture(bitmap);
     atlas.colorSpace = T.SRGBColorSpace;
     atlas.needsUpdate = true;
-    atlas.anisotropy = 4;
+    atlas.anisotropy = economy ? 1 : 4;
     cardMaterial = new T.MeshBasicMaterial({
       map: atlas,
       alphaTest: 0.18,
@@ -75,62 +82,65 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
       #endif`,
         );
     };
-    tree.scene.updateMatrixWorld(true);
-    const bounds = new T.Box3().setFromObject(tree.scene),
-      treeHeight = bounds.max.y - bounds.min.y,
-      centerX = (bounds.max.x + bounds.min.x) / 2,
-      centerZ = (bounds.max.z + bounds.min.z) / 2;
-    for (const center of [-25, -890]) {
-      const sector = new T.Group();
-      sector.name = `near-woodland-${center}`;
-      const locations = [
-        { x: -12, z: center + 25, height: 23, angle: 0.3, tint: 1 },
-        { x: 14, z: center + 30, height: 24, angle: 2.3, tint: 1.06 },
-        { x: -18, z: center - 13, height: 23, angle: 4.1, tint: 0.94 },
-        { x: 18, z: center - 28, height: 25, angle: 5.4, tint: 1.02 },
-      ].map((p) => ({ ...p, z: center < -800 ? Math.min(-880, p.z) : p.z }));
-      tree.scene.traverse((object: any) => {
-        if (!object.isMesh) return;
-        const material = object.material as T.MeshStandardMaterial;
-        material.transparent = false;
-        material.alphaTest = 0;
-        material.roughness = 0.9;
-        material.envMapIntensity = 0.3;
-        const mesh = new T.InstancedMesh(
-          object.geometry,
-          material,
-          locations.length,
-        );
-        mesh.name = "near-broadleaf-" + object.name;
-        mesh.castShadow = !economy;
-        mesh.receiveShadow = true;
-        locations.forEach((p, i) => {
-          const dummy = new T.Object3D(),
-            scale = p.height / treeHeight;
-          dummy.position.set(p.x, terrainY(p.x, p.z), p.z);
-          dummy.rotation.y = p.angle;
-          dummy.scale.setScalar(scale);
-          dummy.updateMatrix();
-          mesh.setMatrixAt(
-            i,
-            dummy.matrix
-              .clone()
-              .multiply(
-                new T.Matrix4().makeTranslation(
-                  -centerX,
-                  -bounds.min.y,
-                  -centerZ,
-                ),
-              )
-              .multiply(object.matrixWorld),
+    if (tree) {
+      tree.scene.updateMatrixWorld(true);
+      const bounds = new T.Box3().setFromObject(tree.scene),
+        treeHeight = bounds.max.y - bounds.min.y,
+        centerX = (bounds.max.x + bounds.min.x) / 2,
+        centerZ = (bounds.max.z + bounds.min.z) / 2;
+      for (const center of [-25, -890]) {
+        const sector = new T.Group();
+        sector.name = `near-woodland-${center}`;
+        sector.userData.detailed = true;
+        const locations = [
+          { x: -12, z: center + 25, height: 23, angle: 0.3, tint: 1 },
+          { x: 14, z: center + 30, height: 24, angle: 2.3, tint: 1.06 },
+          { x: -18, z: center - 13, height: 23, angle: 4.1, tint: 0.94 },
+          { x: 18, z: center - 28, height: 25, angle: 5.4, tint: 1.02 },
+        ].map((p) => ({ ...p, z: center < -800 ? Math.min(-880, p.z) : p.z }));
+        tree.scene.traverse((object: any) => {
+          if (!object.isMesh) return;
+          const material = object.material as T.MeshStandardMaterial;
+          material.transparent = false;
+          material.alphaTest = 0;
+          material.roughness = 0.9;
+          material.envMapIntensity = 0.3;
+          const mesh = new T.InstancedMesh(
+            object.geometry,
+            material,
+            locations.length,
           );
-          mesh.setColorAt(i, new T.Color(p.tint, p.tint, p.tint));
+          mesh.name = "near-broadleaf-" + object.name;
+          mesh.castShadow = !economy;
+          mesh.receiveShadow = true;
+          locations.forEach((p, i) => {
+            const dummy = new T.Object3D(),
+              scale = p.height / treeHeight;
+            dummy.position.set(p.x, terrainY(p.x, p.z), p.z);
+            dummy.rotation.y = p.angle;
+            dummy.scale.setScalar(scale);
+            dummy.updateMatrix();
+            mesh.setMatrixAt(
+              i,
+              dummy.matrix
+                .clone()
+                .multiply(
+                  new T.Matrix4().makeTranslation(
+                    -centerX,
+                    -bounds.min.y,
+                    -centerZ,
+                  ),
+                )
+                .multiply(object.matrixWorld),
+            );
+            mesh.setColorAt(i, new T.Color(p.tint, p.tint, p.tint));
+          });
+          mesh.computeBoundingSphere();
+          sector.add(mesh);
         });
-        mesh.computeBoundingSphere();
-        sector.add(mesh);
-      });
-      group.add(sector);
-      bands.push({ group: sector, center, radius: 170 });
+        group.add(sector);
+        bands.push({ group: sector, center, radius: 170 });
+      }
     }
     for (const [center, forest] of [
       [-65, true],
@@ -149,6 +159,18 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
           forest,
         );
       if (!forest) locations.push(...hedgerowPlacements(center));
+      const nearStart = locations.length;
+      if (forest) {
+        const near = center === -65 ? -25 : -890;
+        locations.push(
+          ...[
+            { x: -12, z: near + 25, height: 23, angle: 0.3, tint: 1 },
+            { x: 14, z: near + 30, height: 24, angle: 2.3, tint: 1.06 },
+            { x: -18, z: near - 13, height: 23, angle: 4.1, tint: 0.94 },
+            { x: 18, z: near - 28, height: 25, angle: 5.4, tint: 1.02 },
+          ].map((p) => ({ ...p, z: near < -800 ? Math.min(-880, p.z) : p.z })),
+        );
+      }
       const geometry = new T.PlaneGeometry(1, 1);
       geometry.translate(0, 0.5, 0);
       geometries.push(geometry);
@@ -164,11 +186,12 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
       );
       mesh.name = "distant-baked-broadleaf";
       mesh.frustumCulled = false;
-      cards.push({ mesh, locations, slots, aspect });
+      cards.push({ mesh, locations, slots, aspect, nearStart });
       sector.add(mesh);
       group.add(sector);
       bands.push({ group: sector, center, radius: forest ? 230 : 300 });
     }
+    if (!grass) return;
     grass.scene.updateMatrixWorld(true);
     const byMaterial = new Map<T.Material, T.BufferGeometry[]>();
     let variant = 0;
@@ -200,6 +223,7 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
           random = seededRandom(Math.abs(center) + 50),
           mesh = new T.InstancedMesh(geometry, material, count);
         mesh.name = "textured-meadow-grasses";
+        sector.userData.detailed = true;
         mesh.receiveShadow = true;
         for (let i = 0; i < count; i++) {
           const z = center + (random() - 0.5) * 35;
@@ -229,13 +253,18 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
   return {
     group,
     load,
+    setEconomy(value: boolean) {
+      lightweight = value;
+    },
     apply(camera: T.PerspectiveCamera, night: number) {
       bands.forEach(
         (b) =>
-          (b.group.visible = Math.abs(camera.position.z - b.center) < b.radius),
+          (b.group.visible =
+            !(lightweight && b.group.userData.detailed) &&
+            Math.abs(camera.position.z - b.center) < b.radius),
       );
       if (cardMaterial) cardMaterial.color.setScalar(1 - night * 0.76);
-      for (const { mesh, locations, slots, aspect } of cards) {
+      for (const { mesh, locations, slots, aspect, nearStart } of cards) {
         if (!mesh.parent?.visible) continue;
         locations.forEach((p, i) => {
           const angle = Math.atan2(
@@ -245,6 +274,7 @@ export function createWoodland(signal: AbortSignal, economy: boolean) {
           dummy.position.set(p.x, terrainY(p.x, p.z), p.z);
           dummy.rotation.set(0, angle, 0);
           dummy.scale.set(p.height * aspect, p.height, 1);
+          if (!lightweight && i >= nearStart) dummy.scale.setScalar(0);
           dummy.updateMatrix();
           mesh.setMatrixAt(i, dummy.matrix);
           slots.setX(i, ((((angle - p.angle) / (Math.PI / 2)) % 4) + 4) % 4);

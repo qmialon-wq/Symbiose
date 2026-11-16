@@ -37,7 +37,7 @@ export function createJourneyWorld(
   scene.add(ambient, sun, sun.target);
   const terrain = createTerrain(economy),
     vegetation = createVegetation(economy),
-    coast = createCoast(),
+    coast = createCoast(economy),
     observation = createObservation();
   const soilOpening = [
     new T.Plane(new T.Vector3(-1, 0, 0), -13),
@@ -53,7 +53,7 @@ export function createJourneyWorld(
   let environment: T.WebGLRenderTarget | undefined,
     shadowEnabled = !economy,
     shadowUpdate = true;
-  const fauna = createFauna(signal, changed, issue),
+  const fauna = createFauna(signal, changed, issue, economy),
     nature = createNature(signal, changed, issue, economy);
   observation.animal.visible = false;
   scene.add(fauna.group, nature.group);
@@ -72,7 +72,7 @@ export function createJourneyWorld(
     sunDirection: { value: lightDirection },
   };
   const sky = new T.Mesh(
-    new T.SphereGeometry(900, 24, 16),
+    new T.SphereGeometry(900, economy ? 16 : 24, economy ? 12 : 16),
     new T.ShaderMaterial({
       uniforms: skyUniforms,
       vertexShader: skyVertex,
@@ -97,7 +97,7 @@ export function createJourneyWorld(
     }`,
   });
   const clouds = new T.InstancedMesh(
-    new T.SphereGeometry(1, 24, 16),
+    new T.SphereGeometry(1, economy ? 12 : 24, economy ? 8 : 16),
     cloudMaterial,
     economy ? 35 : 70,
   );
@@ -169,7 +169,7 @@ export function createJourneyWorld(
     fish.setMatrixAt(i, dummy.matrix);
   }
   points.add(fish);
-  const dataCount = 7200,
+  const dataCount = economy ? 1800 : 7200,
     scatter: number[] = [],
     target: number[] = [],
     dataGeometry = new T.BufferGeometry();
@@ -194,6 +194,7 @@ export function createJourneyWorld(
     sizeAttenuation: true,
   });
   const data = new T.Points(dataGeometry, dataMaterial);
+  let pointBudget = dataCount;
   data.frustumCulled = false;
   points.add(data);
   scene.add(points);
@@ -219,7 +220,7 @@ export function createJourneyWorld(
       ctx.getImageData(0, 0, canvas.width, canvas.height).data,
       canvas.width,
       canvas.height,
-      dataCount,
+      pointBudget,
     );
     dataGeometry.setDrawRange(0, candidates.length / 2);
     for (let i = 0; i < candidates.length / 2; i++) {
@@ -329,7 +330,11 @@ export function createJourneyWorld(
     const attributes = dataGeometry.attributes.position as T.BufferAttribute;
     const viewHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * 10,
       logoWidth = viewHeight * camera.aspect * 0.3;
-    for (let i = 0; fx.logo > 0 && i < dataCount; i++) {
+    for (
+      let i = 0;
+      fx.logo > 0 && i < Math.min(dataCount, dataGeometry.drawRange.count);
+      i++
+    ) {
       globalTarget
         .set(
           target[i * 3] * logoWidth + viewHeight * camera.aspect * 0.27,
@@ -367,6 +372,23 @@ export function createJourneyWorld(
     },
     setEconomy(value: boolean) {
       reflection.setEconomy(value);
+      nature.setEconomy(value);
+      fauna.setEconomy(value);
+      clouds.count = value
+        ? Math.min(clouds.count, 35)
+        : clouds.instanceMatrix.count;
+      if (value && pointBudget > 1800) {
+        const available = Math.min(pointBudget, dataGeometry.drawRange.count);
+        const budget = Math.min(available, 1800);
+        // Keep coverage of the whole logo rather than retaining only its top.
+        for (let i = 0; i < budget; i++) {
+          const source = Math.floor(((i + 0.5) * available) / budget);
+          for (let axis = 0; axis < 3; axis++)
+            target[i * 3 + axis] = target[source * 3 + axis];
+        }
+        pointBudget = budget;
+        dataGeometry.setDrawRange(0, budget);
+      }
       shadowEnabled = !value;
       sun.castShadow = !value;
       if (value) {

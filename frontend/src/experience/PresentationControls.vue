@@ -8,6 +8,7 @@ import {
   chapterProgress,
 } from "./pitch";
 import { computed } from "vue";
+import type { QualityPreference } from "./render-quality";
 import {
   excursions,
   expandedDuration,
@@ -26,6 +27,7 @@ const props = defineProps<{
   routeProgress?: number;
   routeSeconds?: number;
   excursion?: ExcursionId;
+  quality?: QualityPreference;
 }>();
 const emit = defineEmits<{
   seek: [progress: number];
@@ -42,6 +44,7 @@ const emit = defineEmits<{
   excursion: [id: ExcursionId];
   next: [];
   previous: [];
+  quality: [value: QualityPreference];
 }>();
 const chapterIndex = computed(() => pitchIndex(props.progress));
 const expanded = computed(() => props.routeProgress !== undefined);
@@ -143,6 +146,22 @@ const seek = (event: Event) => {
     <details class="sx-recovery-tools">
       <summary>Régie du récit</summary>
       <div>
+        <label class="sx-quality-choice"
+          >Qualité visuelle
+          <select
+            :value="quality ?? 'auto'"
+            @change="
+              emit(
+                'quality',
+                ($event.target as HTMLSelectElement).value as QualityPreference,
+              )
+            "
+          >
+            <option value="auto">Automatique</option>
+            <option value="eco">3D légère</option>
+            <option value="standard">3D détaillée</option>
+          </select>
+        </label>
         <button @click="emit('restart')">Recommencer le récit</button>
         <button @click="emit('skip')">Passer l’animation</button>
         <button v-if="resumeLabel" @click="emit('resume')">

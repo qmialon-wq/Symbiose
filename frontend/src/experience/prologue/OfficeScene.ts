@@ -22,9 +22,11 @@ export function createOfficeScene(
     height = 1024,
   ) => {
     const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
+    const scale = economy && width === 1024 ? 0.5 : 1;
+    canvas.width = width * scale;
+    canvas.height = height * scale;
     const ctx = canvas.getContext("2d")!;
+    ctx.scale(scale, scale);
     draw(ctx);
     const texture = new T.CanvasTexture(canvas);
     texture.colorSpace = T.SRGBColorSpace;
@@ -66,29 +68,40 @@ export function createOfficeScene(
     }
   });
   oakMap.wrapS = oakMap.wrapT = T.RepeatWrapping;
-  const grainNormal = canvasTexture((ctx) => {
-    const image = ctx.createImageData(1024, 1024);
-    for (let i = 0; i < image.data.length; i += 4) {
-      const x = (i / 4) % 1024,
-        y = Math.floor(i / 4096);
-      image.data[i] = 128 + Math.sin(x * 0.8 + Math.sin(y * 0.015)) * 13;
-      image.data[i + 1] = 128 + Math.sin(x * 0.04 + y * 0.012) * 3;
-      image.data[i + 2] = 254;
-      image.data[i + 3] = 255;
-    }
-    ctx.putImageData(image, 0, 0);
-  });
-  grainNormal.colorSpace = T.NoColorSpace;
-  grainNormal.wrapS = grainNormal.wrapT = T.RepeatWrapping;
-  const roughMap = canvasTexture((ctx) => {
-    ctx.fillStyle = "#c7c7c7";
-    ctx.fillRect(0, 0, 1024, 1024);
-    for (let i = 0; i < 14000; i++) {
-      ctx.fillStyle = `rgba(40,40,40,${random() * 0.1})`;
-      ctx.fillRect(random() * 1024, random() * 1024, 0.6, 7 + random() * 25);
-    }
-  });
-  roughMap.colorSpace = T.NoColorSpace;
+  const grainNormal = economy
+    ? undefined
+    : canvasTexture((ctx) => {
+        const image = ctx.createImageData(1024, 1024);
+        for (let i = 0; i < image.data.length; i += 4) {
+          const x = (i / 4) % 1024,
+            y = Math.floor(i / 4096);
+          image.data[i] = 128 + Math.sin(x * 0.8 + Math.sin(y * 0.015)) * 13;
+          image.data[i + 1] = 128 + Math.sin(x * 0.04 + y * 0.012) * 3;
+          image.data[i + 2] = 254;
+          image.data[i + 3] = 255;
+        }
+        ctx.putImageData(image, 0, 0);
+      });
+  if (grainNormal) {
+    grainNormal.colorSpace = T.NoColorSpace;
+    grainNormal.wrapS = grainNormal.wrapT = T.RepeatWrapping;
+  }
+  const roughMap = economy
+    ? undefined
+    : canvasTexture((ctx) => {
+        ctx.fillStyle = "#c7c7c7";
+        ctx.fillRect(0, 0, 1024, 1024);
+        for (let i = 0; i < 14000; i++) {
+          ctx.fillStyle = `rgba(40,40,40,${random() * 0.1})`;
+          ctx.fillRect(
+            random() * 1024,
+            random() * 1024,
+            0.6,
+            7 + random() * 25,
+          );
+        }
+      });
+  if (roughMap) roughMap.colorSpace = T.NoColorSpace;
   const oak = material({
     color: "#e1b17c",
     map: oakMap,
@@ -816,6 +829,9 @@ export function createOfficeScene(
   const detachVideoEvents = () => {
     attachedVideo?.removeEventListener("loadeddata", refreshVideoSurface);
     attachedVideo?.removeEventListener("error", refreshVideoSurface);
+    attachedVideo?.removeEventListener("play", refreshVideoSurface);
+    attachedVideo?.removeEventListener("pause", refreshVideoSurface);
+    attachedVideo?.removeEventListener("seeking", refreshVideoSurface);
   };
   const setVideo = (video: HTMLVideoElement | null) => {
     if (video === attachedVideo || disposed) return;
@@ -830,6 +846,9 @@ export function createOfficeScene(
       videoTexture.magFilter = T.LinearFilter;
       video.addEventListener("loadeddata", refreshVideoSurface);
       video.addEventListener("error", refreshVideoSurface);
+      video.addEventListener("play", refreshVideoSurface);
+      video.addEventListener("pause", refreshVideoSurface);
+      video.addEventListener("seeking", refreshVideoSurface);
     }
     refreshVideoSurface();
   };

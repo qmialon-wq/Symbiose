@@ -160,10 +160,17 @@ const labels: Record<Species, string> = {
 export function projectAnimalBox(
   object: T.Object3D,
   camera: T.PerspectiveCamera,
+  precise = true,
 ) {
-  object.updateWorldMatrix(true, true);
-  const bounds = new T.Box3().setFromObject(object, true);
+  object.parent?.updateWorldMatrix(true, false);
+  // SkinnedMesh.updateMatrixWorld also refreshes its inverse bind matrix.
+  object.updateMatrixWorld(true);
+  const bounds = new T.Box3().setFromObject(object, precise);
   if (bounds.isEmpty()) return undefined;
+  // In lightweight mode use mesh/bone bounds, with room for the small motion
+  // between bound refreshes, instead of skinning every vertex again per frame.
+  if (!precise)
+    bounds.expandByVector(bounds.getSize(new T.Vector3()).multiplyScalar(0.03));
   const center = bounds.getCenter(new T.Vector3()).project(camera);
   if (center.z < -1 || center.z > 1) return undefined;
   const points = [];
@@ -242,7 +249,9 @@ export function createFauna(
   signal: AbortSignal,
   changed: () => void,
   issue: (message: string) => void,
+  economy = false,
 ) {
+  let lightweight = economy;
   const group = new T.Group();
   group.name = "local-3d-fauna";
   const loaded = new Map<Species, GLTF>(),
@@ -250,7 +259,12 @@ export function createFauna(
     failed = new Set<Species>();
   const actors = new Map<
     string,
-    { root: T.Group; model: T.Object3D; mixer?: T.AnimationMixer }
+    {
+      root: T.Group;
+      model: T.Object3D;
+      mixer?: T.AnimationMixer;
+      boundsFrame?: number;
+    }
   >();
   let current = 0,
     started = false;
@@ -388,8 +402,16 @@ export function createFauna(
         actor.root.rotation.y = p.rotation + Math.cos(phase * 0.5) * 0.18;
       }
       actor.mixer?.setTime(time * 0.45);
-      actor.root.updateWorldMatrix(true, true);
-      const bounds = projectAnimalBox(actor.root, camera);
+      const boundsFrame = Math.round(time * 20);
+      if (lightweight && actor.mixer && actor.boundsFrame !== boundsFrame) {
+        actor.boundsFrame = boundsFrame;
+        actor.model.traverse((object) => {
+          if (object instanceof T.SkinnedMesh)
+            // Runtime Three supports null here; the pinned typings omit it.
+            (object as { boundingBox: T.Box3 | null }).boundingBox = null;
+        });
+      }
+      const bounds = projectAnimalBox(actor.root, camera, !lightweight);
       if (bounds && opacity > 0.35)
         boxes.push({ id: p.id, label: labels[p.species], ...bounds, opacity });
     }
@@ -399,6 +421,9 @@ export function createFauna(
     group,
     ensure,
     apply,
+    setEconomy(value: boolean) {
+      lightweight = value;
+    },
     get pending() {
       return pending.size > 0;
     },

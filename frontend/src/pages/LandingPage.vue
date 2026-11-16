@@ -22,6 +22,13 @@ import {
   progressAtSeconds,
 } from "../experience/pitch";
 import type { PerformanceSample } from "../experience/PerformanceMonitor";
+import LandingLoading from "../experience/LandingLoading.vue";
+import {
+  readQualityPreference,
+  qualityStorageKey,
+  type QualityPreference,
+  type LoadingState,
+} from "../experience/render-quality";
 import "../experience/experience.css";
 import "../experience/journey.css";
 import "../experience/pitch.css";
@@ -87,6 +94,33 @@ const root = ref<HTMLElement>();
 const totalProgress = ref(0);
 const ready = ref(false),
   error = ref("");
+const qualityPreference = ref(readQualityPreference());
+const loading = shallowRef<LoadingState>({
+  progress: 0.04,
+  label: "Chargement de l’expérience…",
+});
+function chooseQuality(value: QualityPreference) {
+  if (value === qualityPreference.value) return;
+  timeline?.pause();
+  qualityPreference.value = value;
+  try {
+    localStorage.setItem(qualityStorageKey, value);
+  } catch {
+    /* Session choice still works. */
+  }
+  if (!forced2d.value && !error.value) {
+    ready.value = false;
+    loading.value = { progress: 0.04, label: "Adaptation de la qualité…" };
+  }
+}
+function lightweight() {
+  timeline?.pause();
+  ready.value = false;
+  error.value = "";
+  forced2d.value = true;
+  loading.value = { progress: 0.25, label: "Chargement de l’aperçu léger…" };
+  frame.value = undefined;
+}
 const mode = ref<"exploration" | "presentation">(
   props.jury ? "presentation" : "exploration",
 );
@@ -103,7 +137,7 @@ const PitchSources = defineAsyncComponent(
 );
 let fullscreenOwned = false;
 const performance = ref<PerformanceSample>();
-const frame = ref<FrameReport>();
+const frame = shallowRef<FrameReport>();
 const layers = ref<JourneyLayers>({ ...defaultLayers });
 const assetIssues = ref<string[]>([]);
 function showFallback(message: string) {
@@ -313,6 +347,7 @@ function toggleRenderer() {
   if (!forced2d.value) {
     error.value = "";
     ready.value = false;
+    loading.value = { progress: 0.04, label: "Préparation de la scène 3D…" };
   }
   frame.value = undefined;
 }
@@ -484,6 +519,8 @@ onBeforeUnmount(() => {
     >
       <ExperienceCanvas
         v-if="!error && !forced2d"
+        :key="qualityPreference"
+        :quality-preference="qualityPreference"
         :progress="progress"
         :reduced-motion="reducedMotion"
         :layers="layers"
@@ -493,6 +530,7 @@ onBeforeUnmount(() => {
         :excursion="excursion"
         :suspended="dialogOpen"
         @ready="ready = true"
+        @loading="loading = $event"
         @error="showFallback"
         @performance="performance = $event"
         @frame="frame = $event"
@@ -500,7 +538,7 @@ onBeforeUnmount(() => {
         @screen="screenChanged"
       />
       <FallbackScene
-        v-else
+        v-else-if="!inPrologue"
         :progress="progress"
         :reduced-motion="reducedMotion"
         @ready="ready = true"
@@ -508,6 +546,7 @@ onBeforeUnmount(() => {
       <PrologueFallback
         v-if="inPrologue && (error || forced2d)"
         :local="prologueLocal"
+        @ready="ready = true"
       />
       <ExcursionFallback
         v-if="excursion && (error || forced2d)"
@@ -607,9 +646,12 @@ onBeforeUnmount(() => {
       >
         Certains calques sont indisponibles · géométrie conservée
       </p>
-      <p v-if="!ready && !error" class="sx-loading" role="status">
-        Préparation du paysage…
-      </p>
+      <LandingLoading
+        v-if="!ready"
+        :state="loading"
+        :app-href="applicationHref"
+        @lightweight="lightweight"
+      />
       <div v-if="error" class="sx-fallback-note" role="status">
         <p>{{ error }}</p>
         <button @click="openProject">Lire le projet et le parcours</button>
@@ -629,6 +671,8 @@ onBeforeUnmount(() => {
         :route-progress="debug ? undefined : routeProgress"
         :route-seconds="debug ? undefined : route.seconds"
         :excursion="excursion?.id"
+        :quality="qualityPreference"
+        @quality="chooseQuality"
         :resume-label="
           checkpoint
             ? pitchChapters[pitchIndex(checkpoint.progress)].subject

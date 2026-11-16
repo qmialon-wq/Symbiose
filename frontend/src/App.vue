@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   defineAsyncComponent,
+  h,
   computed,
   nextTick,
   ref,
@@ -22,7 +23,19 @@ import { useEnvironmentTheme } from "./composables/useEnvironmentTheme";
 import LoginTransition from "./components/symbiose/LoginTransition.vue";
 import ClientGuide from "./components/ClientGuide.vue";
 import HelpButton from "./components/HelpButton.vue";
-const LandingPage = defineAsyncComponent(() => import("./pages/LandingPage.vue"));
+import LandingLoading from "./experience/LandingLoading.vue";
+const LandingPage = defineAsyncComponent({
+  loader: () => import("./pages/LandingPage.vue"),
+  delay: 0,
+  loadingComponent: {
+    render: () =>
+      h(LandingLoading, {
+        state: { progress: 0.02, label: "Ouverture de l’expérience…" },
+        appHref: "/connexion",
+        lightweightAvailable: false,
+      }),
+  },
+});
 useEnvironmentTheme();
 const dataMode = useDataMode();
 

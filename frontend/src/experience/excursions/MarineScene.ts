@@ -511,6 +511,28 @@ export function createMarineScene(economy: boolean, connected = false) {
           kind === "mackerel" ? 0.6 + random() * 0.5 : 1.05 + random() * 0.5,
         school: i % 2,
       }));
+      if (economy && kind === "pollack") {
+        // With a smaller shoal, keep a representative on the camera's route.
+        // It is still an animated mesh and its annotation uses its real bounds.
+        Object.assign(swimmers[0], {
+          x: -14.2,
+          y: -4.2,
+          z: -742.03,
+          phase: 0,
+          scale: 1.3,
+          school: 0,
+        });
+      }
+      if (economy && kind === "plaice") {
+        Object.assign(swimmers[0], {
+          x: -6.8,
+          y: -9.45,
+          z: -740.7,
+          phase: 0,
+          scale: 1.5,
+          school: 0,
+        });
+      }
       scene.add(fish);
       return { kind, fish, swimmers };
     },
