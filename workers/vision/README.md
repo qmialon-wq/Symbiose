@@ -12,7 +12,7 @@ et les divergences fonctionnelles sont dans [NOTEBOOK_MIGRATION.md](NOTEBOOK_MIG
 Le notebook original reste à la racine et n'est pas exécuté par ce package.
 
 Les commandes Make `prepare-training`, `train`, `analyze` et `watch`, leurs prérequis et dossiers
-sont décrits dans le [guide principal](../../README.md#entraînement-et-vidéos-annotées-avec-make).
+sont décrits dans le [parcours Make ci-dessous](#entraînement-et-vidéos-annotées-avec-make).
 Elles correspondent aux commandes CLI du même nom (`train --check-only` pour le
 diagnostic). Les modèles sont chargés uniquement sur demande. Le fichier
 Compose ML construit une image supplémentaire complète ; l'image CPU de base
@@ -155,8 +155,9 @@ Les opérations CLI GPU et les fonctions `train`/`analyze_video` utilisent un ve
 interprocessus. Tous les appels doivent partager `gpu_lock_path`. Si un appelant
 construit lui-même des modèles CUDA avant ces fonctions, il doit sérialiser aussi
 cette construction ; ne pas imbriquer deux acquisitions du verrou. Aucun modèle
-n'est construit et aucune tâche n'est consommée automatiquement par le worker Redis
-existant. Aucun raccordement HTTP ou interface de revue web n'est ajouté.
+n'est construit à l'import. Le worker Redis consomme les tâches lorsque le fichier
+additionnel ML est activé ; les [parcours HTTP et de revue web](../../WEB_CONSOLE.md)
+réutilisent ces modules. Une correction humaine ne déclenche aucun entraînement.
 
 ## Évaluation
 
@@ -198,7 +199,7 @@ reçoivent pas de boîtes périmées maintenues artificiellement.
 
 Pour le dataset nommé par espèce, lancer depuis la racine :
 `make prepare-training DEVICE=cuda`, puis `make train DEVICE=cuda BATCH_SIZE=2`.
-Les poids MegaDetector locaux sont requis avant la préparation (README principal).
+Les poids MegaDetector locaux sont requis avant la préparation (voir le parcours Make ci-dessous).
 `DEVICE=cpu` fonctionne aussi. La CLI de préparation est
 `biosentinelle-vision prepare-training --inventory <videos.json>`.
 
@@ -257,3 +258,140 @@ Ce test limité est conservé sous `data/results/vision/real-preparation-smoke/`
 la préparation complète des 343 vidéos et l'entraînement du dataset ne sont
 pas exécutés par les tests. L'inférence GPU a depuis été vérifiée avec la vidéo
 réelle et le checkpoint local : voir [les résultats de validation](INFERENCE.md#validation-locale).
+
+## Parcours Make
+
+### Classer les vidéos du dépôt
+
+```sh
+make classify-videos
+```
+
+Cette commande copie les vidéos de `video datathon/` dans
+`data/datasets/classified/<espèce>/`, sans déplacer les originaux. Les fichiers
+déjà identiques sont conservés et les destinations différentes ne sont pas écrasées.
+Les noms inconnus, ambigus ou les vidéos illisibles sont rangés dans `_a_verifier/`.
+Pour changer le dossier source, définir `SOURCE_VIDEOS` dans `.env`.
+
+L'inventaire et le tableau CSV se trouvent dans
+`data/results/vision/classification/` (`videos.json`, `classement.csv`,
+`classification.json`). Les espèces sont des **candidats déduits des noms de fichiers**.
+Le classement ne crée pas de `review.json` et ne valide pas les labels de chaque
+animal visible. Les séparations proposées regroupent les copies identiques ;
+les scènes issues d'une même prise restent à identifier avant une évaluation fiable.
+
+### Entraînement et vidéos annotées avec Make
+
+Depuis la racine du projet, utiliser GNU Make (sous Windows, WSL est recommandé).
+Docker doit être démarré ; le venv Python de l'hôte n'a pas d'effet sur ces commandes.
+
+```sh
+make prepare-training DEVICE=cuda
+make train-check
+make train DEVICE=cuda BATCH_SIZE=2
+```
+
+`DEVICE=cpu` est la valeur par défaut, utilisable sans NVIDIA. `DEVICE=cuda`
+convient à la RTX 3050 avec Docker/NVIDIA configuré. `ml-build` installe les
+bibliothèques ML dans une image facultative ; aucun poids n'est téléchargé.
+`train` vérifie d'abord les données, puis construit si nécessaire et lance
+l'entraînement explicitement. Les autres services n'ont pas besoin d'être démarrés.
+
+`prepare-training` classe les vidéos si nécessaire, extrait jusqu'à 24 images par
+vidéo, lance **MegaDetector** et recadre les animaux. Le résultat est
+`data/results/vision/training.json`, accompagné de `frames.json`, `detections.json`,
+`crops.json` et `preparation.json`. Les erreurs de lecture/détection sont rapportées ;
+une préparation partielle retourne un code non nul. Relancer recalcule les images
+et détections, sans cache implicite.
+
+Les poids réels du détecteur doivent être présents dans `data/models/md_v5a.0.0.pt`.
+[Télécharger MDv5a depuis sa publication officielle](https://github.com/agentmorris/MegaDetector/releases/download/v5.0/md_v5a.0.0.pt)
+et y enregistrer le fichier. Aucun téléchargement n'est lancé par les imports
+ou par la préparation.
+
+**Par défaut, Make autorise les labels provisoires issus des noms** pour démarrer
+sur ce dataset majoritairement mono-espèce. MegaDetector localise les animaux ;
+il ne détermine pas ces dix espèces. Les labels inconnus sont exclus. Les refus
+humains sont toujours exclus et les corrections humaines priment sur le nom et
+sur le quota de 18 recadrages par vidéo. `review.json`, lorsqu'il existe, est lu
+lors de la préparation et n'est jamais remplacé par une fausse validation humaine.
+Après une correction, relancer la préparation pour actualiser `training.json`.
+
+Les ensembles sont séparés **par vidéo avant extraction** et les copies identiques
+restent ensemble. Chaque classe doit avoir des exemples en train et val doit être
+non vide. Le score de validation sert au choix du checkpoint ; il est **provisoire
+si ses labels proviennent des noms**, avec `human_validated=false` dans l'historique
+et `label_provenance` dans le checkpoint. Il ne constitue pas une évaluation
+scientifique vérifiée. Les prises issues d'une même scène doivent être regroupées
+pour une évaluation indépendante. La commande `evaluate` reste réservée aux labels
+humains. Les imports Python restent stricts par défaut ; Make active explicitement
+`training.allow_filename_labels`.
+
+Pour entraîner uniquement sur une revue humaine :
+
+```sh
+make train DEVICE=cuda ALLOW_FILENAME_LABELS=0 MANIFEST=/storage/results/vision/review.json
+```
+
+Chaque run écrit `data/checkpoints/<run_id>/best.pt` et `last.pt` (reprise complète),
+avec son historique sous `data/results/vision/training/<run_id>/`. Le fichier
+historique `classifier_v3_best.pt` n'est pas remplacé automatiquement : sélectionner
+le nouveau `best.pt` avec `CHECKPOINT=...` pour l'inférence. Le parcours `train`
+sur CUDA soumet maintenant sa tâche à Redis et nécessite le worker ML démarré.
+Sans checkpoint initial, les poids sont initialisés aléatoirement ; aucun transfert
+ImageNet n'est téléchargé automatiquement. Exemple avec un checkpoint compatible :
+
+```sh
+make train DEVICE=cuda BATCH_SIZE=2 EPOCHS_HEAD=6 EPOCHS_FINETUNE=18 INITIAL_CHECKPOINT=/storage/checkpoints/initial.pt
+```
+
+Pour l'analyse, placer explicitement les poids MegaDetector dans
+`data/models/md_v5a.0.0.pt`, puis déposer les vidéos dans **`data/datasets/inbox/`** :
+
+```sh
+make analyze DEVICE=cuda
+make analyze DEVICE=cuda VIDEO="ma video.mp4"
+make watch DEVICE=cuda
+```
+
+`analyze` traite les fichiers déjà déposés. `watch` reste actif au premier plan et
+traite automatiquement les nouveaux dépôts ; arrêter avec **Ctrl+C**. Il attend
+dix secondes sans changement de taille/mtime, réglables avec `STABLE_SECONDS=30`.
+Pour une copie longue, copier sous un nom `video.mp4.part`, puis renommer en `.mp4`
+une fois terminé : le suffixe `.part` est ignoré. La stabilité seule ne garantit
+pas qu'une copie temporairement suspendue soit terminée.
+
+Les résultats sont dans :
+
+```text
+data/results/vision/analyses/<nom>-<identifiant>/annotated.mp4
+data/results/vision/analyses/<nom>-<identifiant>/report.json
+data/results/vision/analyses/<nom>-<identifiant>/state.json
+```
+
+Les originaux restent dans inbox. `state.json` distingue `completed` et `error`.
+Les analyses déjà terminées sont ignorées ; une modification du contenu vidéo,
+des poids ou des paramètres produit une nouvelle identité. Les erreurs enregistrées
+ne sont pas relancées en boucle. Pour réessayer explicitement :
+
+```sh
+make analyze DEVICE=cuda VIDEO="ma video.mp4" FORCE=1
+```
+
+Le verrou GPU couvre le chargement, le calcul et la libération des modèles. Une
+analyse ponctuelle échoue si le GPU est déjà occupé par ces commandes ; `watch`
+attend et réessaie. Les modèles sont libérés après chaque lot, pour permettre
+l'entraînement pendant que la surveillance reste en attente. Redémarrer `watch`
+après modification des paramètres ; les fichiers de poids sont relus pour chaque lot.
+
+Variables Make : `DEVICE`, `VIDEO` (chemin relatif à inbox), `MANIFEST`, `DETECTOR`,
+`CHECKPOINT`, `INITIAL_CHECKPOINT`, `ALLOW_FILENAME_LABELS` (1 par défaut),
+`BATCH_SIZE`, `EPOCHS_HEAD`, `EPOCHS_FINETUNE`,
+`FORCE`, `POLL_SECONDS` et `STABLE_SECONDS`. Les chemins de modèles/manifeste sont
+ceux **dans le conteneur**, donc préfixés par `/storage/`. `DATA_ROOT` dans `.env`
+permet de changer leur racine hôte. Le dossier inbox autorise le dépôt depuis un
+compte hôte Linux avec un mode sticky ; il reste monté en lecture seule dans vision.
+Les vidéos déposées doivent être lisibles par l'UID 10001.
+
+L'export MP4 ne conserve pas l'audio et le codec `mp4v` n'est pas garanti dans
+tous les navigateurs. Les observations restent des prédictions à valider.
