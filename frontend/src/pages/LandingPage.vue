@@ -35,6 +35,7 @@ import "../experience/pitch.css";
 import "../experience/finishing.css";
 import symbioseLogo from "../assets/symbiose-logo.png";
 import FallbackScene from "../experience/FallbackScene.vue";
+import { fallbackRoute } from "../experience/fallback-frame";
 import PrologueOverlay from "../experience/prologue/PrologueOverlay.vue";
 import PrologueFallback from "../experience/prologue/PrologueFallback.vue";
 import type { OfficeScreenProjection } from "../experience/prologue/screen-projection";
@@ -157,7 +158,12 @@ const route = computed(() =>
         excursion: undefined,
         seconds: pitchSeconds(routeProgress.value),
       }
-    : sampleRoute(routeProgress.value),
+    : forced2d.value || error.value
+      ? fallbackRoute(
+          routeProgress.value,
+          0.5 / (expandedScrollScreens * window.innerHeight),
+        )
+      : sampleRoute(routeProgress.value),
 );
 const progress = computed(() => route.value.progress);
 const excursion = computed(() =>
@@ -290,10 +296,16 @@ function toggleMotion() {
   userReduced.value = !userReduced.value;
   buildTimeline();
 }
-function seek(value: number, immediate = props.jury) {
+function seek(
+  value: number,
+  immediate = props.jury || forced2d.value || !!error.value,
+) {
   seekRoute(debug ? value : routeAtOriginal(value), immediate);
 }
-function seekRoute(value: number, immediate = props.jury) {
+function seekRoute(
+  value: number,
+  immediate = props.jury || forced2d.value || !!error.value,
+) {
   prologueOverlay.value?.pause();
   approachingScreen.value = leavingScreen.value = false;
   timeline?.seek(toTotal(value, prefix), immediate);

@@ -2,11 +2,82 @@
 
 Le moteur est une étude spatiale continue avec géométrie provisoire et calques générés. La validation ci-dessous porte sur le fonctionnement, les états arrêtés et le repli ; elle ne vaut pas validation artistique définitive ni certification géographique.
 
+## Étape 20 — Paysages 2D complets et fondus éditoriaux
+
+L’ancien repli appliquait `transitionAt()` et un masque polygonal aux positions
+de la caméra 3D (`anchorTimes`). Les clics utilisent d’autres bornes,
+`chapterProgress()` et `visualBoundaries` : l’étape 02 se situe à 17,5 unités,
+alors que la transition spatiale Forêt → Ciel se termine à 35. Le masque restait
+donc à moitié ouvert à l’arrivée sur certains chapitres.
+
+Le module `fallback-frame.ts` échantillonne désormais les positions éditoriales.
+Deux images plein écran en `object-fit: cover` remplacent le masque ; seule
+l’opacité de la seconde varie, avec un lissage sur les **derniers 12 %** du chapitre.
+À chaque `chapterProgress(index)`, la photo du chapitre est intégralement visible.
+Le dernier chapitre reste fixe ; le même calcul fonctionne en marche arrière.
+Avec mouvements réduits, le fondu est supprimé sans utiliser les poses de caméra.
+
+Les sauts et déplacements du curseur sont immédiats **uniquement en 2D**. La
+conversion 2D absorbe l’arrondi d’un demi-pixel CSS autour des arrêts éditoriaux
+et les résidus numériques en fin d’exploration. Le parcours 3D conserve sa
+conversion, ses positions, ses durées et sa timeline.
+
+Le composant attend le chargement et le décodage avant d’afficher une image.
+Le chapitre courant ne dépend plus de la disponibilité du suivant. Pendant une
+attente ou une erreur, une image valide reste entière ; les réponses obsolètes
+sont ignorées lors des clics rapides. Le cache et le préchargement des paysages
+suivants sont conservés ; un échec peut être retenté après changement de destination.
+
+Fichiers de cette correction : `FallbackScene.vue`, `fallback-frame.ts`, les
+branches de navigation 2D de `LandingPage.vue`, les nouveaux tests unitaires
+`fallback-frame.test.ts` et `fallback-loading.test.ts`, le scénario
+`fallback-transitions.spec.ts` et l’ancien test du masque dans `narrative.spec.ts`.
+Les modifications du prologue préparées avant cette étape sont conservées.
+
+La [galerie des huit destinations](../output/symbiose/etape-20/index.html) réunit
+les captures à 1600 × 900 et 1920 × 1080, ainsi qu’un contrôle mobile à 390 × 844.
+Les contrôles visuels des étapes 02, 03 et 04 montrent chacun un paysage complet,
+sans démarcation. Les tests vérifient aussi la source de chaque photo, sa couverture,
+l’absence de `clip-path`, l’opacité nulle de l’autre image aux étapes, le curseur,
+la molette, les modes de lecture, les chargements lents/échoués et les clics rapides.
+
+Les empreintes avant/après de **28 fichiers protégés** confirment la conservation
+des illustrations, du prologue, des caméras, de `journey.ts`, de `pitch.ts`, de
+`NarrativeTimeline.ts` et du parcours des explorations. Les mesures historiques
+3D et la galerie de masques ci-dessous décrivent l’ancien audit, pas le repli actuel.
+
+### Vérifications de l’étape 20
+
+- **31 tests unitaires ciblés réussis** : calcul 2D, décodage et concurrence,
+  frontières éditoriales, caméra et parcours existants.
+- **28 scénarios navigateur réussis sur le build de production**, sans scénario
+  ignoré : neuf nouveaux scénarios 2D, treize contrôles du prologue (dont le
+  lecteur projeté dans le bureau WebGL), quatre scénarios d’explorations,
+  le test adapté de perte de WebGL et le jury intégral hors ligne.
+- Compilation TypeScript/Vite, formatage des fichiers concernés et
+  `git diff --check` réussis.
+- Rapports JSON et 17 captures de chapitre dans `output/symbiose/etape-20/`.
+  Les vidéos YouTube et locale des tests restent des fixtures, pas une
+  démonstration produit ni une vérification de la disponibilité du service distant.
+
+Depuis `frontend/`, reproduire les contrôles du nouveau repli :
+
+```powershell
+npm.cmd test -- tests/unit/fallback-frame.test.ts tests/unit/fallback-loading.test.ts tests/unit/narrative.test.ts tests/unit/pitch.test.ts tests/unit/prologue.test.ts tests/unit/expanded-route.test.ts
+npm.cmd run build
+npm.cmd run test:e2e -- fallback-transitions.spec.ts
+```
+
+Pour la recette du cache hors ligne, servir le build avec
+`node scripts/serve-jury.mjs dist 4188`, puis définir `E2E_BASE_URL=http://127.0.0.1:4188`
+et `E2E_PRODUCTION=1` dans le terminal des tests. Pour actualiser le frontend Docker
+existant : `docker compose up -d --build --no-deps frontend` depuis la racine.
+
 ## Périmètre visuel
 
 Les états 0, 25, 50, 75 et 100 % sont capturés pour chacun des sept raccords. Les contrôles sont masqués pendant la capture du paysage, mais restent disponibles dans le DEBUG. Une image supplémentaire par raccord vérifie le rejeu à 50 %. La galerie est dans [output/symbiose/transitions/gpu/index.html](../output/symbiose/transitions/gpu/index.html) et les poses/cadences dans [report.json](../output/symbiose/transitions/gpu/report.json).
 
-Les sept raccords utilisent une caméra réelle et un monde commun. L’interpolation est continue aux frontières, les effets sont purs et les pauses n’ajoutent pas de mouvement caché. La cohérence spatiale ne repose pas sur la superposition en opacité de deux photographies. Le repli est volontairement une version 2D à masques, identifiée dans son interface et sa [galerie séparée](../output/symbiose/transitions/fallback/index.html).
+Les sept raccords utilisent une caméra réelle et un monde commun. L’interpolation est continue aux frontières, les effets sont purs et les pauses n’ajoutent pas de mouvement caché. La cohérence spatiale 3D ne repose pas sur la superposition en opacité de deux photographies. Le repli de cet audit historique était une version 2D à masques, conservée dans sa [galerie séparée](../output/symbiose/transitions/fallback/index.html) ; le repli actuel utilise les fondus décrits à l’étape 20.
 
 Les premières inspections ont révélé des collisions de caméra avec des couronnes, des berges trop grossières et une conversion de couleur manquante en sortie du post-traitement. Le corridor de passage, le maillage des berges et la conversion de sortie ont été corrigés. Les feuilles emploient des contours adoucis, les volumes nuageux une extinction de bord, et un îlot porte l’animal observé.
 

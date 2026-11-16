@@ -264,7 +264,7 @@ test("failed asynchronous material is explicit and world remains usable", async 
   await expect.poll(() => altitude(page)).toBeGreaterThan(12);
 });
 
-test("WebGL failure uses reversible spatial masks and real application links", async ({
+test("WebGL failure uses reversible editorial crossfades and real application links", async ({
   page,
 }) => {
   await publicSession(page);
@@ -284,18 +284,23 @@ test("WebGL failure uses reversible spatial masks and real application links", a
   );
   await expect(page.getByTestId("experience-fallback")).toBeVisible();
   const slider = page.getByLabel("Progression de la transition");
-  await slider.fill("0.5");
-  await expect
-    .poll(() =>
-      page.locator(".sx-fallback-scene img").nth(1).getAttribute("style"),
-    )
-    .toContain("50");
+  // 94 % du chapitre éditorial Forêt, soit 47 % de l’ancienne transition 3D.
+  await slider.fill("0.47");
+  await expect(page.locator(".sx-fallback-scene")).toHaveAttribute(
+    "data-chapter",
+    "forest",
+  );
+  await expect(page.locator(".sx-fallback-scene img").nth(1)).toHaveCSS(
+    "opacity",
+    "0.5",
+  );
+  for (const image of await page.locator(".sx-fallback-scene img").all())
+    await expect(image).toHaveCSS("clip-path", "none");
   await slider.fill("0");
-  await expect
-    .poll(() =>
-      page.locator(".sx-fallback-scene img").nth(1).getAttribute("style"),
-    )
-    .toContain("100%");
+  await expect(page.locator(".sx-fallback-scene img").nth(1)).toHaveCSS(
+    "opacity",
+    "0",
+  );
   await page.locator(".sx-debug-panel summary").click();
   await page
     .getByRole("button", { name: "Lire le projet et le parcours" })

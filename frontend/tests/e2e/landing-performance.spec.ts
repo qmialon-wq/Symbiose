@@ -95,7 +95,7 @@ test("le chevreuil et sa progression restent lisibles si le moteur tarde, avec u
       .getByRole("button", { name: "Continuer en version légère sans 3D" })
       .click();
     await ready(page);
-    await expect(page.locator(".sx-prologue-fallback img")).toBeVisible();
+    await expect(page.locator(".sx-prologue-poster")).toBeVisible();
     await expect(page.locator(".sx-canvas")).toHaveCount(0);
     await page
       .getByRole("button", { name: "Passer l’introduction", exact: true })
