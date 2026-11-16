@@ -95,6 +95,8 @@ const root = ref<HTMLElement>();
 const totalProgress = ref(0);
 const ready = ref(false),
   error = ref("");
+const minimumLoadingElapsed = ref(false);
+let minimumLoadingTimer: ReturnType<typeof setTimeout> | undefined;
 const qualityPreference = ref(readQualityPreference());
 const loading = shallowRef<LoadingState>({
   progress: 0.04,
@@ -115,6 +117,8 @@ function chooseQuality(value: QualityPreference) {
   }
 }
 function lightweight() {
+  clearTimeout(minimumLoadingTimer);
+  minimumLoadingElapsed.value = true;
   timeline?.pause();
   ready.value = false;
   error.value = "";
@@ -129,6 +133,9 @@ const playing = ref(false),
   systemReduced = ref(false),
   userReduced = ref(false);
 const reducedMotion = computed(() => systemReduced.value || userReduced.value);
+const showLoading = computed(
+  () => !ready.value || (!minimumLoadingElapsed.value && !reducedMotion.value),
+);
 const dialog = ref<HTMLDialogElement>();
 const dialogOpen = ref(false),
   fullscreen = ref(false),
@@ -456,6 +463,9 @@ function presentationKey(event: KeyboardEvent) {
 }
 
 onMounted(() => {
+  minimumLoadingTimer = setTimeout(() => {
+    minimumLoadingElapsed.value = true;
+  }, 2500);
   document.title = "Symbiose — Le vivant nous relie";
   media = window.matchMedia("(prefers-reduced-motion: reduce)");
   systemReduced.value = media.matches;
@@ -481,6 +491,7 @@ onMounted(() => {
   resizeObserver.observe(root.value!);
 });
 onBeforeUnmount(() => {
+  clearTimeout(minimumLoadingTimer);
   timeline?.dispose();
   resizeObserver?.disconnect();
   cancelAnimationFrame(resizeFrame);
@@ -658,12 +669,16 @@ onBeforeUnmount(() => {
       >
         Certains calques sont indisponibles · géométrie conservée
       </p>
-      <LandingLoading
-        v-if="!ready"
-        :state="loading"
-        :app-href="applicationHref"
-        @lightweight="lightweight"
-      />
+      <Transition name="sx-loader">
+        <LandingLoading
+          v-if="showLoading"
+          :state="
+            ready ? { progress: 1, label: 'L’expérience est prête.' } : loading
+          "
+          :app-href="applicationHref"
+          @lightweight="lightweight"
+        />
+      </Transition>
       <div v-if="error" class="sx-fallback-note" role="status">
         <p>{{ error }}</p>
         <button @click="openProject">Lire le projet et le parcours</button>

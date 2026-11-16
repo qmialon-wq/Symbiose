@@ -77,6 +77,16 @@ defineEmits<{ lightweight: [] }>();
   margin: 8px auto 0;
   color: #d2e9b5;
 }
+.sx-loading-deer :deep(.login-deer) {
+  --deer-stride-duration: 1000ms;
+  --deer-far-offset: -216.667ms;
+}
+.sx-landing-loading.sx-loader-leave-active {
+  transition: opacity 0.8s ease;
+}
+.sx-landing-loading.sx-loader-leave-to {
+  opacity: 0;
+}
 .sx-loading-content h2 {
   margin: 4px 0 14px;
   font:
@@ -99,7 +109,7 @@ defineEmits<{ lightweight: [] }>();
   height: 100%;
   background: #b9ef84;
   transform-origin: left;
-  transition: transform 0.2s ease;
+  transition: transform 0.6s ease;
 }
 .sx-loading-hint {
   margin: 0 0 28px;
@@ -125,6 +135,9 @@ defineEmits<{ lightweight: [] }>();
   font-size: 12px;
 }
 @media (prefers-reduced-motion: reduce) {
+  .sx-landing-loading.sx-loader-leave-active {
+    transition: none;
+  }
   .sx-loading-deer :deep(.login-deer) {
     display: block;
   }

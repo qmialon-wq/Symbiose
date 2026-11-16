@@ -16,6 +16,83 @@ async function settled(page: Page) {
     .toBe(true);
 }
 
+test("le loader ralenti laisse voir le chevreuil puis révèle doucement un paysage prêt", async ({
+  page,
+}) => {
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route(/office-poster[^/?]*\.webp/, async (route) => {
+    if (route.request().resourceType() === "image") await gate;
+    await route.continue().catch(() => {});
+  });
+  try {
+    await page.goto("/jury/?render=2d", { waitUntil: "domcontentloaded" });
+    const loader = page.getByTestId("landing-loading");
+    await expect(loader).toBeVisible();
+    const started = await page.evaluate(() => performance.now());
+    await expect(loader.locator(".deer-body")).toHaveCSS(
+      "animation-duration",
+      "1s",
+    );
+    await expect(loader.locator(".sx-loading-track span")).toHaveCSS(
+      "transition-duration",
+      "0.6s",
+    );
+    release();
+    await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/);
+    await expect(loader).toBeVisible();
+    await expect(loader.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "100",
+    );
+    await expect(loader.getByRole("status")).toHaveText(
+      "L’expérience est prête.",
+    );
+    await expect(loader).toHaveClass(/sx-loader-leave-active/);
+    await expect(loader).toHaveCSS("transition-duration", "0.8s");
+    expect(
+      (await page.evaluate(() => performance.now())) - started,
+    ).toBeGreaterThan(2000);
+    await expect(loader).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { name: "Du bureau au vivant.", exact: true }),
+    ).toBeVisible();
+  } finally {
+    release();
+  }
+});
+
+test("le loader ralenti n’annonce aucune progression inventée et attend toujours le paysage", async ({
+  page,
+}) => {
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route(/office-poster[^/?]*\.webp/, async (route) => {
+    if (route.request().resourceType() === "image") await gate;
+    await route.continue().catch(() => {});
+  });
+  try {
+    await page.goto("/jury/?render=2d", { waitUntil: "domcontentloaded" });
+    const loader = page.getByTestId("landing-loading");
+    await expect(loader).toBeVisible();
+    await page.waitForTimeout(2700); // Dépasser volontairement le délai visuel minimum.
+    await expect(loader).toBeVisible();
+    await expect(loader.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "4",
+    );
+    await expect(page.locator(".sx-stage")).not.toHaveClass(/sx-stage--ready/);
+    release();
+    await ready(page);
+  } finally {
+    release();
+  }
+});
+
 test("le chevreuil apparaît aussi pendant le téléchargement initial de la landing publique", async ({
   page,
 }) => {

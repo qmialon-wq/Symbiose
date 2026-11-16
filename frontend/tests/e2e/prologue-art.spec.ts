@@ -6,6 +6,7 @@ async function open(page: Page) {
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
+  await expect(page.getByTestId("landing-loading")).toHaveCount(0);
   await page
     .locator(".sx-prologue-poster")
     .evaluate((image: HTMLImageElement) => image.decode());
