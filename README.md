@@ -45,10 +45,6 @@ préserver la végétation ou réduire les surfaces imperméabilisées. Chaque o
 précise ses conditions et son niveau de justification. Le dossier conserve les
 sources et s’exporte pour en discuter.
 
-<img src="frontend/src/assets/guide/review.png" alt="Écran de validation humaine avec des données d’exemple" width="800">
-
-*Validation humaine — données d’exemple du guide.*
-
 ## Pourquoi la Normandie ?
 
 Bocages, prairies, forêts et zones humides invitent à penser ensemble les usages et
