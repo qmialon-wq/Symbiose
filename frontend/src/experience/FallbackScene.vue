@@ -1,35 +1,44 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from "vue";
-import { transitionAt, reducedProgress } from "./journey";
+import { fallbackFrame } from "./fallback-frame";
 import { sceneAsset } from "./runtime-assets";
-import { chapterIds } from "./config";
+import { chapterIds, type ChapterId } from "./config";
 const props = defineProps<{ progress: number; reducedMotion: boolean }>();
 const emit = defineEmits<{ ready: [] }>();
-const rig = computed(() =>
-  transitionAt(
-    props.reducedMotion ? reducedProgress(props.progress) : props.progress,
-  ),
-);
-const pair = ref({ from: "forest", to: "sky" }),
+const rig = computed(() => fallbackFrame(props.progress, props.reducedMotion));
+const frame = ref<ReturnType<typeof fallbackFrame>>({
+    from: "forest",
+    to: "forest",
+    opacity: 0,
+  }),
   loading = ref(true),
   failure = ref(false);
 let sequence = 0,
   disposed = false;
 const cache = new Map<string, Promise<void>>();
-const heldRig = ref({ id: rig.value.id, local: rig.value.local });
+const prepared = new Set<ChapterId>();
 const pending = new Set<() => void>();
-function prepare(id: string) {
+function prepare(id: ChapterId) {
   if (!cache.has(id))
     cache.set(
       id,
       new Promise<void>((resolve, reject) => {
         const image = new Image();
+        let settled = false;
         const finish = (error = false) => {
+          if (settled) return;
+          settled = true;
           clearTimeout(timeout);
           pending.delete(cancel);
           image.onload = null;
           image.onerror = null;
-          error ? reject(new Error(id)) : resolve();
+          if (error) {
+            cache.delete(id);
+            reject(new Error(id));
+          } else {
+            prepared.add(id);
+            resolve();
+          }
         };
         const cancel = () => {
           image.src = "";
@@ -37,12 +46,29 @@ function prepare(id: string) {
         };
         const timeout = setTimeout(cancel, 8000);
         pending.add(cancel);
-        image.onload = () => finish();
+        image.onload = () => {
+          void image.decode().then(
+            () => finish(),
+            () => finish(true),
+          );
+        };
         image.onerror = () => finish(true);
         image.src = sceneAsset(id, "primary");
       }),
     );
   return cache.get(id)!;
+}
+function publish() {
+  const desired = rig.value;
+  if (disposed || !prepared.has(desired.from)) return;
+  frame.value = prepared.has(desired.to)
+    ? desired
+    : { from: desired.from, to: desired.from, opacity: 0 };
+}
+function holdCompleteImage() {
+  const visible =
+    frame.value.opacity >= 0.5 ? frame.value.to : frame.value.from;
+  frame.value = { from: visible, to: visible, opacity: 0 };
 }
 watch(
   () => `${rig.value.from}/${rig.value.to}`,
@@ -52,16 +78,21 @@ watch(
       to = rig.value.to;
     loading.value = true;
     failure.value = false;
+    holdCompleteImage();
     try {
-      await Promise.all([prepare(from), prepare(to)]);
+      // Une image suivante indisponible ne doit pas bloquer le chapitre courant.
+      await prepare(from);
       if (disposed || version !== sequence) return;
-      pair.value = { from, to };
-      heldRig.value = { id: rig.value.id, local: rig.value.local };
+      publish();
       emit("ready");
+      await prepare(to);
+      if (disposed || version !== sequence) return;
+      publish();
       const next = chapterIds[chapterIds.indexOf(to) + 1];
       if (next) void prepare(next).catch(() => {});
     } catch {
       if (!disposed && version === sequence) {
+        holdCompleteImage();
         failure.value = true;
         emit("ready");
       }
@@ -71,35 +102,31 @@ watch(
   },
   { immediate: true },
 );
-watch(rig, (value) => {
-  if (pair.value.from === value.from && pair.value.to === value.to)
-    heldRig.value = { id: value.id, local: value.local };
-});
-const clip = computed(() => {
-  const p = heldRig.value.local;
-  if (heldRig.value.id === "observation-data") {
-    const inset = (1 - p) * 48;
-    return `inset(${inset}% ${inset}% ${inset}% ${inset}% round ${12 * (1 - p)}px)`;
-  }
-  const y = 100 * (1 - p);
-  return `polygon(0 ${y}%,25% ${Math.max(0, y - 2 * Math.sin(p * Math.PI))}%,60% ${y}%,100% ${Math.max(0, y - 1.4 * Math.sin(p * Math.PI))}%,100% 100%,0 100%)`;
-});
+watch(rig, publish);
 onBeforeUnmount(() => {
   disposed = true;
   sequence++;
   pending.forEach((cancel) => cancel());
   pending.clear();
   cache.clear();
+  prepared.clear();
 });
 </script>
 <template>
-  <div class="sx-fallback-scene" data-testid="experience-fallback">
-    <img :src="sceneAsset(pair.from, 'primary')" alt="" /><img
-      :src="sceneAsset(pair.to, 'primary')"
+  <div
+    class="sx-fallback-scene"
+    data-testid="experience-fallback"
+    :data-chapter="frame.from"
+    :data-next="frame.to"
+    :data-blend="frame.opacity.toFixed(6)"
+    :data-requested-chapter="rig.from"
+  >
+    <img :src="sceneAsset(frame.from, 'primary')" alt="" /><img
+      :src="sceneAsset(frame.to, 'primary')"
       alt=""
-      :style="{ clipPath: clip }"
+      :style="{ opacity: frame.opacity }"
     />
-    <p>VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · MASQUE SPATIAL</p>
+    <p>VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES</p>
     <span v-if="loading" role="status">Chargement du prochain paysage…</span
     ><span v-if="failure" role="alert"
       >Un paysage est indisponible. Le récit et la navigation restent

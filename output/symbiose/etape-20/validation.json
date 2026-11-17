@@ -1,0 +1,26 @@
+{
+  "unit_tests_passed": 31,
+  "browser_tests_passed": 28,
+  "browser_reports": {
+    "tests-production.json": {
+      "startTime": "2026-11-16T14:19:07.397Z",
+      "duration": 89681.506,
+      "expected": 22,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests-regression.json": {
+      "startTime": "2026-11-16T14:21:23.518Z",
+      "duration": 10800.517,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "protected_files_unchanged": 28,
+  "chapter_captures": 17,
+  "build": "TypeScript et Vite réussis",
+  "scope": "Repli 2D uniquement ; changements précédents du prologue conservés"
+}

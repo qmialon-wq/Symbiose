@@ -162,6 +162,24 @@
 .sx-experience .sx-prologue-enter span {
   margin-left: 15px;
 }
+/* Direction photographique du seul repli 2D ; la scène WebGL garde sa composition. */
+.sx-experience
+  .sx-stage--fallback
+  .sx-prologue-overlay:not([data-fallback-video="true"])
+  .sx-prologue-copy {
+  width: min(640px, 48vw);
+}
+.sx-experience .sx-stage--fallback .sx-prologue-copy h1 {
+  font:
+    400 clamp(42px, 5.4vw, 88px) / 1.02 Georgia,
+    serif;
+  letter-spacing: -0.047em;
+  text-wrap: balance;
+}
+.sx-experience .sx-stage--fallback .sx-prologue-intro {
+  font-size: clamp(14px, 1.25vw, 18px);
+  line-height: 1.7;
+}
 .sx-experience .sx-prologue-player > .sx-cta {
   width: 100%;
   max-width: 300px;
@@ -331,6 +349,15 @@
   visibility: hidden;
 }
 @media (max-width: 760px) {
+  .sx-experience
+    .sx-stage--fallback
+    .sx-prologue-overlay:not([data-fallback-video="true"])
+    .sx-prologue-copy {
+    width: calc(100% - 2 * var(--sx-gutter) - 25px);
+  }
+  .sx-experience .sx-stage--fallback .sx-prologue-intro {
+    font-size: 13px;
+  }
   .sx-experience .sx-prologue-media--visible {
     top: 120px;
     left: var(--sx-gutter);
@@ -426,5 +453,15 @@
     .sx-prologue-actions {
     width: 100%;
     justify-content: space-between;
+  }
+}
+@media (min-width: 1800px) {
+  .sx-experience .sx-stage--fallback .sx-prologue-copy {
+    left: 11vw;
+  }
+}
+@media (max-width: 600px) {
+  .sx-experience .sx-stage--fallback .sx-prologue-copy h1 {
+    font-size: clamp(35px, 9.2vw, 50px);
   }
 }

@@ -41,13 +41,13 @@ test("le poster du nouveau prologue reste disponible après installation hors li
   );
   await context.setOffline(true);
   await page.reload();
-  const poster = page.locator(".sx-prologue-fallback img");
+  const poster = page.locator(".sx-prologue-poster");
   await expect(poster).toBeVisible();
   await expect
     .poll(() =>
       poster.evaluate((image: HTMLImageElement) => image.naturalWidth),
     )
-    .toBe(1440);
+    .toBe(2560);
   await page
     .getByRole("button", { name: "Passer l’introduction", exact: true })
     .click();
@@ -70,7 +70,7 @@ test("le bureau ouvre le récit, peut être passé et reste accessible depuis 00
       exact: false,
     }),
   ).toBeVisible();
-  await expect(page.locator(".sx-prologue-fallback img")).toBeVisible();
+  await expect(page.locator(".sx-prologue-poster")).toBeVisible();
   await expect(page.locator(".sx-prologue-media")).toHaveCount(0);
   await page
     .getByRole("button", { name: "Passer l’introduction", exact: true })
