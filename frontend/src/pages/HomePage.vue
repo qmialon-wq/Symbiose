@@ -27,14 +27,18 @@ const tasks = useResource<Task[]>(
       ><i class="pi pi-video" aria-hidden="true" />
       <h2>Vos vidéos de terrain</h2>
       <p>Importez plusieurs vidéos ou sélectionnez celles de votre parcelle.</p>
-      <span>Ouvrir la vidéothèque →</span></RouterLink
+      <span class="journey-action"
+        >Ouvrir la vidéothèque <span class="journey-arrow">→</span></span
+      ></RouterLink
     >
     <RouterLink to="/parcelles" class="panel journey-card"
       ><span class="eyebrow">02 · DÉCRIRE VOTRE PROJET</span
       ><i class="pi pi-sparkles" aria-hidden="true" />
       <h2>Votre parcelle, votre projet</h2>
       <p>Indiquez la surface, le type de terrain et l’activité souhaitée.</p>
-      <span>Voir mes dossiers →</span></RouterLink
+      <span class="journey-action"
+        >Voir mes dossiers <span class="journey-arrow">→</span></span
+      ></RouterLink
     >
     <RouterLink to="/parcelles" class="panel journey-card"
       ><span class="eyebrow">03 · RETROUVER VOS RÉSULTATS</span
@@ -44,7 +48,9 @@ const tasks = useResource<Task[]>(
         Confirmez les espèces, consultez les pistes sourcées et téléchargez
         votre dossier.
       </p>
-      <span>Vidéo annotée et dossier →</span></RouterLink
+      <span class="journey-action"
+        >Vidéo annotée et dossier <span class="journey-arrow">→</span></span
+      ></RouterLink
     >
   </div>
   <section class="panel">

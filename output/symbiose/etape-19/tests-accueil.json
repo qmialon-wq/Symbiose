@@ -1,0 +1,541 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\arden\\Desktop\\Photosynthese\\frontend\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "home-readability.spec.ts",
+      "--reporter=line,json"
+    ],
+    "configFile": "C:\\Users\\arden\\Desktop\\Photosynthese\\frontend\\playwright.config.ts",
+    "rootDir": "C:/Users/arden/Desktop/Photosynthese/frontend/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/arden/Desktop/Photosynthese/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/arden/Desktop/Photosynthese/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\arden\\Desktop\\Photosynthese\\frontend\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "C:\\Users\\arden\\Desktop\\Photosynthese\\frontend\\tests\\e2e",
+        "snapshotDir": "C:\\Users\\arden\\Desktop\\Photosynthese\\frontend\\tests\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "launchOptions": {
+            "args": [
+              "--use-angle=d3d11",
+              "--ignore-gpu-blocklist"
+            ]
+          },
+          "baseURL": "http://127.0.0.1:4173",
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev -- --port 4173",
+      "url": "http://127.0.0.1:4173",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "home-readability.spec.ts",
+      "file": "home-readability.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "première connexion : le contenu garde le focus sans encadrement parasite",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2990,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:02.070Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-4f6ed4a52a73cb3f2809",
+          "file": "home-readability.spec.ts",
+          "line": 18,
+          "column": 1
+        },
+        {
+          "title": "clavier : lien d’évitement, cartes et roue gardent leurs repères",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1143,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:05.176Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-93fee5326ecf6f80108d",
+          "file": "home-readability.spec.ts",
+          "line": 64,
+          "column": 1
+        },
+        {
+          "title": "les actions s’éclaircissent au survol et la flèche respecte la réduction des animations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1474,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:06.330Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-5c7fe42d51bddefe9bb6",
+          "file": "home-readability.spec.ts",
+          "line": 100,
+          "column": 1
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement forest",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2243,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:07.815Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6ImZvcmVzdCIsImRlc2NyaXB0aW9uIjoiY29sb3Ioc3JnYiAwLjk2MDc4NCAwLjk3MjU0OSAwLjkzNzI1NSAvIDAuODgpIiwiaWNvbiI6InJnYigxODUsIDIzOSwgMTMyKSIsImxpbmsiOiJjb2xvcihzcmdiIDAuNjU4ODI0IDAuOTQ5MDIgMC4zMTc2NDcpIiwiZm9jdXMiOiJjb2xvcihzcmdiIDAuODM1Mjk0IDEgMC42OTQxMTgpIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-c034036b5f2566c2f562",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement sky",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1666,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:10.071Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6InNreSIsImRlc2NyaXB0aW9uIjoiY29sb3Ioc3JnYiAwLjk2MDc4NCAwLjk3MjU0OSAwLjkzNzI1NSAvIDAuODgpIiwiaWNvbiI6InJnYigxNzQsIDIyMywgMjU1KSIsImxpbmsiOiJjb2xvcihzcmdiIDAuNjgyMzUzIDAuODc0NTEgMSkiLCJmb2N1cyI6ImNvbG9yKHNyZ2IgMC43Nzc2NDcgMC45MTIxNTcgMSkifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-05ed69a56997d494dd1f",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement river",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1686,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:11.753Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6InJpdmVyIiwiZGVzY3JpcHRpb24iOiJjb2xvcihzcmdiIDAuOTYwNzg0IDAuOTcyNTQ5IDAuOTM3MjU1IC8gMC44OCkiLCJpY29uIjoicmdiKDE0NSwgMjI5LCAyNDIpIiwibGluayI6ImNvbG9yKHNyZ2IgMC41Njg2MjcgMC44OTgwMzkgMC45NDkwMikiLCJmb2N1cyI6ImNvbG9yKHNyZ2IgMC42OTgwMzkgMC45Mjg2MjcgMC45NjQzMTQpIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-8577d9956502659c326b",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement underwater",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:13.448Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6InVuZGVyd2F0ZXIiLCJkZXNjcmlwdGlvbiI6ImNvbG9yKHNyZ2IgMC45NjA3ODQgMC45NzI1NDkgMC45MzcyNTUgLyAwLjg4KSIsImljb24iOiJyZ2IoOTYsIDIyNCwgMjEwKSIsImxpbmsiOiJjb2xvcihzcmdiIDAuMzc2NDcxIDAuODc4NDMxIDAuODIzNTI5KSIsImZvY3VzIjoiY29sb3Ioc3JnYiAwLjU2MzUyOSAwLjkxNDkwMiAwLjg3NjQ3MSkifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-c640737459e9bb811c3a",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement wetland",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1566,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:15.084Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6IndldGxhbmQiLCJkZXNjcmlwdGlvbiI6ImNvbG9yKHNyZ2IgMC45NjA3ODQgMC45NzI1NDkgMC45MzcyNTUgLyAwLjg4KSIsImljb24iOiJyZ2IoMTc2LCAyMjIsIDE5MikiLCJsaW5rIjoiY29sb3Ioc3JnYiAwLjY5MDE5NiAwLjg3MDU4OCAwLjc1Mjk0MSkiLCJmb2N1cyI6ImNvbG9yKHNyZ2IgMC43ODMxMzcgMC45MDk0MTIgMC44MjcwNTkpIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-5736f38b2e8c55d58502",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement meadow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:16.660Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6Im1lYWRvdyIsImRlc2NyaXB0aW9uIjoiY29sb3Ioc3JnYiAwLjk2MDc4NCAwLjk3MjU0OSAwLjkzNzI1NSAvIDAuODgpIiwiaWNvbiI6InJnYigyMjcsIDIwOSwgMTIzKSIsImxpbmsiOiJjb2xvcihzcmdiIDAuODkwMTk2IDAuODE5NjA4IDAuNDgyMzUzKSIsImZvY3VzIjoiY29sb3Ioc3JnYiAwLjkyMzEzNyAwLjg3MzcyNSAwLjYzNzY0NykifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-cda6fb22d0951d480896",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement coast",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:18.336Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6ImNvYXN0IiwiZGVzY3JpcHRpb24iOiJjb2xvcihzcmdiIDAuOTYwNzg0IDAuOTcyNTQ5IDAuOTM3MjU1IC8gMC44OCkiLCJpY29uIjoicmdiKDEzMiwgMjAwLCAyMTMpIiwibGluayI6ImNvbG9yKHNyZ2IgMC41MTc2NDcgMC43ODQzMTQgMC44MzUyOTQpIiwiZm9jdXMiOiJjb2xvcihzcmdiIDAuNjYyMzUzIDAuODQ5MDIgMC44ODQ3MDYpIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-ec78dfe9c83526dc0cfc",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        },
+        {
+          "title": "lisibilité, focus et disposition dans l’environnement night-forest",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1494,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-16T13:29:19.974Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "couleurs-des-cartes",
+                      "contentType": "application/json",
+                      "body": "eyJ0aGVtZSI6Im5pZ2h0LWZvcmVzdCIsImRlc2NyaXB0aW9uIjoiY29sb3Ioc3JnYiAwLjk2MDc4NCAwLjk3MjU0OSAwLjkzNzI1NSAvIDAuODgpIiwiaWNvbiI6InJnYigxODYsIDE4NCwgMjMyKSIsImxpbmsiOiJjb2xvcihzcmdiIDAuNzI5NDEyIDAuNzIxNTY5IDAuOTA5ODA0KSIsImZvY3VzIjoiY29sb3Ioc3JnYiAwLjgxMDU4OCAwLjgwNTA5OCAwLjkzNjg2MykifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "50195f7433d409537597-64ae3ec0b3435a0db89c",
+          "file": "home-readability.spec.ts",
+          "line": 135,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-16T13:28:59.067Z",
+    "duration": 23057.191,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
