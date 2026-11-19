@@ -1,5 +1,4 @@
-export const defaultIntroYouTubeUrl =
-  "https://www.youtube.com/embed/J-cDr27eVC0?si=ODOfFAOpuabutBOm";
+export const defaultIntroYouTubeUrl = "https://youtu.be/O4J-Na3stKY";
 
 /** Accept only real YouTube URLs, never arbitrary iframe markup or remote hosts. */
 export function youtubeVideoId(value: string): string | undefined {

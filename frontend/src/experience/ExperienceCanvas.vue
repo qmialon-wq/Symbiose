@@ -462,8 +462,8 @@ onMounted(async () => {
     // or while an actual local video supplies new pixels. A still bureau sleeps.
     if (
       props.prologue !== undefined &&
-      !props.reducedMotion &&
-      (screenFocus !== Number(!!props.prologueFocus) ||
+      ((!props.reducedMotion &&
+        screenFocus !== Number(!!props.prologueFocus)) ||
         (props.prologueVideo &&
           !props.prologueVideo.paused &&
           !props.prologueVideo.ended))

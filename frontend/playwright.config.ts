@@ -18,6 +18,8 @@ export default defineConfig({
     : {
         command: "npm run dev -- --port 4173",
         url: "http://127.0.0.1:4173",
+        // Tests intercept this URL even on clean clones without the ignored MP4.
+        env: { VITE_SYMBIOSE_INTRO_VIDEO_URL: "/experience-media/intro.mp4" },
         reuseExistingServer: !process.env.CI,
       },
 });

@@ -1,6 +1,33 @@
 import { expect, test, type Page } from "@playwright/test";
+import { existsSync, readFileSync } from "node:fs";
 
-async function open(page: Page) {
+async function open(page: Page, fixture = true, fallback = true) {
+  // Test signal only: this does not replace the supplied official MP4.
+  if (fixture) {
+    const media = readFileSync("tests/fixtures/media-signal.webm");
+    await page.route("**/experience-media/intro.mp4", (route) => {
+      const range = route
+        .request()
+        .headers()
+        .range?.match(/^bytes=(\d+)-(\d*)$/);
+      const start = Number(range?.[1] ?? 0);
+      const end = Math.min(
+        Number(range?.[2] || media.length - 1),
+        media.length - 1,
+      );
+      return route.fulfill({
+        status: range ? 206 : 200,
+        contentType: "video/webm",
+        headers: {
+          "Accept-Ranges": "bytes",
+          ...(range
+            ? { "Content-Range": `bytes ${start}-${end}/${media.length}` }
+            : {}),
+        },
+        body: media.subarray(start, end + 1),
+      });
+    });
+  }
   await page.route("**/api/**", (route) =>
     route.fulfill(
       new URL(route.request().url()).pathname.endsWith("/auth/me")
@@ -8,7 +35,7 @@ async function open(page: Page) {
         : { json: { setup_required: false, registration_open: true } },
     ),
   );
-  await page.goto("/jury/?render=2d");
+  await page.goto(`/jury/${fallback ? "?render=2d" : ""}`);
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
@@ -21,7 +48,7 @@ const root = (page: Page) => page.locator(".sx-experience");
 const chapter = (page: Page, name: string) =>
   page.getByRole("button", { name, exact: true });
 
-test("le poster du nouveau prologue reste disponible après installation hors ligne", async ({
+test("le poster et le MP4 officiel restent disponibles après installation hors ligne", async ({
   page,
   context,
 }) => {
@@ -30,7 +57,7 @@ test("le poster du nouveau prologue reste disponible après installation hors li
     "Nécessite le service worker du build de production",
   );
   test.setTimeout(90000);
-  await open(page);
+  await open(page, false);
   await page.locator(".jury-installation summary").click();
   await page
     .getByRole("button", { name: "Installer hors ligne", exact: true })
@@ -48,6 +75,30 @@ test("le poster du nouveau prologue reste disponible après installation hors li
       poster.evaluate((image: HTMLImageElement) => image.naturalWidth),
     )
     .toBe(2560);
+  const video = page.locator(".sx-prologue-media");
+  await expect(video).toHaveAttribute("src", "/experience-media/intro.mp4");
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.readyState),
+    )
+    .toBeGreaterThanOrEqual(1);
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.currentTime),
+    )
+    .toBeGreaterThan(0);
+  await page
+    .getByRole("button", { name: "Mettre la vidéo en pause", exact: true })
+    .click();
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
   await page
     .getByRole("button", { name: "Passer l’introduction", exact: true })
     .click();
@@ -66,12 +117,13 @@ test("le bureau ouvre le récit, peut être passé et reste accessible depuis 00
     page.getByRole("heading", { name: "Du bureau au vivant." }),
   ).toBeVisible();
   await expect(
-    page.getByText("Vidéo provisoire · YouTube · lecture manuelle", {
-      exact: false,
-    }),
+    page.getByRole("button", { name: "Découvrir Symbiose", exact: true }),
   ).toBeVisible();
+  await expect(
+    page.getByText("Vidéo provisoire", { exact: false }),
+  ).toHaveCount(0);
   await expect(page.locator(".sx-prologue-poster")).toBeVisible();
-  await expect(page.locator(".sx-prologue-media")).toHaveCount(0);
+  await expect(page.locator(".sx-prologue-media")).toHaveCount(1);
   await page
     .getByRole("button", { name: "Passer l’introduction", exact: true })
     .click();
@@ -89,6 +141,149 @@ test("le bureau ouvre le récit, peut être passé et reste accessible depuis 00
     "step",
   );
   expect(errors).toEqual([]);
+});
+
+test("le MP4 principal reste manuel et conserve volume, progression et retour au récit en 2D", async ({
+  page,
+}) => {
+  const youtubeRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/youtube\.com|youtu\.be/.test(request.url()))
+      youtubeRequests.push(request.url());
+  });
+  await open(page);
+  const video = page.locator(".sx-prologue-media");
+  await expect(video).toHaveAttribute("src", "/experience-media/intro.mp4");
+  await expect(video).toHaveAttribute("preload", "metadata");
+  expect(await video.getAttribute("autoplay")).toBeNull();
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.readyState),
+    )
+    .toBeGreaterThanOrEqual(1);
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  await page
+    .getByRole("button", { name: "Couper le son de la vidéo", exact: true })
+    .click();
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.muted),
+  ).toBe(true);
+  await page
+    .getByRole("button", { name: "Activer le son de la vidéo", exact: true })
+    .click();
+  await page
+    .getByRole("slider", { name: "Volume de la vidéo", exact: true })
+    .fill("0.35");
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.volume),
+  ).toBeCloseTo(0.35);
+  await video.evaluate((element: HTMLVideoElement) => {
+    element.loop = true;
+  });
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "true",
+  );
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.currentTime),
+    )
+    .toBeGreaterThan(0.05);
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) =>
+        element.seekable.length ? element.seekable.end(0) : 0,
+      ),
+    )
+    .toBeGreaterThan(0.2);
+  await page
+    .getByRole("button", { name: "Mettre la vidéo en pause", exact: true })
+    .click();
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  await page
+    .getByRole("slider", {
+      name: "Position dans la vidéo de présentation",
+      exact: true,
+    })
+    .fill("0.2");
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.currentTime),
+    )
+    .toBeCloseTo(0.2, 1);
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "true",
+  );
+  await page
+    .getByRole("button", { name: "Mettre la vidéo en pause", exact: true })
+    .click();
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  expect(youtubeRequests).toEqual([]);
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-chapter",
+    "forest",
+  );
+});
+
+test("le vrai MP4 officiel installé est décodable sans lecture automatique", async ({
+  page,
+}) => {
+  test.skip(
+    !existsSync("public/experience-media/intro.mp4"),
+    "Le MP4 officiel doit être installé hors Git pour cette vérification réelle",
+  );
+  await open(page, false);
+  const video = page.locator(".sx-prologue-media");
+  await expect(video).toHaveAttribute("src", "/experience-media/intro.mp4");
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.readyState),
+    )
+    .toBeGreaterThanOrEqual(1);
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.duration),
+  ).toBeGreaterThan(0);
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
+  await page
+    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .click();
+  await expect(page.locator(".sx-prologue-overlay")).toHaveAttribute(
+    "data-playing",
+    "true",
+  );
+  await expect
+    .poll(() =>
+      video.evaluate((element: HTMLVideoElement) => element.currentTime),
+    )
+    .toBeGreaterThan(0);
+  await page
+    .getByRole("button", { name: "Mettre la vidéo en pause", exact: true })
+    .click();
+  expect(
+    await video.evaluate((element: HTMLVideoElement) => element.paused),
+  ).toBe(true);
 });
 
 test("le travelling rejoint la forêt, lance le récit et le scroll natif permet de revenir au bureau", async ({

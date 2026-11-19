@@ -44,7 +44,16 @@ for (const viewport of [
       exact: true,
     });
     await expect(title).toBeInViewport();
-    await expect(page.locator(".sx-prologue-intro")).toBeInViewport();
+    const compactPlayer =
+      viewport.width <= 760 &&
+      (await page.locator(".sx-prologue-media").count()) > 0;
+    if (compactPlayer) {
+      // The existing mobile composition reserves this space for the local player.
+      await expect(page.locator(".sx-prologue-intro")).toBeHidden();
+      await expect(page.locator(".sx-prologue-media")).toBeInViewport();
+    } else {
+      await expect(page.locator(".sx-prologue-intro")).toBeInViewport();
+    }
     await expect(page.locator(".sx-prologue-copy .sx-eyebrow")).toHaveText(
       "00 / BUREAU D’ÉTUDES LE PROLOGUE",
     );
@@ -95,17 +104,29 @@ for (const viewport of [
       .first()
       .evaluate((image: HTMLImageElement) => image.decode());
     const reference = page.locator(".sx-pitch-scene h2");
-    expect(
-      await reference.evaluate((el) => {
-        const style = getComputedStyle(el);
-        return [
-          style.fontFamily,
-          style.fontSize,
-          style.color,
-          style.letterSpacing,
-        ];
-      }),
-    ).toEqual(typography);
+    const referenceTypography = await reference.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return [
+        style.fontFamily,
+        style.fontSize,
+        style.color,
+        style.letterSpacing,
+      ];
+    });
+    if (compactPlayer) {
+      expect(typography[1]).toBe("32px");
+      expect([referenceTypography[0], referenceTypography[2]]).toEqual([
+        typography[0],
+        typography[2],
+      ]);
+      // Letter spacing uses em and scales with the compact mobile title.
+      expect(
+        parseFloat(referenceTypography[3]) / parseFloat(referenceTypography[1]),
+      ).toBeCloseTo(parseFloat(typography[3]) / parseFloat(typography[1]), 3);
+      expect(parseFloat(referenceTypography[1])).toBeGreaterThanOrEqual(35);
+    } else {
+      expect(referenceTypography).toEqual(typography);
+    }
     await page.screenshot({
       path: info.outputPath(
         `01-probleme-${viewport.width}x${viewport.height}.png`,

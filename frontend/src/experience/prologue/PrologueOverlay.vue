@@ -10,7 +10,7 @@ import {
 import { clock, localMediaUrl } from "../pitch";
 import "./prologue.css";
 import YouTubeScreen from "./YouTubeScreen.vue";
-import { defaultIntroYouTubeUrl } from "./youtube-player";
+import { defaultIntroYouTubeUrl, youtubeVideoId } from "./youtube-player";
 import type { OfficeScreenProjection } from "./screen-projection";
 
 const props = defineProps<{
@@ -30,17 +30,23 @@ const emit = defineEmits<{
   focus: [];
 }>();
 const localFiles = Object.keys(
-  import.meta.glob("/public/experience-media/demo.{mp4,webm}", {
+  import.meta.glob("/public/experience-media/intro.mp4", {
     eager: true,
     query: "?url",
     import: "default",
   }),
 );
-const configured = import.meta.env.VITE_SYMBIOSE_DEMO_URL as string | undefined;
+const configured = import.meta.env.VITE_SYMBIOSE_INTRO_VIDEO_URL as
+  | string
+  | undefined;
 const source = ref(
-  localMediaUrl(configured) || localFiles[0]?.replace("/public", "") || "",
+  configured === undefined
+    ? localFiles[0]?.replace("/public", "") || ""
+    : localMediaUrl(configured.trim()),
 );
-const captions = localMediaUrl(import.meta.env.VITE_SYMBIOSE_DEMO_CAPTIONS_URL);
+const captions = localMediaUrl(
+  import.meta.env.VITE_SYMBIOSE_INTRO_CAPTIONS_URL,
+);
 const video = ref<HTMLVideoElement>();
 const playing = ref(false),
   ended = ref(false),
@@ -52,17 +58,24 @@ const current = ref(0),
 const notice = ref(""),
   fileName = ref(""),
   caption = ref("");
-const available = computed(() => !!source.value && !failed.value);
-const useYouTube = computed(() => !source.value);
+const youtubeSelected = ref(false);
+const useYouTube = computed(() => !source.value || youtubeSelected.value);
+const available = computed(
+  () => !!source.value && !failed.value && !useYouTube.value,
+);
 const youtube = ref<InstanceType<typeof YouTubeScreen>>();
 const youtubeRequested = ref(false),
   youtubePresented = ref(false),
   youtubeReady = ref(false),
   youtubeError = ref("");
 const youtubeGeneration = ref(0);
-const youtubeLink =
-  (import.meta.env.VITE_SYMBIOSE_INTRO_YOUTUBE_URL as string | undefined) ||
-  defaultIntroYouTubeUrl;
+const youtubeId = youtubeVideoId(
+  import.meta.env.VITE_SYMBIOSE_INTRO_YOUTUBE_URL?.trim() ||
+    defaultIntroYouTubeUrl,
+);
+const youtubeLink = youtubeId
+  ? `https://www.youtube.com/watch?v=${youtubeId}`
+  : "";
 const copyVisible = computed(() => props.active && props.local < 0.22);
 const opacity = computed(() =>
   Math.max(0, Math.min(1, 1 - (props.local - 0.1) / 0.12)),
@@ -82,6 +95,7 @@ function pause() {
   state(false);
 }
 function approachScreen() {
+  if (props.suspended || !copyVisible.value) return;
   youtubeRequested.value = true;
   youtubeError.value = "";
   emit("focus");
@@ -96,7 +110,16 @@ function fail() {
   pause();
   failed.value = true;
   notice.value =
-    "La vidéo est absente ou illisible. Vous pouvez poursuivre le voyage ou choisir un fichier local.";
+    "La vidéo est absente ou illisible. Vous pouvez regarder sur YouTube, poursuivre le voyage ou choisir un fichier local.";
+}
+function watchOnYouTube() {
+  if (props.suspended || !copyVisible.value) return;
+  pause();
+  youtubeSelected.value = true;
+  notice.value = "";
+  ended.value = false;
+  caption.value = "";
+  approachScreen();
 }
 async function toggle() {
   if (useYouTube.value) {
@@ -121,13 +144,14 @@ async function toggle() {
     try {
       await video.value.play();
     } catch {
-      notice.value =
-        "La lecture n’a pas pu démarrer. Réessayez ou choisissez un autre fichier local.";
+      if (!failed.value)
+        notice.value =
+          "La lecture n’a pas pu démarrer. Réessayez ou choisissez un autre fichier local.";
     }
   }
 }
 function onPlay() {
-  if (props.suspended || !props.active || document.hidden) {
+  if (props.suspended || !copyVisible.value || document.hidden) {
     pause();
     return;
   }
@@ -154,6 +178,11 @@ function toggleMute() {
   muted.value = !muted.value;
   if (video.value) video.value.muted = muted.value;
 }
+function syncVolume() {
+  if (!video.value) return;
+  volume.value = video.value.volume;
+  muted.value = video.value.muted;
+}
 function cueChanged(event: Event) {
   const track = (event.target as HTMLTrackElement).track;
   caption.value = Array.from(track.activeCues ?? [])
@@ -163,8 +192,6 @@ function cueChanged(event: Event) {
 function metadata() {
   duration.value = video.value?.duration ?? 0;
   if (video.value?.textTracks[0]) video.value.textTracks[0].mode = "hidden";
-  if (finiteDuration.value && Math.abs(finiteDuration.value - 90) > 5)
-    notice.value = `Durée du fichier : ${Math.round(finiteDuration.value)} s. Le format prévu est d’environ 90 s.`;
 }
 function chooseFile(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0];
@@ -175,6 +202,9 @@ function chooseFile(event: Event) {
   }
   pause();
   youtubeRequested.value = youtubePresented.value = youtubeReady.value = false;
+  youtubeSelected.value = false;
+  youtubeError.value = "";
+  caption.value = "";
   if (objectUrl) URL.revokeObjectURL(objectUrl);
   objectUrl = URL.createObjectURL(file);
   source.value = objectUrl;
@@ -193,6 +223,10 @@ function enter(skip = false) {
 }
 const visibility = () => {
   if (document.hidden) pause();
+};
+const blur = () => {
+  // Focusing the embedded player keeps focus inside this document.
+  if (!document.hasFocus()) pause();
 };
 watch(
   () => [props.active, props.suspended, props.local],
@@ -228,6 +262,7 @@ watch(
 );
 onMounted(() => {
   document.addEventListener("visibilitychange", visibility);
+  window.addEventListener("blur", blur);
   if (configured && !localMediaUrl(configured))
     notice.value =
       "La vidéo doit utiliser un chemin local. Configuration distante ignorée.";
@@ -236,6 +271,7 @@ onBeforeUnmount(() => {
   pause();
   emit("video", null);
   document.removeEventListener("visibilitychange", visibility);
+  window.removeEventListener("blur", blur);
   if (objectUrl) URL.revokeObjectURL(objectUrl);
 });
 defineExpose({ pause, toggle, resetScreen });
@@ -287,6 +323,8 @@ defineExpose({ pause, toggle, resetScreen });
       class="sx-prologue-media"
       :class="{ 'sx-prologue-media--visible': fallback && copyVisible }"
       :src="source"
+      :muted="muted"
+      :volume="volume"
       playsinline
       preload="metadata"
       :aria-hidden="!(fallback && copyVisible)"
@@ -299,6 +337,7 @@ defineExpose({ pause, toggle, resetScreen });
       @error="fail"
       @loadedmetadata="metadata"
       @timeupdate="current = video?.currentTime ?? 0"
+      @volumechange="syncVolume"
     >
       <track
         v-if="captions"
@@ -335,9 +374,9 @@ defineExpose({ pause, toggle, resetScreen });
               ? 'Mettre la vidéo en pause'
               : useYouTube && youtubeError
                 ? 'Réessayer YouTube'
-              : useYouTube && youtubePresented
-                ? 'Lire la vidéo'
-                : 'Découvrir Symbiose'
+                : useYouTube && youtubePresented
+                  ? 'Lire la vidéo'
+                  : 'Découvrir Symbiose'
           "
           @click="toggle"
         >
@@ -346,13 +385,15 @@ defineExpose({ pause, toggle, resetScreen });
               ? "Mettre en pause"
               : useYouTube && youtubeError
                 ? "Réessayer YouTube"
-              : useYouTube && youtubeRequested
-                ? youtubeReady
-                  ? "Lire la vidéo"
-                  : youtubePresented ? "Chargement du lecteur…" : "Approche de l’écran…"
-                : ended
-                  ? "Revoir Symbiose"
-                  : "Découvrir Symbiose"
+                : useYouTube && youtubeRequested
+                  ? youtubeReady
+                    ? "Lire la vidéo"
+                    : youtubePresented
+                      ? "Chargement du lecteur…"
+                      : "Approche de l’écran…"
+                  : ended
+                    ? "Revoir Symbiose"
+                    : "Découvrir Symbiose"
           }}</span
           ><span aria-hidden="true">{{ playing ? "Ⅱ" : "▶" }}</span>
         </button>
@@ -397,17 +438,28 @@ defineExpose({ pause, toggle, resetScreen });
         </div>
       </div>
       <p v-else class="sx-prologue-unavailable">
-        La vidéo de présentation sera bientôt disponible.<br /><span
-          >Vous pouvez déjà entrer dans le vivant.</span
+        La vidéo locale ne peut pas être lue.<br /><span
+          >Vous pouvez entrer dans le vivant ou utiliser YouTube.</span
         >
       </p>
+      <button
+        v-if="failed && !useYouTube"
+        class="sx-prologue-youtube-fallback"
+        @click="watchOnYouTube"
+      >
+        Regarder sur YouTube
+      </button>
       <p v-if="useYouTube && !focused" class="sx-prologue-video-note">
-        Vidéo provisoire · YouTube · lecture manuelle
+        Vidéo officielle · YouTube · lecture manuelle
       </p>
       <p v-if="youtubeError" class="sx-prologue-youtube-error" role="alert">
         {{ youtubeError }}
-        <a :href="youtubeLink" target="_blank" rel="noopener noreferrer"
-          >Ouvrir la vidéo sur YouTube ↗</a
+        <a
+          v-if="youtubeLink"
+          :href="youtubeLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Ouvrir la vidéo sur YouTube</a
         >
       </p>
       <p v-if="ended" class="sx-prologue-ended" role="status">
