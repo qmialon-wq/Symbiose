@@ -140,26 +140,6 @@
   background: #10251c;
   font-size: 11px;
 }
-.sx-experience .sx-field-glimpse {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  align-items: center;
-  gap: 0 15px;
-  max-width: 480px;
-  margin-bottom: 25px;
-  font-size: 11px;
-}
-.sx-experience .sx-field-glimpse svg {
-  width: 110px;
-  grid-row: span 2;
-  fill: none;
-  stroke: #c8e9aa;
-  stroke-width: 1.5;
-}
-.sx-experience .sx-field-glimpse small {
-  font-size: 9px;
-  color: #d5dfc9;
-}
 .sx-experience .sx-data-confluence {
   max-width: 760px;
 }
@@ -243,28 +223,6 @@
   text-underline-offset: 4px;
   font-size: 10px;
 }
-.sx-experience .sx-future-signal {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  font-size: 11px;
-  margin-top: 30px;
-}
-.sx-experience .sx-future-signal i {
-  width: 35px;
-  height: 35px;
-  border: 1px solid #b9decb;
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 12px #b9decb22,
-    0 0 0 24px #b9decb0f;
-  margin: 15px;
-}
-.sx-experience .sx-future-signal strong {
-  font-weight: 400;
-  color: #ceecdf;
-}
 .sx-experience .sx-living-pipeline {
   max-width: 900px;
   padding-top: 15px;
@@ -343,113 +301,6 @@
 .sx-experience .sx-impact-proof > span,
 .sx-experience .sx-impact-proof small {
   font-size: 10px;
-}
-.sx-experience .sx-pitch-scene--demo h2 {
-  font-size: clamp(28px, 3vw, 46px);
-  white-space: normal;
-  margin-bottom: 10px;
-}
-.sx-experience .sx-pitch-scene--demo .sx-eyebrow {
-  margin-bottom: 10px;
-}
-.sx-experience .sx-pitch-scene--demo .sx-pitch-message {
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-.sx-experience .sx-pitch-scene--demo .sx-evidence-status {
-  margin-bottom: 12px;
-}
-.sx-experience .sx-demo {
-  width: min(100%, 880px);
-  margin: 0;
-  background: #112c22e8;
-  border: 1px solid #c0d4aa66;
-  box-shadow: 0 18px 70px #0005;
-}
-.sx-experience .sx-demo-bar {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 9px 14px;
-  font-size: 8px;
-  letter-spacing: 0.08em;
-  color: #d6e5c8;
-}
-.sx-experience .sx-demo-screen {
-  position: relative;
-  background: #081b12;
-}
-.sx-experience .sx-demo-screen :is(img, video) {
-  width: 100%;
-  aspect-ratio: 1907 / 895;
-  object-fit: contain;
-  display: block;
-}
-.sx-experience .sx-demo-placeholder {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 25px 16px 12px;
-  background: linear-gradient(transparent, #071b12);
-  pointer-events: none;
-}
-.sx-experience .sx-demo-placeholder strong {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-}
-.sx-experience .sx-demo-placeholder span {
-  display: block;
-  font-size: 9px;
-  margin-top: 4px;
-  color: #e2e9d6;
-}
-.sx-experience .sx-demo figcaption {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 12px 14px;
-  font-size: 10px;
-}
-.sx-experience .sx-demo figcaption > span {
-  flex: 1;
-  min-width: 130px;
-  overflow-wrap: anywhere;
-}
-.sx-experience .sx-demo-toggle {
-  color: #c5e8a2;
-  text-decoration: underline;
-}
-.sx-experience .sx-file-choice {
-  position: relative;
-  display: inline-block;
-  padding: 7px 10px;
-  border: 1px solid #adc494;
-  cursor: pointer;
-}
-.sx-experience .sx-file-choice input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  width: 100%;
-  cursor: pointer;
-}
-.sx-experience .sx-file-choice:focus-within {
-  outline: 2px solid var(--sx-lime);
-  outline-offset: 4px;
-}
-.sx-experience .sx-demo-guide,
-.sx-experience .sx-media-notice {
-  margin: 0;
-  padding: 0 14px 10px;
-  font-size: 10px;
-  line-height: 1.7;
-  color: #e1e8d5;
-}
-.sx-experience .sx-demo-guide p {
-  max-width: 720px;
 }
 .sx-experience .sx-book-tabs {
   display: flex;
@@ -634,14 +485,6 @@
   .sx-experience .sx-presentation-tools button > span {
     display: none;
   }
-  .sx-experience .sx-field-glimpse {
-    grid-template-columns: 65px 1fr;
-    font-size: 10px;
-    gap: 6px 10px;
-  }
-  .sx-experience .sx-field-glimpse svg {
-    width: 65px;
-  }
   .sx-experience .sx-tributaries {
     grid-template-columns: 1fr 1fr;
     font-size: 9px;
@@ -678,24 +521,6 @@
     bottom: 4px;
     font-size: 11px;
     gap: 15px;
-  }
-  .sx-experience .sx-pitch-scene--demo h2 {
-    font-size: 30px;
-  }
-  .sx-experience .sx-demo-bar {
-    font-size: 7px;
-    flex-wrap: wrap;
-  }
-  .sx-experience .sx-demo-placeholder {
-    position: static;
-    padding: 12px;
-    background: #0c241c;
-  }
-  .sx-experience .sx-demo-placeholder strong {
-    font-size: 10px;
-  }
-  .sx-experience .sx-demo figcaption {
-    font-size: 9px;
   }
   .sx-experience .sx-evidence-key {
     grid-template-columns: 1fr;

@@ -2,6 +2,7 @@
 import { chapters } from "./config";
 import {
   pitchChapters,
+  pitchDuration,
   pitchIndex,
   pitchSeconds,
   clock,
@@ -49,7 +50,7 @@ const emit = defineEmits<{
 const chapterIndex = computed(() => pitchIndex(props.progress));
 const expanded = computed(() => props.routeProgress !== undefined);
 const duration = computed(() =>
-  expanded.value ? clock(expandedDuration) : "5:00",
+  clock(expanded.value ? expandedDuration : pitchDuration),
 );
 const seconds = computed(
   () => props.routeSeconds ?? pitchSeconds(props.progress),
@@ -137,9 +138,6 @@ const seek = (event: Event) => {
     >
       <span>Suivant</span> →
     </button>
-    <button @click="emit('seek', chapterProgress(5))">
-      Démonstration <span aria-hidden="true">↗</span>
-    </button>
     <button :aria-pressed="fullscreen" @click="emit('fullscreen')">
       {{ fullscreen ? "Quitter le plein écran" : "Plein écran" }}
     </button>
@@ -179,9 +177,7 @@ const seek = (event: Event) => {
         prologue
           ? "Du bureau au vivant · défilez pour sortir"
           : mode === "presentation"
-            ? expanded
-              ? "Lecture continue · 7 min 30 · Espace lecture/pause"
-              : "Lecture continue · 5 minutes · Espace lecture/pause"
+            ? `Lecture continue · ${duration} · Espace lecture/pause`
             : "Défilez librement pour explorer"
       }}</span>
     </div>

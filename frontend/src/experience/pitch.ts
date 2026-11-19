@@ -12,9 +12,11 @@ export interface PitchChapter {
   subject: string;
   title: string;
   message: string;
-  status: EvidenceStatus;
+  /** Only chapters that make a claim about Symbiose carry an evidence label. */
+  status?: EvidenceStatus;
   start: number;
   duration: number;
+  /** Speaker cues shown in the presentation notebook, not on the scene. */
   oral: string;
   screen: string[];
   interaction: string;
@@ -22,7 +24,12 @@ export interface PitchChapter {
   sources: string[];
 }
 
-export const pitchDuration = 300;
+/**
+ * Seconds of the eight main-route chapters. The three explorations add 84 s
+ * (see excursions/route.ts), so the presented clock lasts exactly five minutes,
+ * after the opening video and the travelling out of the office.
+ */
+export const pitchDuration = 216;
 // Preserve the existing spatial study and all seven reversible camera transitions.
 // Presentation seconds are an editorial clock, independent of the 210-unit camera path.
 export const visualBoundaries = [
@@ -31,248 +38,228 @@ export const visualBoundaries = [
 export const pitchChapters: readonly PitchChapter[] = [
   {
     id: "forest",
-    subject: "Le problème",
-    title: "Voir le vivant.\nÉclairer nos choix.",
-    message:
-      "Des observations dispersées. Des projets à éclairer à l’échelle locale.",
-    status: "expected",
+    subject: "Ce que l’on ne voit pas",
+    title: "Une forêt ordinaire.\nVraiment ?",
+    message: "Le vivant passe ici chaque jour, presque toujours sans témoin.",
     start: 0,
-    duration: 35,
-    oral: "Une caméra piège filme un animal. Mais comment passer de cette observation à une décision d’aménagement ? Les vidéos, les inventaires et les études existent ; ils restent dispersés et longs à analyser. Pour une collectivité, un agriculteur ou un aménageur, connaître les enjeux locaux reste difficile. Symbiose veut relier ces informations pour éclairer les choix, avant les travaux.",
-    screen: ["Observer", "Comprendre", "Préparer la décision"],
+    duration: 26,
+    oral: "0:00 · A — « Regardez cette forêt… » Un décor ordinaire, puis la question : que savons-nous de ce qui vit ici ? La descente dans le sol accompagne la réplique de B. 0:41 · A — « Les informations existent… » Observations, inventaires, données : dispersées, difficiles à traduire en décisions. Comment comprendre ce territoire avant de le transformer ?",
+    screen: [
+      "Observations éparses",
+      "Inventaires dispersés",
+      "Des décisions difficiles à éclairer",
+    ],
     interaction:
-      "Une caméra piège et une silhouette animale illustrent une observation candidate, sans score inventé.",
-    transition: "La caméra quitte le sous-bois et prend de la hauteur.",
+      "Chevreuil, sanglier et pigeon traversent le sous-bois ; leurs cadres restent illustratifs.",
+    transition:
+      "La caméra plonge sous la litière, remonte, puis prend de la hauteur.",
     sources: ["manifesto", "description", "jury-questions"],
   },
   {
     id: "sky",
-    subject: "La vision",
-    title: "Un territoire.\nDes liens à comprendre.",
+    subject: "L’idée Symbiose",
+    title: "Rendre l’invisible\nvisible.",
     message:
-      "Symbiose relie observations, connaissances et projets d’aménagement.",
+      "Symbiose associe intelligence artificielle et données environnementales ouvertes pour éclairer l’aménagement.",
     status: "operational",
-    start: 35,
-    duration: 25,
-    oral: "Notre solution, Symbiose, associe reconnaissance animale, validation humaine et données du territoire. Elle s’adresse aux collectivités, aux propriétaires, aux aménageurs et aux naturalistes. Son originalité : partir d’un projet concret et rendre visibles les preuves, les incertitudes et les adaptations à examiner. L’humain garde la décision.",
+    start: 26,
+    duration: 17,
+    oral: "B — « C’est pour répondre à cette question que nous avons imaginé Symbiose. » Une idée simple : l’IA et les données environnementales ouvertes pour transformer des observations en informations utiles à l’aménagement. Annoncer que tout commence avec une caméra qui observe la faune.",
     screen: [
-      "Collectivités",
-      "Agriculteurs et propriétaires",
-      "Aménageurs et naturalistes",
+      "Observer la faune",
+      "Comprendre le territoire",
+      "Éclairer les projets",
     ],
     interaction:
       "Le survol révèle les liens entre les milieux normands ; le trajet reste illustratif.",
     transition: "Le regard suit la vallée et rejoint le réseau des rivières.",
-    sources: ["manifesto", "parcels", "design", "annex"],
+    sources: ["manifesto", "vision", "design"],
   },
   {
     id: "rivers",
-    subject: "Les données",
-    title: "Faire converger\nles connaissances.",
+    subject: "De la vidéo à l’espèce",
+    title: "L’IA détecte et propose.\nL’humain valide.",
     message:
-      "Observations validées, cadastre, occupation agricole et référentiels environnementaux.",
+      "Une caméra filme, MegaDetector repère, un second modèle propose l’espèce.",
     status: "operational",
-    start: 60,
-    duration: 35,
-    oral: "Le prototype croise les vidéos validées avec le cadastre, les prairies déclarées au RPG 2024, les zonages IGN et les zones humides de la DREAL Normandie. OpenAlex, Crossref et Europe PMC alimentent la recherche documentaire. Chaque source garde sa provenance. Les consultations archivées de Caen et Carentan montrent un fonctionnement technique ; elles ne mesurent aucun effet écologique. Un point consulté ne décrit pas toute une parcelle.",
-    screen: [
-      "Vidéos et validation humaine",
-      "Cadastre · RPG 2024 · commune",
-      "ZNIEFF · Natura 2000 · zones humides",
-      "Publications scientifiques",
-    ],
-    interaction:
-      "Quatre affluents documentaires convergent ; une matrice interactive montre les réponses IGN réellement archivées.",
-    transition:
-      "Le courant entraîne le regard sous la surface, vers une perspective d’évolution.",
-    sources: [
-      "manifesto",
-      "parcels",
-      "territory",
-      "territory-validation",
-      "wetlands",
-      "documents",
-    ],
-  },
-  {
-    id: "underwater",
-    subject: "Les perspectives",
-    title: "Demain,\nécouter aussi le vivant.",
-    message:
-      "Hydrophones, caméras immergées et autres capteurs : des pistes à développer et à valider.",
-    status: "future",
-    start: 95,
+    start: 43,
     duration: 20,
-    oral: "Aujourd’hui, nous travaillons sur les vidéos terrestres. Demain, des hydrophones ou des caméras immergées pourraient élargir l’observation. Ce sont des perspectives : ces capteurs ne sont pas opérationnels dans le prototype. Chaque nouveau milieu demandera des données et une validation adaptées.",
-    screen: [
-      "Hydrophones",
-      "Caméras immergées",
-      "Nouveaux protocoles à valider",
-    ],
-    interaction:
-      "Des ondes illustratives évoquent l’écoute ; aucun signal acoustique réel n’est revendiqué.",
-    transition:
-      "La caméra remonte vers les roseaux et la chaîne d’analyse actuelle.",
-    sources: ["manifesto", "vision"],
-  },
-  {
-    id: "wetland",
-    subject: "Le moteur technique",
-    title: "L’IA propose.\nL’humain vérifie.",
-    message:
-      "De la vidéo au dossier : une chaîne traçable, avec des étapes distinctes.",
-    status: "operational",
-    start: 115,
-    duration: 35,
-    oral: "Nous extrayons des images de la vidéo. MegaDetector localise les animaux ; un modèle PyTorch propose une espèce, puis le suivi relie les observations dans le temps. La personne vérifie l’espèce et le recadrage. Les données ouvertes et les publications enrichissent ensuite le dossier. Les traitements sont locaux et asynchrones, avec une seule tâche GPU lourde à la fois. Aucun entraînement ne démarre automatiquement.",
+    oral: "B — MegaDetector détecte les animaux ; un second modèle propose leur espèce (SpeciesNet : piste étudiée pour la suite, le classificateur actuel est un modèle PyTorch) ; l’observation est ensuite vérifiée et validée par un humain. Terminer sur la question : reconnaître cet animal suffit-il pour comprendre les enjeux du territoire ?",
     screen: [
       "Vidéo",
       "Extraction",
       "Reconnaissance et suivi",
       "Validation humaine",
-      "Open Data et publications",
-      "Pistes d’aménagement",
+      "Données ouvertes et publications",
+      "Propositions",
     ],
     interaction:
-      "Un fil lumineux traverse six étapes dans le paysage ; chaque étape explique son rôle au clic.",
+      "La frise des six étapes suit le fil de l’eau ; chaque étape explique son rôle au clic.",
+    transition: "Le courant entraîne le regard sous la surface.",
+    sources: ["vision", "review", "architecture"],
+  },
+  {
+    id: "underwater",
+    subject: "Comprendre le milieu",
+    title: "Reconnaître un animal\nne suffit pas.",
+    message: "Sa présence ne prend sens que dans le milieu qui l’accueille.",
+    start: 63,
+    duration: 16,
+    oral: "A — « Non. » Savoir qu’un animal est présent ne dit pas encore ce que cela implique pour un projet d’aménagement. Il faut aussi comprendre l’environnement dans lequel il évolue.",
+    screen: ["Une présence observée", "Un milieu à comprendre"],
+    interaction:
+      "Les poissons portent la mention « espèce à confirmer » ; aucune identification n’est calculée.",
+    transition: "La caméra remonte vers les roseaux de la zone humide.",
+    sources: ["manifesto", "territory"],
+  },
+  {
+    id: "wetland",
+    subject: "Croiser les données",
+    title: "Le vivant, replacé\ndans son territoire.",
+    message:
+      "ZNIEFF, Natura 2000, zones humides : vérifications et alternatives sourcées.",
+    status: "operational",
+    start: 79,
+    duration: 32,
+    oral: "B — Symbiose croise les observations avec les données officielles : ZNIEFF, Natura 2000, zones humides lorsque les données existent. Exemple d’un projet d’éclairage : informations à examiner, vérifications, alternatives (adapter, déplacer, modifier), justifiées et sourcées. A — L’IA ne décide pas de ce que nous construisons ; elle aide à comprendre ce qu’il faut prendre en compte avant de construire.",
+    screen: [
+      "Observations validées",
+      "Cadastre · RPG 2024",
+      "IGN · DREAL Normandie",
+      "Publications scientifiques",
+    ],
+    interaction:
+      "Quatre affluents documentaires convergent ; une matrice montre les réponses IGN réellement archivées pour deux points normands.",
     transition:
-      "Les annotations se rapprochent et deviennent le cadre de la démonstration produit.",
-    sources: ["vision", "review", "rag", "architecture"],
+      "La caméra quitte les roseaux et s’ouvre sur la prairie et le bocage.",
+    sources: [
+      "territory",
+      "territory-validation",
+      "wetlands",
+      "parcels",
+      "design",
+      "documents",
+    ],
   },
   {
     id: "meadow",
-    subject: "La démonstration",
-    title: "Du terrain\nà un dossier partagé.",
+    subject: "Vers la décision",
+    title: "Observer, situer, décider :\nun seul parcours.",
     message:
-      "90 secondes dans l’application. Lecture et pause sous votre contrôle.",
-    status: "operational",
-    start: 150,
-    duration: 90,
-    oral: "[Démonstration vidéo locale : 90 secondes. Lancer manuellement. Montrer l’import, la validation d’une observation, le projet localisé, ses sources et une alternative conditionnelle. Si la vidéo est absente, annoncer le remplacement par une capture issue du manifeste ; ne pas prétendre avoir démontré le parcours complet.]",
-    screen: [
-      "Importer les vidéos",
-      "Valider une observation",
-      "Examiner un projet et ses sources",
-    ],
-    interaction:
-      "Lecteur HTML natif, sans lecture automatique. Capture du manifeste en remplacement et sélection possible d’un fichier vidéo local.",
-    transition:
-      "Le cadre de l’interface s’ouvre à nouveau sur le bocage puis le littoral.",
-    sources: ["manifesto", "parcels", "review", "design-validation"],
-  },
-  {
-    id: "coast",
-    subject: "Les impacts",
-    title: "Mieux anticiper.\nMieux adapter.",
-    message:
-      "Des bénéfices attendus pour les acteurs normands ; leur ampleur reste à évaluer sur le terrain.",
+      "Trois démarches réunies pour repérer plus tôt les points de vigilance.",
     status: "expected",
-    start: 240,
-    duration: 25,
-    oral: "Le prototype documente douze alternatives pour cinq types d’intervention, dont les clôtures et l’éclairage. Les bénéfices attendus sont un examen facilité des observations et des projets mieux informés. Ces options restent conditionnelles : leur efficacité locale n’est pas mesurée. Il faut vérifier les habitats, les usages et l’applicabilité des sources avec les acteurs du terrain.",
+    start: 111,
+    duration: 50,
+    oral: "B — Qu’est-ce que cela change ? Observer une espèce, consulter les zonages, étudier un projet : trois démarches aujourd’hui distinctes, réunies dans un même parcours. A — Pour un aménageur, des points de vigilance identifiés plus tôt ; pour les acteurs de l’environnement, des connaissances mieux valorisées ; pour les territoires, des décisions mieux éclairées. Un démonstrateur fonctionnel, dont l’impact réel reste à mesurer. Conviction : mieux comprendre un territoire pour mieux le préserver.",
     screen: [
-      "Collectivité : examiner un éclairage",
-      "Propriétaire : étudier une clôture",
-      "Aménageur : revoir une implantation",
+      "Aménageurs : des vigilances repérées plus tôt",
+      "Acteurs de l’environnement : des connaissances valorisées",
+      "Territoires : des décisions mieux éclairées",
     ],
     interaction:
-      "Trois usages se déploient devant une évocation discrète d’Étretat ; le nombre d’alternatives est relié à sa source.",
-    transition:
-      "La lumière baisse ; les liens du territoire rejoignent la forêt nocturne.",
+      "Les trois publics et l’inventaire des douze alternatives documentées accompagnent le bocage.",
+    transition: "La caméra rejoint le drone qui survole le bocage.",
     sources: ["manifesto", "design", "design-validation"],
   },
   {
-    id: "night-forest",
-    subject: "L’équipe et la suite",
-    title:
-      "Pour mieux protéger le vivant,\ncommençons par mieux le comprendre.",
+    id: "coast",
+    subject: "Et demain ?",
+    title: "Rendre l’expertise accessible\nau bon moment.",
     message:
-      "ARQ · Arden, Romain et Quentin. Passer du prototype à une évaluation de terrain.",
+      "Un démonstrateur fonctionnel aujourd’hui. Demain, un appui pour les experts, sans les remplacer.",
     status: "future",
-    start: 265,
-    duration: 35,
-    oral: "Nous sommes ARQ : Arden, Romain et Quentin. Pour changer d’échelle, nous proposons de rechercher des terrains pilotes en Normandie, un accompagnement naturaliste et des moyens de consolidation technique. Les prochaines étapes : valider les observations, mesurer l’utilité pour les utilisateurs et évaluer les ressources consommées. Aucun partenariat n’est annoncé. Pour mieux protéger le vivant, commençons par mieux le comprendre.",
+    start: 161,
+    duration: 25,
+    oral: "3:35 · A — Aujourd’hui, Symbiose est un démonstrateur ; notre ambition va plus loin. Qu’est-ce qu’il nous manque ? (B détaille les besoins pendant la plongée.) 4:17 · B — Notre objectif n’est pas de remplacer les experts de la biodiversité, mais de rendre leurs connaissances accessibles au moment où les décisions se prennent.",
     screen: [
-      "Terrains pilotes à rechercher",
-      "Expertise naturaliste à mobiliser",
-      "Robustesse et sobriété à évaluer",
+      "Un démonstrateur fonctionnel",
+      "Des experts mieux outillés, jamais remplacés",
     ],
     interaction:
-      "Le logo apparaît avec un lien configurable vers la connexion ou l’inscription.",
+      "Étretat encadre la question ; la plongée détaille les besoins puis la caméra remonte face aux falaises.",
+    transition:
+      "La lumière baisse ; le voyage revient vers la forêt, à la nuit tombée.",
+    sources: ["manifesto", "jury-questions", "annex"],
+  },
+  {
+    id: "night-forest",
+    subject: "La même forêt",
+    title: "Comprendre le vivant\navant d’aménager.",
+    message: "Retour au point de départ : la même forêt, un autre regard.",
+    start: 186,
+    duration: 30,
+    oral: "Silence, quelques secondes de nature. A — « Regardez autour de vous… C’est ici que notre voyage a commencé. » Pause. B — La même forêt qu’il y a cinq minutes ; ce qui a changé, c’est ce que nous en savons. A — Peut-être le début d’une meilleure façon d’aménager nos territoires. Le logo se forme : Comprendre le vivant avant d’aménager.",
+    screen: ["Logo Symbiose", "Comprendre le vivant avant d’aménager"],
+    interaction:
+      "Chevreuil et sanglier reviennent dans la forêt nocturne ; le logo se forme, avec le lien vers l’application.",
     transition:
       "Arrêt final. L’utilisateur choisit d’entrer dans l’application.",
-    sources: ["manifesto", "architecture", "design-validation"],
+    sources: ["manifesto", "description"],
   },
 ];
 
 export const juryCoverage = [
   [
     "Problème",
-    "Forêt",
-    "Données dispersées et difficulté à préparer une décision locale.",
+    "Forêt · Sous nos pas",
+    "Un vivant qui passe inaperçu ; des données dispersées, difficiles à traduire en décisions.",
   ],
   [
     "Solution",
-    "Ciel · Zone humide · Démonstration",
-    "Chaîne vidéo, contrôle humain et dossier contextualisé.",
+    "Ciel · Rivières · Sous-marin · Zone humide",
+    "Détection et proposition d’espèce, validation humaine, croisement avec les données officielles et alternatives sourcées.",
   ],
   [
     "Impacts",
-    "Littoral",
-    "Bénéfices attendus séparés des mesures techniques ; pas de gain écologique chiffré.",
+    "Prairie et bocage",
+    "Bénéfices attendus pour aménageurs, acteurs de l’environnement et territoires ; impact réel à mesurer.",
   ],
   [
     "Équipe",
-    "Forêt nocturne",
-    "ARQ : Arden, Romain et Quentin ; rôles individuels non documentés.",
+    "L’équipe ARQ",
+    "ARQ : Arden, Romain et Quentin ; IA, développement logiciel et données ; rôles individuels non détaillés.",
   ],
   [
     "Besoins pour changer d’échelle",
-    "Forêt nocturne",
-    "Proposition : pilotes, expertise et consolidation ; aucun partenaire ni financement acquis.",
+    "Littoral · Changer d’échelle",
+    "Partenaires de terrain, données fiables et expertise scientifique, moyens d’expérimentation ; aucun partenariat annoncé.",
   ],
   [
     "Originalité",
-    "Ciel · Démonstration",
-    "Partir des interventions du projet et rendre les preuves consultables.",
+    "Ciel · Zone humide",
+    "Partir d’un projet concret et rendre visibles vérifications, alternatives et sources.",
   ],
   [
     "Innovation",
-    "Zone humide",
-    "Vision, validation humaine et recherche documentaire reliées aux interventions.",
+    "Rivières · Zone humide",
+    "Vision par ordinateur, validation humaine et contexte territorial reliés au projet d’aménagement.",
   ],
   [
     "Données ouvertes",
-    "Rivières",
-    "Producteurs, usages, millésime RPG et limites des consultations ponctuelles.",
+    "Zone humide",
+    "ZNIEFF, Natura 2000, zones humides DREAL, cadastre et RPG 2024 ; limites des consultations ponctuelles.",
   ],
   [
     "Faisabilité",
-    "Zone humide · Démonstration",
-    "Socle local existant, recettes techniques archivées et lecteur local.",
+    "Rivières · Prairie et bocage",
+    "Démonstrateur fonctionnel, socle local existant et recettes techniques archivées.",
   ],
   [
     "Numérique responsable",
-    "Zone humide · Forêt nocturne",
+    "Rivières · Carnet de présentation",
     "Traitements locaux, GPU sérialisé ; consommation et utilité à mesurer.",
   ],
   [
     "Pertinence territoriale",
-    "Rivières · Littoral",
+    "Zone humide · Littoral",
     "Sources DREAL Normandie et archives de points normands ; usages proposés aux acteurs locaux.",
   ],
   [
     "Qualité de la présentation orale",
     "Ensemble du parcours",
-    "Script de 5 minutes, 90 secondes réservées à la vidéo, mots simples et arrêts manuels ; répétition à effectuer.",
+    "Vidéo d’ouverture puis récit de cinq minutes à deux voix, calé sur l’horloge du parcours ; répétition à effectuer.",
   ],
 ] as const;
-
-export const pitchWordCount = pitchChapters
-  .filter((chapter) => chapter.id !== "meadow")
-  .map((chapter) => chapter.oral)
-  .join(" ")
-  .split(/\s+/).length;
 
 export const clock = (seconds: number) =>
   `${Math.floor((seconds + 1e-6) / 60)}:${String(Math.floor((seconds + 1e-6) % 60)).padStart(2, "0")}`;

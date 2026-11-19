@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
@@ -50,10 +49,6 @@ async function chapter(page: Page, name: string, id: string) {
     /.+/,
   );
 }
-async function fixtureVideo(_page: Page) {
-  // Verified local VP8 test signal. Never bundled into the product presentation.
-  return readFileSync("tests/fixtures/media-signal.webm");
-}
 
 test("eight sourced scenes, archived observations, jury coverage and final application link", async ({
   page,
@@ -71,10 +66,30 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   await page.setViewportSize({ width: 1440, height: 1000 });
   await openPitch(page);
   await expect(
-    page.getByRole("heading", { name: /Voir le vivant/ }),
+    page.getByRole("heading", { name: /Une forêt ordinaire/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Inventaires dispersés", { exact: true }),
   ).toBeVisible();
   await page.screenshot({ path: "../output/symbiose/pitch/01-probleme.png" });
   await chapter(page, "3. Rivières", "rivers");
+  await page.getByRole("button", { name: "03 Reconnaissance" }).click();
+  await expect(page.locator(".sx-pipeline-detail")).toContainText(
+    "MegaDetector localise",
+  );
+  await expect(page.locator(".sx-pipeline-detail")).toContainText(
+    "SpeciesNet en piste",
+  );
+  await expect(page.locator(".sx-pipeline-detail")).toContainText(
+    "Le suivi relie",
+  );
+  await page.screenshot({ path: "../output/symbiose/pitch/03-moteur.png" });
+  await chapter(page, "4. Monde sous-marin", "underwater");
+  await expect(
+    page.getByRole("heading", { name: /Reconnaître un animal/ }),
+  ).toBeVisible();
+  await expect(page.locator(".sx-evidence-status")).toHaveCount(0);
+  await chapter(page, "5. Zone humide", "wetland");
   await page
     .getByText("Résultats vérifiés · deux points normands", { exact: true })
     .click();
@@ -84,48 +99,26 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
     page.getByText("Aucun objet renvoyé", { exact: true }),
   ).toHaveCount(4);
   await expect(page.getByText(/ARCHIVES IGN/)).toBeVisible();
-  await page.screenshot({ path: "../output/symbiose/pitch/03-donnees.png" });
-  await chapter(page, "4. Monde sous-marin", "underwater");
+  await page.screenshot({ path: "../output/symbiose/pitch/05-donnees.png" });
+  await chapter(page, "6. Prairie et bocage", "meadow");
   await expect(
-    page.getByText("Perspective · non opérationnelle", { exact: true }),
+    page.getByText("alternatives documentées", { exact: true }),
   ).toBeVisible();
-  await chapter(page, "5. Zone humide", "wetland");
-  await page.getByRole("button", { name: "03 Reconnaissance" }).click();
-  await expect(page.locator(".sx-pipeline-detail")).toContainText(
-    "MegaDetector localise",
-  );
-  await expect(page.locator(".sx-pipeline-detail")).toContainText(
-    "le suivi relie",
-  );
-  await page.screenshot({ path: "../output/symbiose/pitch/05-moteur.png" });
-  await page
-    .getByRole("button", { name: "Démonstration", exact: true })
-    .click();
   await expect(
-    page.getByText("Vidéo produit de 90 s non fournie", { exact: true }),
+    page.getByText("Bénéfice attendu · non mesuré", { exact: true }),
   ).toBeVisible();
+  // The 90-second demo slot is gone: no player, no shortcut.
   await expect(page.locator("video")).toHaveCount(0);
-  await expect(page.locator(".sx-demo img")).toBeVisible();
-  await page
-    .locator(".sx-demo img")
-    .evaluate((img: HTMLImageElement) => img.decode());
-  const posterBox = await page.locator(".sx-demo img").boundingBox();
-  expect(posterBox!.width / posterBox!.height).toBeCloseTo(1907 / 895, 1);
-  const fileChoiceBox = await page
-    .locator('.sx-demo input[type="file"]')
-    .boundingBox();
-  const demoContentBox = await page.locator(".sx-pitch-content").boundingBox();
-  expect(fileChoiceBox!.y + fileChoiceBox!.height).toBeLessThanOrEqual(
-    demoContentBox!.y + demoContentBox!.height,
-  );
-  await page.screenshot({
-    path: "../output/symbiose/pitch/06-demonstration.png",
-  });
+  await expect(
+    page.getByRole("button", { name: "Démonstration", exact: true }),
+  ).toHaveCount(0);
+  await page.screenshot({ path: "../output/symbiose/pitch/06-decision.png" });
+  await chapter(page, "7. Littoral — Étretat", "coast");
+  await expect(page.getByText(/aucun partenariat annoncé/)).toBeVisible();
   await chapter(page, "8. Forêt nocturne", "night-forest");
   await expect(
-    page.getByRole("heading", { name: /Pour mieux protéger le vivant/ }),
+    page.getByRole("heading", { name: /Comprendre le vivant/ }),
   ).toBeVisible();
-  await expect(page.getByText(/ARQ · Arden, Romain et Quentin/)).toBeVisible();
   const cta = page.getByRole("link", {
     name: "Commencer l’expérience Symbiose",
   });
@@ -142,7 +135,24 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   await expect(page.getByRole("table")).toBeVisible();
   await expect(page.getByRole("row")).toHaveCount(13);
   await page.getByRole("button", { name: "Pitch chronométré" }).click();
-  await expect(page.locator(".sx-speaker-chapter")).toHaveCount(8);
+  // Eight chapters and three explorations, in the order of the five-minute clock.
+  await expect(page.locator(".sx-speaker-chapter")).toHaveCount(11);
+  await expect(page.locator(".sx-speaker-chapter h3")).toHaveText([
+    "Ce que l’on ne voit pas",
+    "Sous nos pas · Le sol vivant",
+    "L’idée Symbiose",
+    "De la vidéo à l’espèce",
+    "Comprendre le milieu",
+    "Croiser les données",
+    "Vers la décision",
+    "L’équipe ARQ · Survol du bocage",
+    "Et demain ?",
+    "Changer d’échelle · Plongée à Étretat",
+    "La même forêt",
+  ]);
+  await expect(
+    page.locator(".sx-speaker-chapter").last().locator(".sx-eyebrow"),
+  ).toContainText("4:30–5:00");
   await page.getByRole("button", { name: "Fermer le projet" }).click();
   await cta.click();
   await expect(page).toHaveURL(/\/connexion$/);
@@ -166,7 +176,7 @@ test("presentation keyboard, continuous narrative, reverse navigation and reduce
     "data-chapter",
     "sky",
   );
-  await expect(page.locator(".sx-counter")).toHaveText("1:25 / 7:30");
+  await expect(page.locator(".sx-counter")).toHaveText("0:50 / 5:00");
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator(".sx-experience")).toHaveAttribute(
     "data-excursion",
@@ -220,10 +230,8 @@ test("presentation keyboard, continuous narrative, reverse navigation and reduce
   await page
     .getByRole("button", { name: "Mettre en pause", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Démonstration", exact: true })
-    .click();
-  await expect(page.locator(".sx-counter")).toHaveText("3:20 / 7:30");
+  await page.getByRole("button", { name: "6. Prairie et bocage" }).click();
+  await expect(page.locator(".sx-counter")).toHaveText("2:15 / 5:00");
   await expect(
     page.getByRole("button", { name: "Lire le récit" }),
   ).toBeEnabled();
@@ -233,85 +241,13 @@ test("presentation keyboard, continuous narrative, reverse navigation and reduce
   );
   await page.locator("#main-content").focus();
   await page.keyboard.press("End");
-  await expect(page.locator(".sx-counter")).toHaveText("7:30 / 7:30");
+  await expect(page.locator(".sx-counter")).toHaveText("5:00 / 5:00");
   await page.keyboard.press("Home");
   await expect(page.locator(".sx-counter")).toHaveText("00 / 08");
   await expect(page.locator(".sx-experience")).toHaveAttribute(
     "data-prologue-active",
     "true",
   );
-});
-
-test("a real local media file stays manual, pauses for sources and releases on chapter departure", async ({
-  page,
-}) => {
-  await openPitch(page);
-  const bytes = await fixtureVideo(page);
-  await page
-    .getByRole("button", { name: "Démonstration", exact: true })
-    .click();
-  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
-    "data-chapter",
-    "meadow",
-  );
-  await page.locator('.sx-demo input[type="file"]').setInputFiles({
-    name: "test-signal.webm",
-    mimeType: "video/webm",
-    buffer: bytes,
-  });
-  const video = page.locator("video");
-  await expect(video).toHaveAttribute("controls", "");
-  await expect(video).not.toHaveAttribute("autoplay");
-  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
-  await page
-    .getByRole("button", { name: "Lancer la vidéo", exact: true })
-    .click();
-  await expect
-    .poll(() => video.evaluate((v: HTMLVideoElement) => v.currentTime))
-    .toBeGreaterThan(0.1);
-  await page.getByRole("button", { name: "Mettre la vidéo en pause" }).click();
-  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
-  await page
-    .getByRole("button", { name: "Lancer la vidéo", exact: true })
-    .click();
-  await page.getByRole("button", { name: "Le projet", exact: true }).click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
-  await page.keyboard.press("Escape");
-  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
-  const beforeWheel = Number(
-    await page.locator(".sx-experience").getAttribute("data-progress"),
-  );
-  const videoBox = (await video.boundingBox())!;
-  await page.mouse.move(
-    videoBox.x + videoBox.width / 2,
-    videoBox.y + videoBox.height / 2,
-  );
-  const panel = page.locator(".sx-pitch-content");
-  expect(
-    await panel.evaluate((el) => el.scrollHeight - el.clientHeight),
-  ).toBeGreaterThan(0);
-  await page.mouse.wheel(0, 100);
-  await expect
-    .poll(() => panel.evaluate((el) => el.scrollTop))
-    .toBeGreaterThan(0);
-  await expect(video).toBeVisible();
-  expect(
-    Number(await page.locator(".sx-experience").getAttribute("data-progress")),
-  ).toBeCloseTo(beforeWheel, 6);
-  // Once the pointer leaves the independently scrollable article, native page
-  // scrolling must take control again without falling below the demo boundary.
-  await page.mouse.move((await page.viewportSize())!.width - 8, 300);
-  await page.mouse.wheel(0, 1000);
-  await expect
-    .poll(async () =>
-      Number(
-        await page.locator(".sx-experience").getAttribute("data-progress"),
-      ),
-    )
-    .toBeGreaterThan(beforeWheel + 0.01);
-  await page.getByRole("button", { name: "Chapitre suivant" }).click();
-  await expect(video).toHaveCount(0);
 });
 
 test("mobile scenes and source book remain readable and accessible", async ({
@@ -358,9 +294,7 @@ test("mobile scenes and source book remain readable and accessible", async ({
   ).toEqual([]);
 });
 
-test("unreadable local media and unavailable fullscreen have explicit fallbacks", async ({
-  page,
-}) => {
+test("unavailable fullscreen has an explicit fallback", async ({ page }) => {
   await openPitch(page);
   await page.evaluate(() => {
     Object.defineProperty(document.documentElement, "requestFullscreen", {
@@ -374,22 +308,4 @@ test("unreadable local media and unavailable fullscreen have explicit fallbacks"
       exact: true,
     }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Démonstration", exact: true })
-    .click();
-  await page.locator('.sx-demo input[type="file"]').setInputFiles({
-    name: "invalid.webm",
-    mimeType: "video/webm",
-    buffer: Buffer.from("invalid video fixture"),
-  });
-  // Some Chromium versions reject the file as soon as its blob URL is assigned.
-  // Otherwise explicitly request media loading and assert the same honest fallback.
-  await page
-    .locator(".sx-demo video")
-    .evaluateAll((elements) =>
-      elements.forEach((element) => (element as HTMLVideoElement).load()),
-    );
-  await expect(page.locator(".sx-demo video")).toHaveCount(0);
-  await expect(page.getByText(/Vidéo absente ou illisible/)).toBeVisible();
-  await expect(page.locator(".sx-demo img")).toBeVisible();
 });

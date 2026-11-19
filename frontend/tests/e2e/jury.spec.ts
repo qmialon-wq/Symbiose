@@ -66,7 +66,7 @@ test("standalone jury starts without any authentication or business API", async 
     "data-chapter",
     "sky",
   );
-  await expect(page.locator(".sx-counter")).toHaveText("1:25 / 7:30");
+  await expect(page.locator(".sx-counter")).toHaveText("0:50 / 5:00");
   expect(api).toEqual([]);
   expect(errors).toEqual([]);
 });
@@ -89,7 +89,10 @@ test("jury recovers a saved chapter and supports immediate skip, restart and 2D 
   });
   await page.getByText("Régie du récit", { exact: true }).click();
   await page
-    .getByRole("button", { name: "Reprendre : Les données", exact: true })
+    .getByRole("button", {
+      name: "Reprendre : De la vidéo à l’espèce",
+      exact: true,
+    })
     .click();
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",

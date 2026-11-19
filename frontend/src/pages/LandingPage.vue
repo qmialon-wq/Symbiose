@@ -258,7 +258,15 @@ function intro(skip = false) {
   else travelOutside();
 }
 function travelOutside() {
-  timeline?.playTo(prefix, prologueTravelSeconds * (1 - prologueLocal.value));
+  // In presentation mode the five-minute narrative starts as soon as the
+  // travelling reaches the forest; any wheel, key or click cancels both.
+  timeline?.playTo(
+    prefix,
+    prologueTravelSeconds * (1 - prologueLocal.value),
+    () => {
+      if (mode.value === "presentation") play();
+    },
+  );
   playing.value = true;
 }
 function backToPrologue() {
@@ -601,7 +609,6 @@ onBeforeUnmount(() => {
         :key="restartGeneration"
         :progress="progress"
         :reduced-motion="reducedMotion"
-        :suspended="dialogOpen"
         :app-href="applicationHref"
         :time-map="expandedTime"
         @begin="seek(chapterProgress(1))"

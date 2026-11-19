@@ -244,8 +244,8 @@ export class NarrativeTimeline {
       },
     });
   }
-  /** Advance to a specified position. */
-  playTo(progress: number, seconds: number) {
+  /** Advance to a specified position; `onArrive` runs only if no input interrupted the move. */
+  playTo(progress: number, seconds: number, onArrive?: () => void) {
     if (this.reduced) return;
     this.pause();
     const target = clamp01(progress);
@@ -259,6 +259,7 @@ export class NarrativeTimeline {
         this.scrollTo(target);
         this.snap(target);
         this.pause();
+        onArrive?.();
       },
     });
   }

@@ -8,18 +8,16 @@ import {
   appUrl,
 } from "./pitch";
 import PitchVisual from "./PitchVisual.vue";
-import DemoVideo from "./DemoVideo.vue";
 const props = withDefaults(
   defineProps<{
     progress: number;
     reducedMotion: boolean;
-    suspended: boolean;
     appHref?: string;
     timeMap?: (seconds: number) => number;
   }>(),
   { appHref: appUrl },
 );
-defineEmits<{ begin: []; sources: []; videoPlaying: [] }>();
+defineEmits<{ begin: []; sources: [] }>();
 const chapter = computed(() => pitchChapters[pitchIndex(props.progress)]);
 const content = ref<HTMLElement>();
 watch(
@@ -37,10 +35,7 @@ watch(
     <section
       :key="chapter.id"
       class="sx-pitch-scene"
-      :class="{
-        'sx-pitch-scene--demo': chapter.id === 'meadow',
-        'sx-pitch-scene--final': chapter.id === 'night-forest',
-      }"
+      :class="{ 'sx-pitch-scene--final': chapter.id === 'night-forest' }"
       :aria-label="chapter.subject"
     >
       <p class="sx-eyebrow">
@@ -64,23 +59,22 @@ watch(
       />
       <h2>{{ chapter.title }}</h2>
       <p class="sx-pitch-message">{{ chapter.message }}</p>
-      <p class="sx-evidence-status" :data-status="chapter.status">
+      <p
+        v-if="chapter.status"
+        class="sx-evidence-status"
+        :data-status="chapter.status"
+      >
         {{ statusLabels[chapter.status] }}
       </p>
-      <DemoVideo
-        v-if="chapter.id === 'meadow'"
-        :suspended="suspended"
-        @playing="$emit('videoPlaying')"
-      />
-      <PitchVisual v-else :chapter="chapter.id" @sources="$emit('sources')" />
+      <PitchVisual :chapter="chapter.id" @sources="$emit('sources')" />
       <ul
-        v-if="['sky', 'coast', 'night-forest'].includes(chapter.id)"
+        v-if="['forest', 'sky', 'meadow'].includes(chapter.id)"
         class="sx-pitch-points"
       >
         <li v-for="item in chapter.screen" :key="item">{{ item }}</li>
       </ul>
-      <p v-if="chapter.id === 'night-forest'" class="sx-next-steps">
-        Besoins proposés à confirmer par l’équipe · aucun partenariat annoncé.
+      <p v-if="chapter.id === 'coast'" class="sx-next-steps">
+        Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour.
       </p>
       <a v-if="chapter.id === 'night-forest'" class="sx-cta" :href="appHref"
         >Commencer l’expérience Symbiose <span aria-hidden="true">↗</span></a

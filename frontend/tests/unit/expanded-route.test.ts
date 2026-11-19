@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { gsap } from "gsap";
 import { cameraKeys, scrollScreens } from "../../src/experience/config";
-import { chapterProgress, pitchDuration } from "../../src/experience/pitch";
+import {
+  chapterProgress,
+  pitchChapters,
+  pitchDuration,
+} from "../../src/experience/pitch";
 import { NarrativeTimeline } from "../../src/experience/NarrativeTimeline";
 import {
   prologueFraction,
@@ -17,6 +21,7 @@ import {
   expandedUnits,
   excursions,
   excursionProgress,
+  expandedTime,
   routeAtOriginal,
   routeAtSeconds,
   routeClock,
@@ -37,8 +42,29 @@ describe("the longer continuous journey", () => {
     ).toBe(1.75);
     expect(prologueFraction).toBe(3 / 42);
     expect(expandedUnits).toBe(315);
-    expect(expandedDuration).toBe(pitchDuration + 150);
-    expect(expandedDuration).toBe(450);
+    expect(expandedDuration).toBe(pitchDuration + 84);
+    expect(expandedDuration).toBe(300);
+  });
+
+  it("starts each scene on the five-minute clock where the spoken pitch expects it", () => {
+    expect(pitchChapters.map((c) => expandedTime(c.start))).toEqual([
+      0, 50, 67, 87, 103, 135, 215, 270,
+    ]);
+    const starts = excursions.map(
+      (e) => sampleRoute(excursionProgress(e.id, 0)).seconds,
+    );
+    expect(starts[0]).toBeCloseTo((26 * 12) / 17.5, 9);
+    expect(starts[1]).toBeCloseTo(185, 9);
+    expect(starts[2]).toBeCloseTo(227.5, 9);
+    expect(excursions.map((e) => e.seconds)).toEqual([24, 30, 30]);
+    // Pitch sections: problem, solution, impacts, team, needs, epilogue.
+    const sections = [0, 50, 135, 185, 215, 270, 300];
+    expect(expandedTime(pitchChapters[1].start)).toBe(sections[1]);
+    expect(expandedTime(pitchChapters[5].start)).toBe(sections[2]);
+    expect(starts[1]).toBeCloseTo(sections[3], 9);
+    expect(expandedTime(pitchChapters[6].start)).toBe(sections[4]);
+    expect(expandedTime(pitchChapters[7].start)).toBe(sections[5]);
+    expect(expandedTime(pitchDuration)).toBe(sections[6]);
   });
 
   it("maps all original chapters and camera anchors back to their unchanged coordinates", () => {
@@ -89,10 +115,10 @@ describe("the longer continuous journey", () => {
     }
   });
 
-  it("keeps the 450-second clock continuous, monotonic and reversible across every boundary", () => {
+  it("keeps the 300-second clock continuous, monotonic and reversible across every boundary", () => {
     let previousProgress = -1,
       previousSeconds = -1;
-    for (let step = 0; step <= 3600; step++) {
+    for (let step = 0; step <= 2400; step++) {
       const seconds = step / 8;
       const progress = routeAtSeconds(seconds);
       const state = sampleRoute(progress);
@@ -208,10 +234,10 @@ it("injects the expanded clock into the existing presentation player and resumes
       snap: vi.fn(),
     });
     timeline.playPresentation();
-    expect(options.seconds).toBe(450);
-    expect(options.duration).toBe(450);
+    expect(options.seconds).toBe(300);
+    expect(options.duration).toBe(300);
     expect(options.ease).toBe("none");
-    for (const seconds of [24, 49, 74, 150, 290, 320, 389, 449.5]) {
+    for (const seconds of [12, 24, 49, 74, 150, 190, 230, 299.5]) {
       cursor.seconds = seconds;
       options.onUpdate();
       const total = timeline.scrollTo.mock.calls.at(-1)[0];
@@ -223,7 +249,7 @@ it("injects the expanded clock into the existing presentation player and resumes
     timeline.trigger.progress = prefix + routeAtSeconds(123.75) * (1 - prefix);
     timeline.playPresentation();
     expect(tween.kill).toHaveBeenCalled();
-    expect(options.duration).toBeCloseTo(450 - 123.75, 10);
+    expect(options.duration).toBeCloseTo(300 - 123.75, 10);
     options.onComplete();
     expect(timeline.snap).toHaveBeenCalledWith(1);
   } finally {

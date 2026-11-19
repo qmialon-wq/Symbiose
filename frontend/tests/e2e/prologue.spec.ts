@@ -91,7 +91,7 @@ test("le bureau ouvre le récit, peut être passé et reste accessible depuis 00
   expect(errors).toEqual([]);
 });
 
-test("le travelling rejoint la forêt et le scroll natif permet de revenir au bureau", async ({
+test("le travelling rejoint la forêt, lance le récit et le scroll natif permet de revenir au bureau", async ({
   page,
 }) => {
   await open(page);
@@ -104,11 +104,17 @@ test("le travelling rejoint la forêt et le scroll natif permet de revenir au bu
   await expect(root(page)).toHaveAttribute("data-prologue-active", "false", {
     timeout: 20000,
   });
-  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+  // In presentation mode the five-minute narrative starts on arrival.
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     "forest",
   );
+  await expect(
+    page.getByRole("button", { name: "Mettre en pause", exact: true }),
+  ).toBeVisible();
+  await expect
+    .poll(async () => Number(await root(page).getAttribute("data-progress")))
+    .toBeGreaterThan(0);
   await page.mouse.move(700, 500);
   await page.mouse.wheel(0, -600);
   await expect(root(page)).toHaveAttribute("data-prologue-active", "true");

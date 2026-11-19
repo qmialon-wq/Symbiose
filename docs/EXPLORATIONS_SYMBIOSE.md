@@ -2,8 +2,9 @@
 
 Le parcours immersif comprend trois explorations supplémentaires et un défilement
 plus lent. Sa distance de scroll passe de **24 à 42 hauteurs d’écran**, soit
-**×1,75**, bureau compris. La lecture continue passe de cinq minutes à **7 min 30**,
-hors prologue et vidéo d’introduction manuelle.
+**×1,75**, bureau compris. Depuis le 19 novembre 2026, la lecture continue dure
+**5 minutes**, hors prologue et vidéo d’introduction, calée sur le pitch à deux
+voix (voir le [guide du présentateur](PRESENTER_GUIDE.md)).
 
 ## Les nouveaux passages
 
@@ -33,7 +34,8 @@ clés de caméra restent conservées. `excursions/route.ts` ajoute 35 unités de
 historiques restent elles aussi plus lentes, car ces unités occupent 39 écrans de
 scroll, auxquels s’ajoutent les trois du bureau.
 
-Chaque exploration ajoute 50 secondes à l’horloge de présentation. Les repères
+Les explorations occupent 24, 30 et 30 secondes de l’horloge de présentation
+(50 secondes chacune avant le recalage sur le pitch de cinq minutes). Les repères
 horaires affichés par les chapitres et le curseur utilisent cette nouvelle
 horloge ; les textes et les durées du script source ne sont pas réécrits.
 Le mode debug des sept transitions garde son ancien repère pour les audits.

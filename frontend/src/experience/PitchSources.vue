@@ -1,15 +1,45 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { sources, producers } from "./sources";
+import { pitchChapters, juryCoverage, clock, statusLabels } from "./pitch";
 import {
-  pitchChapters,
-  juryCoverage,
-  clock,
-  statusLabels,
-  pitchWordCount,
-} from "./pitch";
+  excursions,
+  excursionProgress,
+  expandedTime,
+  routeClock,
+} from "./excursions/route";
+import { excursionCopy } from "./excursions/copy";
 const props = defineProps<{ chapterId: string }>();
 const tab = ref<"sources" | "speaker" | "jury">("sources");
+// The eight chapters and three explorations, in the order of the five-minute clock.
+const steps = [
+  ...pitchChapters.map((chapter) => ({
+    id: chapter.id,
+    title: chapter.subject,
+    start: expandedTime(chapter.start),
+    end: expandedTime(chapter.start + chapter.duration),
+    message: chapter.message,
+    oral: chapter.oral,
+    status: chapter.status,
+    screen: chapter.screen,
+    details: [chapter.interaction, chapter.transition],
+  })),
+  ...excursions.map((excursion) => {
+    const copy = excursionCopy[excursion.id],
+      start = routeClock.seconds(excursionProgress(excursion.id, 0));
+    return {
+      id: excursion.id,
+      title: `${excursion.label} · ${excursion.name}`,
+      start,
+      end: start + excursion.seconds,
+      message: copy.body,
+      oral: copy.oral,
+      status: undefined,
+      screen: copy.notes,
+      details: [copy.disclaimer],
+    };
+  }),
+].sort((a, b) => a.start - b.start);
 </script>
 <template>
   <div class="sx-source-book">
@@ -37,8 +67,7 @@ const tab = ref<"sources" | "speaker" | "jury">("sources");
       <p class="sx-source-limit">
         <strong>Attendus vérifiés :</strong> les cinq questions de l’image
         fournie, les sept rubriques du descriptif et les six critères du
-        règlement (§ 5, p. 3). La vidéo produit sera réalisée ultérieurement par
-        l’équipe ; elle reste à ajouter au lecteur.
+        règlement (§ 5, p. 3).
       </p>
       <dl class="sx-evidence-key">
         <div>
@@ -117,33 +146,27 @@ const tab = ref<"sources" | "speaker" | "jury">("sources");
     </template>
     <template v-else-if="tab === 'speaker'">
       <p>
-        Cinq minutes, dont 90 secondes de démonstration. Environ
-        {{ pitchWordCount }} mots hors vidéo. Le compteur de l’expérience
-        indique la position dans le script ; une répétition chronométrée reste
-        nécessaire.
+        La vidéo d’ouverture (environ une minute) et le travelling vers la forêt
+        précèdent le récit. Le récit dure ensuite cinq minutes, à deux voix (A
+        et B). En mode présentation, la lecture continue démarre à l’arrivée en
+        forêt ; Espace la met en pause, les flèches changent d’étape. Une
+        répétition chronométrée reste nécessaire.
       </p>
-      <section
-        v-for="chapter in pitchChapters"
-        :key="chapter.id"
-        class="sx-speaker-chapter"
-      >
+      <section v-for="step in steps" :key="step.id" class="sx-speaker-chapter">
         <p class="sx-eyebrow">
-          {{ clock(chapter.start) }}–{{
-            clock(chapter.start + chapter.duration)
-          }}
-          · {{ chapter.duration }} S
+          {{ clock(step.start) }}–{{ clock(step.end) }} ·
+          {{ Math.round(step.end - step.start) }} S
         </p>
-        <h3>{{ chapter.subject }}</h3>
+        <h3>{{ step.title }}</h3>
         <p>
-          <strong>{{ chapter.message }}</strong>
+          <strong>{{ step.message }}</strong>
         </p>
-        <p class="sx-script">{{ chapter.oral }}</p>
-        <small>{{ statusLabels[chapter.status] }}</small>
+        <p class="sx-script">{{ step.oral }}</p>
+        <small v-if="step.status">{{ statusLabels[step.status] }}</small>
         <details>
           <summary>À l’écran et transition</summary>
-          <p>{{ chapter.screen.join(" · ") }}</p>
-          <p>{{ chapter.interaction }}</p>
-          <p>{{ chapter.transition }}</p>
+          <p>{{ step.screen.join(" · ") }}</p>
+          <p v-for="line in step.details" :key="line">{{ line }}</p>
         </details>
       </section>
     </template>

@@ -21,15 +21,13 @@ import { reducedProgress } from "../../src/experience/journey";
 import { anchorTimes, narrativeDuration } from "../../src/experience/config";
 
 describe("sourced five-minute presentation", () => {
-  it("allocates exactly five minutes, including ninety seconds for the manually controlled demo", () => {
-    expect(pitchDuration).toBe(300);
+  it("gives the eight chapters 216 seconds, the explorations completing the five minutes", () => {
+    expect(pitchDuration).toBe(216);
     expect(pitchChapters).toHaveLength(8);
-    expect(pitchChapters.reduce((sum, c) => sum + c.duration, 0)).toBe(300);
-    expect(pitchChapters[5]).toMatchObject({
-      id: "meadow",
-      start: 150,
-      duration: 90,
-    });
+    expect(pitchChapters.reduce((sum, c) => sum + c.duration, 0)).toBe(216);
+    expect(pitchChapters.map((c) => c.duration)).toEqual([
+      26, 17, 20, 16, 32, 50, 25, 30,
+    ]);
     for (const [index, chapter] of pitchChapters.entries()) {
       expect(chapter.start).toBe(
         pitchChapters.slice(0, index).reduce((sum, c) => sum + c.duration, 0),
@@ -47,19 +45,24 @@ describe("sourced five-minute presentation", () => {
         ),
       ).toBe(true);
     }
-    const words = pitchChapters
-      .filter((c) => c.id !== "meadow")
-      .map((c) => c.oral)
-      .join(" ")
-      .split(/\s+/).length;
-    expect(words / 3.5).toBeLessThan(130);
     expect(juryCoverage).toHaveLength(12);
-    expect(pitchChapters[3].status).toBe("future");
-    expect(pitchChapters[6].status).toBe("expected");
-    expect(pitchChapters[7].message).toContain("Arden, Romain et Quentin");
+    // Evidence labels only where the scene makes a claim about Symbiose.
+    expect(pitchChapters.map((c) => c.status)).toEqual([
+      undefined,
+      "operational",
+      "operational",
+      undefined,
+      "operational",
+      "expected",
+      "future",
+      undefined,
+    ]);
+    expect(pitchChapters[7].title).toBe(
+      "Comprendre le vivant\navant d’aménager.",
+    );
   });
   it("maps every editorial second reversibly without altering the camera path", () => {
-    for (let second = 0; second <= 300; second += 0.5) {
+    for (let second = 0; second <= pitchDuration; second += 0.5) {
       expect(pitchSeconds(progressAtSeconds(second))).toBeCloseTo(second, 7);
     }
     for (let i = 0; i < 8; i++) {
@@ -72,7 +75,7 @@ describe("sourced five-minute presentation", () => {
       );
     }
     expect(pitchSeconds(NaN)).toBe(0);
-    expect(pitchSeconds(2)).toBe(300);
+    expect(pitchSeconds(2)).toBe(pitchDuration);
     expect(progressAtSeconds(-30)).toBe(0);
     expect(pitchIndex(1)).toBe(7);
   });

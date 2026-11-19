@@ -23,7 +23,7 @@ const pipeline = [
   ],
   [
     "Reconnaissance",
-    "MegaDetector localise les animaux. Le classificateur PyTorch propose une espèce ; le suivi relie les observations dans le temps.",
+    "MegaDetector localise les animaux, puis un second modèle propose l’espèce : classificateur PyTorch aujourd’hui, SpeciesNet en piste pour la suite. Le suivi relie les observations dans le temps.",
   ],
   [
     "Validation",
@@ -40,20 +40,7 @@ const pipeline = [
 ];
 </script>
 <template>
-  <div
-    v-if="chapter === 'forest'"
-    class="sx-field-glimpse"
-    aria-label="Illustration d’une observation par caméra piège"
-  >
-    <svg viewBox="0 0 180 90" aria-hidden="true">
-      <path
-        d="M13 5v77m-9-42h30v22H4V40Zm16 11a6 6 0 1 0 .01 0M97 55l12-8 30 2 9-14 7 3-8 18-12 5-5 21m-24-24-5 24m8-35 1-12-8-9m8 9 9-10m29 11 3-12m-3 12 12-6"
-      />
-    </svg>
-    <span>Caméra piège → observation à vérifier</span
-    ><small>Illustration · espèce et confiance non calculées</small>
-  </div>
-  <div v-else-if="chapter === 'rivers'" class="sx-data-confluence">
+  <div v-if="chapter === 'wetland'" class="sx-data-confluence">
     <div class="sx-tributaries" aria-label="Sources utilisées par le prototype">
       <span>Observations validées</span><span>Cadastre · RPG 2024</span
       ><span>IGN · DREAL Normandie</span><span>Publications scientifiques</span>
@@ -106,11 +93,7 @@ const pipeline = [
       </button>
     </details>
   </div>
-  <div v-else-if="chapter === 'underwater'" class="sx-future-signal">
-    <i aria-hidden="true" /><span>Écoute et captation aquatiques</span
-    ><strong>À développer · à valider</strong>
-  </div>
-  <div v-else-if="chapter === 'wetland'" class="sx-living-pipeline">
+  <div v-else-if="chapter === 'rivers'" class="sx-living-pipeline">
     <ol aria-label="Étapes de traitement">
       <li v-for="(item, index) in pipeline" :key="item[0]">
         <button :aria-pressed="step === index" @click="step = index">
@@ -125,7 +108,7 @@ const pipeline = [
       séquentiellement</small
     >
   </div>
-  <div v-else-if="chapter === 'coast'" class="sx-impact-proof">
+  <div v-else-if="chapter === 'meadow'" class="sx-impact-proof">
     <strong>12 <span>alternatives documentées</span></strong
     ><span
       >Clôture · éclairage · végétation · terrassement ·

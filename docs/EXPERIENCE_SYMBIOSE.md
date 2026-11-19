@@ -2,7 +2,7 @@
 
 Le [parcours étendu](EXPLORATIONS_SYMBIOSE.md) ajoute désormais le sol vivant,
 un survol par drone et une plongée à Étretat : 42 hauteurs de scroll, soit ×1,75,
-et une lecture continue de 7 min 30. Le repère des huit scènes décrit ci-dessous
+et une lecture continue de 5 minutes, calée sur le pitch à deux voix. Le repère des huit scènes décrit ci-dessous
 reste la référence interne conservée pour leurs caméras et leurs transitions.
 
 Le [pitch du Datathon 2026](PITCH_DATATHON_2026.md) ajoute désormais huit chapitres sourcés, un script de cinq minutes avec créneau vidéo de 90 secondes, un carnet local des sources, la navigation de présentation avec arrêts, le plein écran et un CTA configurable. Le moteur spatial ci-dessous conserve son repère de 210 unités ; ces unités ne sont plus la durée de la présentation. Le règlement, la trame de descriptif et les cinq questions fournis sont intégrés au carnet. La vidéo produit sera montée ultérieurement par l’équipe.

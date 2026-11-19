@@ -3,7 +3,7 @@
 Avec les [trois explorations supplémentaires](EXPLORATIONS_SYMBIOSE.md), le bureau
 occupe toujours trois hauteurs de scroll, sur un total de 42. Son raccord à la
 forêt et son lecteur restent conservés ; la présentation complète dure désormais
-7 min 30 hors prologue.
+5 minutes hors prologue.
 
 Le prologue ajoute un bureau d’études en amont des huit atmosphères existantes.
 Le mobilier, les parois, la baie, les équipements et l’écran sont des objets
@@ -26,6 +26,8 @@ cible `[-2, 6, -28]`, focale de champ `57°`.
   permettent aussi de quitter le film en le mettant en pause.
 - **Entrer dans le vivant** met le film en pause, recule d’abord de l’écran,
   puis lance le travelling de 14 secondes. Le scroll rend ensuite la main au visiteur.
+  En mode présentation, la lecture continue de cinq minutes démarre à l’arrivée
+  en forêt ; une molette, une touche ou un clic l’interrompt.
 - **Passer l’introduction** rejoint directement la forêt. Le défilement inverse,
   `00`, le chapitre précédent depuis la forêt et `Home` en présentation permettent
   de revenir au bureau. Recommencer repart du prologue.

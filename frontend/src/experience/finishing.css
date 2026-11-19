@@ -47,31 +47,6 @@
 .sx-experience .sx-pitch-scene--final h2 {
   font-size: clamp(32px, 3.8vw, 62px);
 }
-.sx-experience .sx-pitch-scene--demo h2 {
-  font-size: clamp(28px, 3vw, 46px);
-}
-.sx-experience .sx-demo-screen :is(img, video) {
-  height: auto;
-}
-.sx-experience .sx-demo-guide > summary {
-  color: #e1e8d5;
-}
-.sx-experience .sx-pitch-content[data-chapter="meadow"] {
-  align-items: flex-start;
-}
-.sx-experience .sx-pitch-scene--demo .sx-demo {
-  width: min(
-    100%,
-    880px,
-    max(320px, calc((100svh - var(--sx-demo-reserve, 590px)) * 2.13))
-  );
-}
-.sx-experience .sx-stage--fallback {
-  --sx-demo-reserve: 638px;
-}
-.sx-experience .sx-pitch-scene--demo .sx-pitch-source {
-  display: none;
-}
 .sx-experience .sx-recovery-tools {
   position: relative;
 }
@@ -117,17 +92,11 @@
   transition: none;
 }
 @media (max-width: 600px) {
-  .sx-experience .sx-pitch-scene--demo .sx-demo {
-    width: 100%;
-  }
   .sx-experience .sx-pitch-scene h2 {
     font-size: clamp(35px, 9.2vw, 50px);
   }
   .sx-experience .sx-pitch-scene--final h2 {
     font-size: 27px;
-  }
-  .sx-experience .sx-pitch-scene--demo h2 {
-    font-size: 29px;
   }
   .sx-experience .sx-evidence-status {
     font-size: 9px;
@@ -152,15 +121,5 @@
   .sx-experience .sx-recovery-tools > div {
     left: auto;
     right: 0;
-  }
-}
-@media (max-height: 780px) and (min-width: 601px) {
-  .sx-experience
-    .sx-pitch-scene--demo
-    :is(.sx-pitch-message, .sx-evidence-status, .sx-demo-guide) {
-    display: none;
-  }
-  .sx-experience .sx-pitch-scene--demo h2 {
-    font-size: 32px;
   }
 }

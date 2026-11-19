@@ -4,6 +4,7 @@ import { sampleCamera } from "../../src/experience/CameraController";
 import { NarrativeTimeline } from "../../src/experience/NarrativeTimeline";
 import {
   chapterProgress,
+  pitchDuration,
   pitchSeconds,
   progressAtSeconds,
 } from "../../src/experience/pitch";
@@ -16,7 +17,7 @@ import {
 
 describe("prologue isolated from the existing journey", () => {
   it("adds scroll space without changing any original chapter or editorial second", () => {
-    for (let seconds = 0; seconds <= 300; seconds++) {
+    for (let seconds = 0; seconds <= pitchDuration; seconds++) {
       const p = progressAtSeconds(seconds);
       expect(pitchSeconds(toJourney(toTotal(p)))).toBeCloseTo(seconds, 9);
     }
@@ -65,7 +66,7 @@ describe("prologue isolated from the existing journey", () => {
       expect(visibleWidth).toBeGreaterThanOrEqual(5.6 / 0.86 - 1e-10);
     }
   });
-  it("runs the unchanged five-minute presentation after the prefix", () => {
+  it("runs the unchanged chapter clock after the prefix", () => {
     let cursor: { seconds: number }, options: any;
     const spy = vi.spyOn(gsap, "to").mockImplementation(((c: any, o: any) => {
       cursor = c;
@@ -83,8 +84,8 @@ describe("prologue isolated from the existing journey", () => {
         snap: vi.fn(),
       });
       timeline.playPresentation();
-      expect(options.duration).toBe(300);
-      for (const seconds of [35, 150, 240, 299]) {
+      expect(options.duration).toBe(pitchDuration);
+      for (const seconds of [26, 111, 186, 215]) {
         cursor!.seconds = seconds;
         options.onUpdate();
         expect(

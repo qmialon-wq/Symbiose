@@ -41,21 +41,21 @@ test("les trois scènes 3D restent disponibles après installation hors ligne", 
 const scenes = [
   {
     id: "soil",
-    label: "Le sol vivant",
+    label: "Sous nos pas",
     start: 12,
     units: 35,
     returns: "forest",
   },
   {
     id: "drone",
-    label: "Survol du bocage",
+    label: "L’équipe ARQ",
     start: 200,
     units: 30,
     returns: "coast",
   },
   {
     id: "marine",
-    label: "Plongée à Étretat",
+    label: "Changer d’échelle",
     start: 245,
     units: 40,
     returns: "coast",
@@ -138,13 +138,15 @@ test("le voyage offre 42 écrans de défilement et trois explorations pédagogiq
     );
     if (scene.id === "soil") {
       await expect(copy).toContainText("un annélide, pas un insecte");
-      await expect(copy).toContainText("Carottage");
+      await expect(copy).toContainText("Un projet d’aménagement prévu ici");
       await expect(copy).toContainText("aucune analyse de sol exécutée");
     }
-    if (scene.id === "drone")
+    if (scene.id === "drone") {
       await expect(copy).toContainText("une piste d’évolution");
+      await expect(copy).toContainText("Arden, Romain et Quentin");
+    }
     if (scene.id === "marine")
-      await expect(copy).toContainText("aucune observation marine mesurée");
+      await expect(copy).toContainText("aucun partenariat annoncé");
     await copy
       .getByRole("button", { name: "Poursuivre le voyage", exact: false })
       .click();
@@ -210,7 +212,7 @@ test("la navigation clavier inclut le sol entre forêt et ciel sans perdre les h
   }
   await page.locator("#main-content").focus();
   await page.keyboard.press("End");
-  await expect(page.locator(".sx-counter")).toHaveText("7:30 / 7:30");
+  await expect(page.locator(".sx-counter")).toHaveText("5:00 / 5:00");
   const href = await page
     .getByRole("link", { name: "Accéder à l’application" })
     .getAttribute("href");

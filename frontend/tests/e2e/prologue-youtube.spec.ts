@@ -182,7 +182,17 @@ test("le lecteur est projeté dans l’écran après l’approche et reste cadr�
   await expect(root(page)).toHaveAttribute("data-prologue-active", "false", {
     timeout: 20000,
   });
-  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+  // In presentation mode the five-minute narrative starts on arrival.
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-chapter",
+    "forest",
+  );
+  await expect(
+    page.getByRole("button", { name: "Mettre en pause", exact: true }),
+  ).toBeVisible();
+  await expect
+    .poll(async () => Number(await root(page).getAttribute("data-progress")))
+    .toBeGreaterThan(0);
 });
 
 test("une intégration YouTube refusée garde le passage et le lien vers la vidéo utilisables", async ({

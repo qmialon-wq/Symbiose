@@ -4,32 +4,34 @@ import type { Vec3 } from "../config";
 
 export type ExcursionId = "soil" | "drone" | "marine";
 export const expandedScrollScreens = 39;
+// `seconds` pace each exploration on the five-minute presentation clock;
+// `units` keep their scroll share and camera path unchanged.
 export const excursions = [
   {
     id: "soil",
     anchor: 12,
     units: 35,
-    seconds: 50,
-    name: "Sous nos pieds",
-    label: "Le sol vivant",
+    seconds: 24,
+    name: "Le sol vivant",
+    label: "Sous nos pas",
     color: "#9a704e",
   },
   {
     id: "drone",
     anchor: 165,
     units: 30,
-    seconds: 50,
-    name: "Le regard du drone",
-    label: "Survol du bocage",
+    seconds: 30,
+    name: "Survol du bocage",
+    label: "L’équipe ARQ",
     color: "#7eaa70",
   },
   {
     id: "marine",
     anchor: 180,
     units: 40,
-    seconds: 50,
-    name: "Sous la Manche",
-    label: "Plongée à Étretat",
+    seconds: 30,
+    name: "Plongée à Étretat",
+    label: "Changer d’échelle",
     color: "#4e979b",
   },
 ] as const;

@@ -1,0 +1,101 @@
+SCÈNE 1 — CE QUE NOUS NE VOYONS PAS
+00:00 – 00:50 | Question 1 : Quel est le problème ?
+[VISUEL] Une forêt en plein écran. La caméra est immobile. Aucun panneau visible. On entend les oiseaux et le vent dans les arbres.
+INTERVENANT A
+« Regardez cette forêt.
+Des arbres, de la végétation, quelques rayons de soleil…
+À première vue, rien d’extraordinaire.
+Et pourtant, une question : que savons-nous réellement de ce qui vit ici ? »
+[CAMÉRA] La caméra avance lentement entre les arbres.
+INTERVENANT B
+« Des animaux se déplacent, se nourrissent, se reproduisent. Certains passent juste devant nous, sans que nous les remarquions.
+Mais imaginons que demain, un projet d’aménagement soit prévu à cet endroit.
+Comment savoir ce que nous risquons de perturber ? »
+INTERVENANT A
+« Les informations existent. Des observations animales, des inventaires, des données environnementales…
+Mais elles sont souvent dispersées, difficiles à exploiter et surtout difficiles à traduire en décisions concrètes.
+Alors, comment faire pour mieux comprendre ce territoire avant de le transformer ? »
+⸻
+SCÈNE 2 — RENDRE L’INVISIBLE VISIBLE
+00:50 – 02:15 | Question 2 : Quelle est la solution ?
+[VISUEL] La caméra s’arrête à proximité d’un piège photographique. Une courte vidéo montre un animal.
+INTERVENANT B
+« C’est pour répondre à cette question que nous avons imaginé Symbiose.
+Notre idée est simple : associer l’intelligence artificielle aux données environnementales ouvertes pour transformer des observations en informations utiles à l’aménagement.
+Tout commence ici, avec une caméra qui observe la faune. »
+[DÉMONSTRATION] Apparition de la détection sur la vidéo, puis de l’espèce proposée par le système.
+« Un premier modèle d’intelligence artificielle, MegaDetector, détecte les animaux.
+Un second, basé sur SpeciesNet, propose d’identifier leur espèce.
+L’observation est ensuite vérifiée et validée par un humain.
+Mais est-ce que reconnaître cet animal suffit pour comprendre les enjeux de ce territoire ? »
+INTERVENANT A
+« Non. Parce que savoir qu’un animal est présent ne nous dit pas encore ce que cela implique pour un projet d’aménagement.
+Il faut aussi comprendre l’environnement dans lequel il évolue. »
+[CAMÉRA] La caméra s’élève. Une vue du territoire apparaît, accompagnée de données cartographiques.
+INTERVENANT B
+« Symbiose croise alors les observations avec des données officielles : zones naturelles d’intérêt écologique, sites Natura 2000, zones humides lorsque les données sont disponibles…
+Et nous allons encore plus loin.
+Imaginons un projet d’éclairage sur ce terrain. »
+[DÉMONSTRATION] Affichage du projet, des éléments territoriaux et des alternatives.
+« Symbiose met en évidence les informations à examiner, les vérifications nécessaires et des alternatives possibles.
+Adapter l’éclairage, déplacer une installation, modifier une intervention…
+Le tout accompagné de justifications et de sources consultables. »
+INTERVENANT A
+« L’objectif n’est donc pas de laisser une IA décider de ce que nous devons construire.
+C’est de nous aider à comprendre ce que nous devons prendre en compte avant de construire. »
+⸻
+SCÈNE 3 — DE L’OBSERVATION À LA DÉCISION
+02:15 – 03:05 | Question 3 : Quels impacts ?
+[VISUEL] La caméra prend de la hauteur. La forêt révèle progressivement un territoire plus vaste, où nature et activités humaines coexistent.
+INTERVENANT B
+« Alors, qu’est-ce que cela change concrètement ?
+Aujourd’hui, observer une espèce, consulter les zonages environnementaux et étudier un projet peuvent être trois démarches distinctes.
+Avec Symbiose, nous les réunissons dans un même parcours. »
+INTERVENANT A
+« Pour un aménageur, c’est la possibilité d’identifier plus tôt des points de vigilance.
+Pour les acteurs de l’environnement, c’est une façon de mieux valoriser les connaissances disponibles.
+Et pour les territoires, c’est la perspective de décisions mieux éclairées.
+Nous avons construit un démonstrateur fonctionnel. Il reste à mesurer son impact réel sur le terrain.
+Mais nous défendons une conviction : mieux comprendre un territoire, c’est se donner les moyens de mieux le préserver. »
+⸻
+SCÈNE 4 — CEUX QUI ONT IMAGINÉ SYMBIOSE
+03:05 – 03:35 | Question 4 : Qui compose l’équipe ?
+[VISUEL] La caméra s’arrête dans une clairière. Une présentation discrète de l’équipe ARQ apparaît.
+INTERVENANT B
+« Derrière cette idée, il y a notre équipe : ARQ.
+Nous avons réuni nos compétences en intelligence artificielle, développement logiciel et exploitation des données pour donner vie à Symbiose. »
+INTERVENANT A
+« Et surtout, nous avons partagé une même ambition : ne pas développer de la technologie pour la technologie.
+Mais construire un outil qui puisse un jour être utile à celles et ceux qui agissent sur nos territoires. »
+⸻
+SCÈNE 5 — ET DEMAIN ?
+03:35 – 04:30 | Question 5 : Quels sont les besoins pour changer d’échelle ?
+[VISUEL] La caméra reprend son mouvement et découvre un paysage plus vaste.
+INTERVENANT A
+« Aujourd’hui, Symbiose est un démonstrateur.
+Mais notre ambition va au-delà de cette première version.
+Alors, qu’est-ce qu’il nous manque pour aller plus loin ? »
+INTERVENANT B
+« D’abord, des partenaires de terrain : collectivités, associations naturalistes et professionnels de l’aménagement, pour confronter notre solution à leurs besoins réels.
+Ensuite, des données fiables et une expertise scientifique pour enrichir et valider nos analyses.
+Et enfin, des moyens pour expérimenter, améliorer et déployer Symbiose à plus grande échelle.
+Parce que notre objectif n’est pas de remplacer les experts de la biodiversité.
+C’est de rendre leurs connaissances plus accessibles au moment où les décisions se prennent. »
+⸻
+ÉPILOGUE — LA MÊME FORÊT
+04:30 – 05:00 | Conclusion
+[VISUEL] La caméra revient lentement vers le point de départ, avec exactement le même cadrage qu’à l’ouverture. Les interfaces disparaissent. La forêt occupe de nouveau tout l’écran.
+[SILENCE] Une courte pause. On n’entend plus que la nature.
+INTERVENANT A
+« Regardez autour de vous.
+Vous reconnaissez cet endroit ?
+C’est ici que notre voyage a commencé. »
+[PAUSE]
+INTERVENANT B
+« Cette forêt est la même qu’il y a cinq minutes.
+Ce qui a changé, c’est ce que nous en savons. »
+INTERVENANT A
+« Et c’est peut-être là que commence une meilleure façon d’aménager nos territoires. »
+[VISUEL] La forêt s’efface progressivement. Le logo Symbiose apparaît, accompagné de la signature :
+SYMBIOSE
+Comprendre le vivant avant d’aménager.
