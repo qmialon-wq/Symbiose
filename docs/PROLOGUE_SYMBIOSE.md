@@ -15,12 +15,13 @@ cible `[-2, 6, -28]`, focale de champ `57°`.
 
 - `00` ouvre le bureau ; `01` à `08` conservent les chapitres d’origine.
 - **Découvrir Symbiose**, ou un clic sur l’écran du bureau, approche la caméra.
-  Le lecteur YouTube se charge une fois cette approche terminée ; la lecture
-  démarre ensuite par un clic sur le lecteur ou **Lire la vidéo**. Aucun autoplay.
-- Le lecteur officiel est projeté sur les quatre coins de l’écran 3D par une
-  matrice de perspective CSS synchronisée avec la caméra. Il conserve ses
-  contrôles natifs, le plein écran et les sous-titres disponibles sur YouTube.
-  Les fichiers locaux continuent d’utiliser une vraie `VideoTexture`.
+  Le MP4 officiel est lu à la demande. Le lecteur YouTube de secours ne se
+  charge qu'après le choix du visiteur ; une fois l'approche terminée, sa lecture
+  démarre par un clic sur le lecteur ou **Lire la vidéo**. Aucun autoplay au chargement.
+- Le MP4 utilise une vraie `VideoTexture` sur l'écran 3D. Le lecteur YouTube de
+  secours est projeté sur les quatre coins de cet écran par une matrice de
+  perspective CSS synchronisée avec la caméra. Les contrôles de lecture, volume
+  et progression sont conservés ; les sous-titres YouTube restent disponibles.
 - Pendant la lecture, molette et gestes tactiles ne déplacent pas le récit.
   La pause et la fin de lecture libèrent le défilement. Les boutons de chapitre
   permettent aussi de quitter le film en le mettant en pause.
@@ -42,16 +43,34 @@ horloge. Les sauvegardes du jury restent dans leur format antérieur.
 Le mode debug des sept transitions conserve volontairement son repère d’origine
 sans prologue, pour permettre la comparaison avec les audits précédents.
 
-## Vidéo YouTube et fichier local
+## Introduction officielle et secours YouTube
 
-La vidéo YouTube fournie par l’utilisateur (`J-cDr27eVC0`) est utilisée par défaut.
-Il s’agit du film **provisoire** « AUBE présentation » (64 secondes au moment de
-la vérification), pas d’une démonstration Symbiose. L’interface l’indique.
-Pour remplacer ce lien, définir au build du frontend :
+Le prologue utilise en priorité `/experience-media/intro.mp4`, copie intégrale
+du fichier `Symbiose_Intro.mp4` fourni par l'équipe. La vidéo fait
+**137 717 625 octets**, **74,234 secondes**, H.264 1920 × 1080 à 60 images/s,
+avec audio AAC 44,1 kHz. SHA-256 :
+`dd30597636fc44e2c9d754c283610ac847710c526bd350d01de20527552d3a32`.
+Cette introduction est indépendante de la démonstration produit ; aucune
+contrainte de 90 secondes ne lui est appliquée.
+
+La vidéo officielle [SYMBIOSE — Projet Datathon 2026](https://youtu.be/O4J-Na3stKY)
+est la solution alternative. Le film provisoire antérieur n'est plus une source
+par défaut. Configuration au build dans `frontend/.env.local` :
 
 ```dotenv
-VITE_SYMBIOSE_INTRO_YOUTUBE_URL=https://www.youtube.com/embed/J-cDr27eVC0
+VITE_SYMBIOSE_INTRO_VIDEO_URL=/experience-media/intro.mp4
+VITE_SYMBIOSE_INTRO_YOUTUBE_URL=https://youtu.be/O4J-Na3stKY
+# Facultatif, seulement si la piste WebVTT existe :
+# VITE_SYMBIOSE_INTRO_CAPTIONS_URL=/experience-media/intro.fr.vtt
 ```
+
+Sans configuration explicite, le fichier `intro.mp4` présent au build est
+détecté automatiquement. Une valeur vide de `VITE_SYMBIOSE_INTRO_VIDEO_URL`
+permet de choisir YouTube sans utiliser le fichier présent. Si le MP4 est
+absent ou illisible, une action explicite **Regarder sur YouTube** permet
+d'utiliser la solution alternative ; elle n'est pas chargée en arrière-plan.
+Le MP4 utilise `preload="metadata"` et reste utilisable sans Internet lorsqu'il
+est servi localement. Aucun son n'est joué au chargement de la landing page.
 
 L’[API IFrame officielle YouTube](https://developers.google.com/youtube/iframe_api_reference)
 transmet les états lecture, mise en mémoire tampon, pause et fin. Elle n’est
@@ -59,22 +78,54 @@ chargée qu’après le choix du visiteur. Le défilement est bloqué pendant la
 lecture et la mise en mémoire tampon, puis libéré à la pause ou à la fin.
 Les erreurs d’intégration ou de réseau laissent une option de nouvelle tentative,
 le passage de l’introduction et un lien vers YouTube. Une connexion Internet est
-nécessaire pour ce film ; les paysages et le prologue restent utilisables hors ligne.
+nécessaire pour cette solution alternative.
 
-Pour une vidéo locale, déposer `demo.mp4` ou `demo.webm` dans `frontend/public/experience-media/`, puis
-reconstruire le frontend. MP4 est déjà ignoré par Git. Le format conseillé est
-16:9, environ 90 secondes. Les variables Vite existantes peuvent également être
-utilisées dans la configuration locale du frontend :
+Les MP4 sont ignorés par Git ; `intro.mp4` est installé dans le checkout local,
+pas dans l'historique du dépôt. Avant un build sur une nouvelle machine ou en CI,
+fournir le fichier réel dans `frontend/public/experience-media/intro.mp4` :
+
+```powershell
+# Depuis la racine du dépôt ; adapter le chemin source si nécessaire.
+Copy-Item -LiteralPath "$env:USERPROFILE\Downloads\Symbiose_Intro.mp4" -Destination frontend/public/experience-media/intro.mp4
+Get-FileHash -LiteralPath frontend/public/experience-media/intro.mp4 -Algorithm SHA256
+docker compose up -d --build --no-deps frontend
+```
+
+`.dockerignore` inclut `frontend/**` et le Dockerfile copie ce répertoire.
+Vite copie le MP4 du dossier public dans le build ; l'image Nginx inclut donc
+le fichier lorsqu'il est présent avant la construction. Un clone Git seul
+ne le contient pas. Les variables Vite sont lues au build ; changer seulement
+l'environnement d'un conteneur déjà construit ne reconfigure pas le lecteur.
+
+Le pack autonome du jury inclut également `intro.mp4` et les éventuels
+sous-titres de l'introduction. `jury/offline-manifest.json` les recense sous
+`intro`, indépendamment de `demo` : une introduction présente ne signifie pas
+que la démonstration produit est fournie. Le cache complet du navigateur est
+installé uniquement par l'action **Installer hors ligne**. Attendre
+**Installation locale prête** avant de couper le réseau ; YouTube reste
+une solution nécessitant Internet. Sans installation de ce cache, le MP4
+reste lisible hors Internet tant que le serveur local sert son fichier.
+
+Les chemins média doivent rester locaux. Une piste WebVTT de l'introduction
+peut être associée via `VITE_SYMBIOSE_INTRO_CAPTIONS_URL` ; aucune n'a été fournie.
+Un fichier peut aussi être choisi depuis le bureau : il reste sur l'appareil,
+sans téléversement ni persistance.
+
+## Ancienne démonstration produit
+
+La mise à jour de `main` a supprimé `DemoVideo.vue` et le visuel de démonstration
+produit. Le récit actuel dure cinq minutes hors prologue, sans ce lecteur de
+90 secondes. Les ressources `demo.mp4` ou `demo.webm` et leurs variables
+historiques restent indépendantes de l'introduction :
 
 ```dotenv
 VITE_SYMBIOSE_DEMO_URL=/experience-media/demo.mp4
 VITE_SYMBIOSE_DEMO_CAPTIONS_URL=/experience-media/demo.fr.vtt
 ```
 
-Les URL de fichiers média de cette configuration doivent rester locales. Fournir une piste WebVTT française pour un film
-commenté. La même configuration continue d’alimenter le lecteur du chapitre
-Démonstration existant, qui n’a pas été modifié. Un fichier peut aussi être choisi
-depuis le bureau : il reste sur l’appareil, sans téléversement ni persistance.
+Cette configuration ne pilote aucun lecteur produit actif dans le récit actuel
+et n'alimente pas le prologue. Ne pas remplacer ces anciennes ressources par
+l'introduction ni réintroduire le lecteur supprimé.
 
 ## Ressources et limites visuelles
 
@@ -104,8 +155,8 @@ hors ligne du jury, sans modification du système de packaging.
 
 Le rendu est un décor 3D procédural cohérent avec l’étude spatiale actuelle ;
 il ne s’agit pas d’une captation réelle ou d’un bureau scanné. Les limites visuelles
-de la forêt existante restent celles du projet. Le vrai film de 90 secondes
-n’a pas pu être validé puisqu’il n’est pas fourni.
+de la forêt existante restent celles du projet. L'introduction officielle est
+installée séparément des anciennes ressources de démonstration produit.
 
 Sans WebGL, le prologue utilise cette image fixe avec un lecteur HTML visible.
 Le paysage de forêt existant est préchargé et affiché derrière le poster. Sur les
@@ -132,7 +183,10 @@ Use case: photorealistic-natural. Asset type: full-screen 16:9 photographic back
 
 </details>
 
-## Recette de la refonte artistique 2D
+## Recette historique de la refonte artistique 2D
+
+Cette recette précède l'intégration de la vidéo officielle et la suppression
+du lecteur produit sur `main` ; elle ne constitue pas une validation de la fusion.
 
 - Compilation TypeScript et production Vite réussies.
 - **22 tests unitaires ciblés réussis** : caméra et horloge du prologue,
@@ -173,7 +227,7 @@ npm.cmd run test:e2e -- prologue-art.spec.ts prologue.spec.ts prologue-youtube.s
 ## Historique : intégration du prologue WebGL et du lecteur
 
 Les listes et validations qui suivent décrivent l’intégration initiale du prologue.
-La recette de la refonte 2D actuelle est celle de la section précédente.
+La recette antérieure de la refonte 2D figure dans la section précédente.
 
 Créés :
 
@@ -238,6 +292,58 @@ Git était propre au début de l’intervention.
 Les captures et rapports locaux sont dans `output/symbiose/prologue-baseline/`
 et `output/symbiose/prologue-validation/` ; ces dossiers d’audit sont ignorés par Git.
 
+## Vérifications de l’étape 21
+
+Cette recette a été réalisée avant la synchronisation avec `origin/main`
+(`8f41aa6`) et décrit le build de cette étape, avant la suppression du lecteur
+produit dans la version réunifiée.
+
+- Build TypeScript/Vite et reconstruction du frontend Docker : réussis.
+- Empreinte du MP4 identique dans la source fournie, le dossier public, le build,
+  le paquet local et le conteneur Nginx. Service frontend sain sur le port 8080.
+- Réponses média HTTP `200` et `206 Partial Content` vérifiées dans Nginx.
+- 24 tests unitaires ciblés réussis : lecteurs, séparation des vidéos et pistes,
+  contrôles, pause et inventaire du paquet hors ligne.
+- 18 scénarios Playwright de production validés, avec reprises ciblées après
+  correction des attentes de mise en page mobile et des réponses HTTP Range de
+  la ressource de test. Lecture réelle du MP4 en 2D et WebGL, mouvements réduits,
+  son/progression, retour au récit et installation/relecture sans réseau vérifiés.
+  Les états et erreurs YouTube utilisent une API de test explicitement identifiée ;
+  la lecture locale réelle n’utilise pas cette ressource de test.
+- La suite unitaire générale retrouve l’anomalie préexistante de
+  `tree-atlas-metadata.json` (43 octets contre 44). Le contrôle d’intégrité PNG a
+  également dépassé son délai de 5 secondes sous charge, puis ses trois tests ont
+  réussi seuls. Aucune de ces ressources n’a été modifiée.
+- Sous-titres d’introduction : à fournir. La démonstration produit, absente lors
+  de cette recette, n’est plus demandée par le récit actuel sans lecteur produit.
+
+## Fichiers de l’étape 21
+
+Le remplacement de l’introduction officielle concerne uniquement :
+
+- `frontend/src/experience/prologue/PrologueOverlay.vue` : source MP4 et WebVTT
+  dédiés, durée libre, secours explicite, contrôles et pause de la fenêtre inactive.
+- `frontend/src/experience/prologue/YouTubeScreen.vue` et `youtube-player.ts` :
+  vidéo officielle `O4J-Na3stKY`, titre accessible et gestion du focus.
+- `frontend/src/experience/prologue/prologue.css` : action de secours YouTube.
+- `frontend/src/experience/ExperienceCanvas.vue` : rafraîchissement de la vidéo
+  même lorsque les mouvements de caméra sont réduits.
+- `frontend/scripts/jury-build.mjs` et `package-jury.mjs` : inclusion et inventaire
+  distincts de l’introduction dans le paquet et le cache hors ligne.
+- `frontend/playwright.config.ts` : URL de test interceptable sans MP4 installé.
+- Tests unitaires `prologue-video.test.ts`, `youtube-screen.test.ts`,
+  `jury-build.test.ts` ; tests navigateur `prologue.spec.ts`,
+  `prologue-youtube.spec.ts`, `prologue-reduced-motion.spec.ts`,
+  `prologue-art.spec.ts` dans leurs répertoires de tests respectifs.
+- `.env.example`, `frontend/public/experience-media/README.md` et ce document :
+  configuration, installation, déploiement et limites.
+
+Les deux ressources locales ignorées par Git sont
+`frontend/public/experience-media/intro.mp4` et `frontend/.env.local`.
+Le travail initial sur l’introduction conservait `DemoVideo.vue`, les photographies
+et les transitions des huit chapitres. La synchronisation suivante conserve la
+suppression de `DemoVideo.vue` décidée sur `main` et adapte les tests associés.
+
 ## Lancement
 
 ```powershell
@@ -250,6 +356,16 @@ npm.cmd run dev -- --port 4173
 npm.cmd run build
 npm.cmd test
 npm.cmd run test:e2e -- prologue.spec.ts narrative.spec.ts pitch.spec.ts jury.spec.ts spatial.spec.ts
+```
+
+Recette ciblée de l’introduction (depuis `frontend/`) :
+
+```powershell
+npm.cmd test -- tests/unit/prologue-video.test.ts tests/unit/youtube-screen.test.ts tests/unit/jury-build.test.ts
+# Frontend Docker déjà reconstruit, y compris test du service worker :
+$env:E2E_BASE_URL = 'http://127.0.0.1:8080'
+$env:E2E_PRODUCTION = '1'
+npm.cmd run test:e2e -- prologue.spec.ts prologue-youtube.spec.ts prologue-reduced-motion.spec.ts prologue-art.spec.ts
 ```
 
 Les tests GPU nécessitent un navigateur avec accélération matérielle. Pour les

@@ -64,22 +64,22 @@ function inertNetworkScripts() {
   }) as typeof document.createElement);
 }
 
-it("sélectionne uniquement les liens YouTube valides et conserve la vidéo provisoire fournie", () => {
-  expect(youtubeVideoId(defaultIntroYouTubeUrl)).toBe("J-cDr27eVC0");
-  expect(youtubeVideoId("https://youtu.be/J-cDr27eVC0")).toBe("J-cDr27eVC0");
-  expect(youtubeVideoId("https://www.youtube.com/watch?v=J-cDr27eVC0")).toBe(
-    "J-cDr27eVC0",
+it("sélectionne uniquement les liens YouTube valides et conserve la vidéo officielle fournie", () => {
+  expect(youtubeVideoId(defaultIntroYouTubeUrl)).toBe("O4J-Na3stKY");
+  expect(youtubeVideoId("https://youtu.be/O4J-Na3stKY")).toBe("O4J-Na3stKY");
+  expect(youtubeVideoId("https://www.youtube.com/watch?v=O4J-Na3stKY")).toBe(
+    "O4J-Na3stKY",
   );
   expect(
-    youtubeVideoId("https://www.youtube-nocookie.com/embed/J-cDr27eVC0"),
-  ).toBe("J-cDr27eVC0");
+    youtubeVideoId("https://www.youtube-nocookie.com/embed/O4J-Na3stKY"),
+  ).toBe("O4J-Na3stKY");
   for (const url of [
     "javascript:alert(1)",
-    "https://youtube.com.attacker.test/embed/J-cDr27eVC0",
-    "https://example.com/embed/J-cDr27eVC0",
+    "https://youtube.com.attacker.test/embed/O4J-Na3stKY",
+    "https://example.com/embed/O4J-Na3stKY",
     "https://www.youtube.com/embed/missing",
-    "http://www.youtube.com/embed/J-cDr27eVC0",
-    "https://other@youtube.com/watch?v=J-cDr27eVC0",
+    "http://www.youtube.com/embed/O4J-Na3stKY",
+    "https://other@youtube.com/watch?v=O4J-Na3stKY",
   ])
     expect(youtubeVideoId(url)).toBeUndefined();
 });
@@ -87,7 +87,7 @@ it("sélectionne uniquement les liens YouTube valides et conserve la vidéo prov
 it("prépare le lecteur dans le moniteur sans lecture automatique et fournit les contrôles natifs", async () => {
   const wrapper = await setup();
   expect(construct).toHaveBeenCalledTimes(1);
-  expect(options.videoId).toBe("J-cDr27eVC0");
+  expect(options.videoId).toBe("O4J-Na3stKY");
   expect(options.playerVars).toMatchObject({
     autoplay: 0,
     controls: 1,
@@ -99,7 +99,7 @@ it("prépare le lecteur dans le moniteur sans lecture automatique et fournit les
   options.events.onReady({ target: player });
   expect(player.playVideo).not.toHaveBeenCalled();
   expect(wrapper.emitted("ready")).toHaveLength(1);
-  expect(player.getIframe().title).toContain("Vidéo provisoire");
+  expect(player.getIframe().title).toContain("Vidéo officielle");
   expect(player.getIframe().referrerPolicy).toBe(
     "strict-origin-when-cross-origin",
   );
@@ -146,7 +146,7 @@ it("met en pause lors d’une suspension, de la sortie ou d’un onglet masqué 
 it("refuse une configuration invalide sans requête ou remplacement silencieux", async () => {
   vi.stubEnv(
     "VITE_SYMBIOSE_INTRO_YOUTUBE_URL",
-    "https://example.com/embed/J-cDr27eVC0",
+    "https://example.com/embed/O4J-Na3stKY",
   );
   const wrapper = await setup();
   expect(construct).not.toHaveBeenCalled();

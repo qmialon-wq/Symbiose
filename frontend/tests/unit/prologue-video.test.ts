@@ -6,6 +6,8 @@ const wrappers: VueWrapper[] = [];
 let play: ReturnType<typeof vi.spyOn>;
 let pause: ReturnType<typeof vi.spyOn>;
 beforeEach(() => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "");
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_CAPTIONS_URL", "");
   const paused = new WeakMap<HTMLMediaElement, boolean>();
   vi.spyOn(HTMLMediaElement.prototype, "paused", "get").mockImplementation(
     function () {
@@ -30,11 +32,20 @@ beforeEach(() => {
 });
 afterEach(() => {
   wrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+  vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });
 function setup() {
   const wrapper = mount(PrologueOverlay, {
     props: { local: 0, active: true, reducedMotion: false, suspended: false },
+    global: {
+      stubs: {
+        YouTubeScreen: {
+          template: '<div class="youtube-screen-stub" />',
+          methods: { pause() {}, play() {} },
+        },
+      },
+    },
   });
   wrappers.push(wrapper);
   return wrapper;
@@ -53,11 +64,10 @@ async function file(
   await flushPromises();
 }
 
-it("présente le film YouTube provisoire sans charger le lecteur avant l’approche", async () => {
+it("propose le film officiel sur YouTube sans charger le lecteur avant l’approche si le MP4 est désactivé", async () => {
   const wrapper = setup();
-  expect(wrapper.text()).toContain(
-    "Vidéo provisoire · YouTube · lecture manuelle",
-  );
+  expect(wrapper.text()).toContain("YouTube · lecture manuelle");
+  expect(wrapper.text()).not.toContain("provisoire");
   expect(wrapper.find("video").exists()).toBe(false);
   expect(play).not.toHaveBeenCalled();
   expect(wrapper.find("iframe").exists()).toBe(false);
@@ -66,6 +76,125 @@ it("présente le film YouTube provisoire sans charger le lecteur avant l’appro
   expect(wrapper.find("iframe").exists()).toBe(false);
   await wrapper.get(".sx-prologue-skip").trigger("click");
   expect(wrapper.emitted("skip")).toHaveLength(1);
+});
+
+it("privilégie le MP4 et ses sous-titres propres sans charger YouTube ni imposer 90 secondes", async () => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "/experience-media/intro.mp4");
+  vi.stubEnv(
+    "VITE_SYMBIOSE_INTRO_CAPTIONS_URL",
+    "/experience-media/intro.fr.vtt",
+  );
+  vi.stubEnv("VITE_SYMBIOSE_DEMO_URL", "/experience-media/demo.mp4");
+  vi.stubEnv(
+    "VITE_SYMBIOSE_DEMO_CAPTIONS_URL",
+    "/experience-media/demo.fr.vtt",
+  );
+  const wrapper = setup();
+  const element = wrapper.get("video").element as HTMLVideoElement;
+  expect(wrapper.get("video").attributes("src")).toBe(
+    "/experience-media/intro.mp4",
+  );
+  expect(wrapper.get("track").attributes("src")).toBe(
+    "/experience-media/intro.fr.vtt",
+  );
+  expect(element.preload).toBe("metadata");
+  expect(element.autoplay).toBe(false);
+  expect(play).not.toHaveBeenCalled();
+  expect(wrapper.find(".youtube-screen-stub").exists()).toBe(false);
+  Object.defineProperty(element, "duration", {
+    value: 240,
+    configurable: true,
+  });
+  await wrapper.get("video").trigger("loadedmetadata");
+  expect(wrapper.text()).not.toContain("90 s");
+  expect(wrapper.get(".sx-prologue-seek input").attributes("max")).toBe("240");
+
+});
+
+it("refuse une source distante et ne réutilise jamais la source ni les sous-titres de démonstration", async () => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "https://example.com/intro.mp4");
+  vi.stubEnv("VITE_SYMBIOSE_DEMO_URL", "/experience-media/demo.mp4");
+  vi.stubEnv(
+    "VITE_SYMBIOSE_DEMO_CAPTIONS_URL",
+    "/experience-media/demo.fr.vtt",
+  );
+  const wrapper = setup();
+  await flushPromises();
+  expect(wrapper.find("video").exists()).toBe(false);
+  expect(wrapper.find("track").exists()).toBe(false);
+  expect(wrapper.text()).toContain("chemin local");
+  expect(wrapper.find(".youtube-screen-stub").exists()).toBe(false);
+});
+
+it("conserve volume, sourdine et progression du MP4", async () => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "/experience-media/intro.mp4");
+  const wrapper = setup();
+  const element = wrapper.get("video").element as HTMLVideoElement;
+  Object.defineProperty(element, "duration", {
+    value: 240,
+    configurable: true,
+  });
+  await wrapper.get("video").trigger("loadedmetadata");
+  await wrapper.get(".sx-prologue-volume input").setValue("0.35");
+  expect(element.volume).toBe(0.35);
+  await wrapper
+    .get('[aria-label="Couper le son de la vidéo"]')
+    .trigger("click");
+  expect(element.muted).toBe(true);
+  await wrapper
+    .get('[aria-label="Activer le son de la vidéo"]')
+    .trigger("click");
+  expect(element.muted).toBe(false);
+  await wrapper.get(".sx-prologue-seek input").setValue("35");
+  expect(element.currentTime).toBe(35);
+  await wrapper.get("video").trigger("timeupdate");
+  expect(wrapper.get(".sx-prologue-time").text()).toContain("0:35");
+});
+
+it("garde le secours YouTube manuel après une erreur MP4 et permet de poursuivre le récit", async () => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "/experience-media/intro.mp4");
+  const wrapper = setup();
+  await wrapper.setProps({ fallback: true, focused: true });
+  await wrapper.get("video").trigger("error");
+  await flushPromises();
+  expect(wrapper.find("video").exists()).toBe(false);
+  expect(wrapper.find(".youtube-screen-stub").exists()).toBe(false);
+  expect(play).not.toHaveBeenCalled();
+  const fallback = wrapper
+    .findAll("button")
+    .find((button) => button.text() === "Regarder sur YouTube");
+  expect(fallback).toBeDefined();
+  await fallback!.trigger("click");
+  expect(wrapper.find(".youtube-screen-stub").exists()).toBe(true);
+  expect(wrapper.emitted("focus")).toHaveLength(1);
+  await wrapper.get(".sx-prologue-skip").trigger("click");
+  expect(wrapper.emitted("skip")).toHaveLength(1);
+});
+
+it("met le MP4 en pause quand l’onglet est masqué", async () => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "/experience-media/intro.mp4");
+  const wrapper = setup();
+  await wrapper.get('[aria-label="Découvrir Symbiose"]').trigger("click");
+  expect(wrapper.emitted("playing")?.at(-1)).toEqual([true]);
+  vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+  document.dispatchEvent(new Event("visibilitychange"));
+  expect(pause).toHaveBeenCalled();
+  expect(wrapper.emitted("playing")?.at(-1)).toEqual([false]);
+});
+
+it("met en pause une fenêtre inactive et préserve la lecture quand le focus reste dans le document", async () => {
+  vi.stubEnv("VITE_SYMBIOSE_INTRO_VIDEO_URL", "/experience-media/intro.mp4");
+  const wrapper = setup();
+  const focus = vi.spyOn(document, "hasFocus").mockReturnValue(true);
+  await wrapper.get('[aria-label="Découvrir Symbiose"]').trigger("click");
+  const pauseCalls = pause.mock.calls.length;
+  window.dispatchEvent(new Event("blur"));
+  expect(pause).toHaveBeenCalledTimes(pauseCalls);
+  expect(wrapper.emitted("playing")?.at(-1)).toEqual([true]);
+  focus.mockReturnValue(false);
+  window.dispatchEvent(new Event("blur"));
+  expect(pause).toHaveBeenCalledTimes(pauseCalls + 1);
+  expect(wrapper.emitted("playing")?.at(-1)).toEqual([false]);
 });
 
 it("ouvre un fichier local sans téléversement puis lit, met en pause et signale la fin", async () => {

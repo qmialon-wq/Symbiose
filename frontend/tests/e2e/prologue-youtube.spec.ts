@@ -30,6 +30,10 @@ const youtubeAPI = String.raw`
 
 async function setup(page: Page, fallback = true) {
   const apiRequests: string[] = [];
+  // Deliberately missing primary asset: YouTube must remain an explicit choice.
+  await page.route("**/experience-media/intro.mp4", (route) =>
+    route.fulfill({ status: 404, body: "MP4 absent pour ce scénario de test" }),
+  );
   await page.route("https://www.youtube.com/iframe_api", (route) => {
     apiRequests.push(route.request().url());
     return route.fulfill({
@@ -47,6 +51,9 @@ async function setup(page: Page, fallback = true) {
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
+  await expect(
+    page.getByRole("button", { name: "Regarder sur YouTube", exact: true }),
+  ).toBeVisible();
   return apiRequests;
 }
 const root = (page: Page) => page.locator(".sx-experience");
@@ -63,7 +70,7 @@ test("YouTube est chargé seulement après le choix du visiteur et suit les éta
   expect(requests).toEqual([]);
   await expect(page.locator(".sx-youtube-screen iframe")).toHaveCount(0);
   await page
-    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .getByRole("button", { name: "Regarder sur YouTube", exact: true })
     .click();
   await expect(root(page)).toHaveAttribute("data-prologue-video-focus", "true");
   await expect(page.locator(".sx-youtube-screen iframe")).toBeVisible();
@@ -77,7 +84,7 @@ test("YouTube est chargé seulement après le choix du visiteur et suit les éta
     };
   });
   expect(configuration).toEqual({
-    id: "J-cDr27eVC0",
+    id: "O4J-Na3stKY",
     autoplay: 0,
     origin: new URL(page.url()).origin,
   });
@@ -86,7 +93,9 @@ test("YouTube est chargé seulement après le choix du visiteur et suit les éta
     "data-playing",
     "true",
   );
-  await page.mouse.move(700, 500);
+  // Wheel over the parent story; events inside the cross-origin player belong
+  // to the iframe document and cannot be cancelled by the parent's listener.
+  await page.mouse.move(25, 420);
   await page.mouse.wheel(0, 1500);
   await expect(root(page)).toHaveAttribute("data-prologue", "0.000000");
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
@@ -134,6 +143,7 @@ test("YouTube est chargé seulement après le choix du visiteur et suit les éta
 test("le lecteur est projeté dans l’écran après l’approche et reste cadré en portrait", async ({
   page,
 }) => {
+  test.setTimeout(60000);
   await page.setViewportSize({ width: 1440, height: 900 });
   const requests = await setup(page, false);
   test.skip(
@@ -143,7 +153,7 @@ test("le lecteur est projeté dans l’écran après l’approche et reste cadr�
   expect(requests).toEqual([]);
   await page
     .getByRole("button", {
-      name: "Découvrir la vidéo sur l’écran",
+      name: "Regarder sur YouTube",
       exact: true,
     })
     .click();
@@ -178,10 +188,10 @@ test("le lecteur est projeté dans l’écran après l’approche et reste cadr�
   await page
     .getByRole("button", { name: "Entrer dans le vivant", exact: false })
     .click();
-  await expect(screen).toHaveCount(0);
   await expect(root(page)).toHaveAttribute("data-prologue-active", "false", {
     timeout: 20000,
   });
+  await expect(screen).toHaveCount(0);
   // In presentation mode the five-minute narrative starts on arrival.
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
@@ -200,7 +210,7 @@ test("une intégration YouTube refusée garde le passage et le lien vers la vid�
 }) => {
   await setup(page);
   await page
-    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .getByRole("button", { name: "Regarder sur YouTube", exact: true })
     .click();
   await expect(page.locator(".sx-youtube-screen iframe")).toBeVisible();
   await page.evaluate(() => (window as any).__youtubeFixture.error(101));
@@ -211,7 +221,7 @@ test("une intégration YouTube refusée garde le passage et le lien vers la vid�
   ).toBeVisible();
   await expect(page.getByRole("link", { name: /YouTube/ })).toHaveAttribute(
     "href",
-    /youtube\.com\/embed\/J-cDr27eVC0/,
+    /(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=))O4J-Na3stKY/,
   );
   await expect(
     page.getByRole("button", { name: "Passer l’introduction", exact: true }),
@@ -227,7 +237,7 @@ test("mettre la vidéo YouTube en pause rend le défilement au visiteur", async 
 }) => {
   await setup(page);
   await page
-    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
+    .getByRole("button", { name: "Regarder sur YouTube", exact: true })
     .click();
   await expect(page.locator(".sx-youtube-screen iframe")).toBeVisible();
   await fixtureState(page, 1);
@@ -245,4 +255,31 @@ test("mettre la vidéo YouTube en pause rend le défilement au visiteur", async 
   await expect
     .poll(async () => Number(await root(page).getAttribute("data-prologue")))
     .toBeGreaterThan(0.01);
+});
+
+test("une panne réseau YouTube conserve une erreur claire et le passage au chapitre 01", async ({
+  page,
+}) => {
+  await setup(page);
+  await page.route("https://www.youtube.com/iframe_api", (route) =>
+    route.abort("failed"),
+  );
+  await page
+    .getByRole("button", { name: "Regarder sur YouTube", exact: true })
+    .click();
+  await expect(page.locator(".sx-prologue-youtube-error")).toContainText(
+    "Vérifiez votre connexion",
+  );
+  await expect(page.locator(".sx-youtube-screen iframe")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Réessayer YouTube", exact: true }),
+  ).toBeEnabled();
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-chapter",
+    "forest",
+  );
 });

@@ -5,16 +5,24 @@ import { rangeResponse } from "./offline-range.mjs";
 
 export function juryBuild() {
   let directory,
-    configuredMedia = [];
+    configuredMedia = [],
+    introConfigured = false;
   return {
     name: "symbiose-jury-offline",
     apply: "build",
     configResolved(config) {
       directory = path.resolve(config.root, config.build.outDir);
       configuredMedia = [
-        { url: config.env.VITE_SYMBIOSE_DEMO_URL, video: true },
+        {
+          url: config.env.VITE_SYMBIOSE_INTRO_VIDEO_URL,
+          video: true,
+          kind: "intro",
+        },
+        { url: config.env.VITE_SYMBIOSE_INTRO_CAPTIONS_URL, video: false },
+        { url: config.env.VITE_SYMBIOSE_DEMO_URL, video: true, kind: "demo" },
         { url: config.env.VITE_SYMBIOSE_DEMO_CAPTIONS_URL, video: false },
       ].filter((item) => item.url?.trim());
+      introConfigured = config.env.VITE_SYMBIOSE_INTRO_VIDEO_URL !== undefined;
     },
     async closeBundle() {
       const manifest = JSON.parse(
@@ -63,6 +71,11 @@ export function juryBuild() {
       const demos = media
         .filter((name) => /^demo\.(mp4|webm)$/.test(name))
         .map((name) => `/experience-media/${name}`);
+      const intros = introConfigured
+        ? []
+        : media
+            .filter((name) => name === "intro.mp4")
+            .map((name) => `/experience-media/${name}`);
       for (const item of configuredMedia) {
         const url = item.url.trim();
         if (!/^\/(?![\/\\])/.test(url) || /[\\?#\s]/.test(url))
@@ -72,13 +85,15 @@ export function juryBuild() {
           throw new Error("Jury media outside build directory");
         await stat(file); // Explicit configuration errors fail the build, never silently break offline mode.
         files.add(url);
-        if (item.video && !demos.includes(url)) demos.push(url);
+        const videos = item.kind === "intro" ? intros : demos;
+        if (item.video && !videos.includes(url)) videos.push(url);
       }
       for (const file of media.filter((name) =>
         /^demo(?:\.fr)?\.vtt$/.test(name),
       ))
         files.add(`/experience-media/${file}`);
       demos.forEach((file) => files.add(file));
+      intros.forEach((file) => files.add(file));
       const records = await Promise.all(
         [...files].sort().map(async (url) => {
           const location = path.join(
@@ -102,6 +117,7 @@ export function juryBuild() {
         entry: "/jury/",
         totalBytes: records.reduce((sum, file) => sum + file.bytes, 0),
         files: records,
+        intro: { available: intros.length > 0, files: intros },
         demo: { available: demos.length > 0, files: demos },
       };
       await writeFile(
@@ -144,7 +160,7 @@ self.addEventListener('fetch', event => {
 `;
       await writeFile(path.join(directory, "jury/sw.js"), worker);
       console.log(
-        `Jury offline: ${records.length} assets, ${(report.totalBytes / 1024 / 1024).toFixed(2)} MiB; product demo ${report.demo.available ? "present" : "MISSING"}.`,
+        `Jury offline: ${records.length} assets, ${(report.totalBytes / 1024 / 1024).toFixed(2)} MiB; intro ${report.intro.available ? "present" : "MISSING"}; product demo ${report.demo.available ? "present" : "MISSING"}.`,
       );
     },
   };

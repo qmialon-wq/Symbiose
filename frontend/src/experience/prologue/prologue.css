@@ -55,6 +55,13 @@
 .sx-experience .sx-prologue-youtube-error a {
   text-decoration: underline;
 }
+.sx-experience .sx-prologue-youtube-fallback {
+  color: var(--sx-lime);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  min-height: 32px;
+}
 @media (max-width: 760px) {
   .sx-experience .sx-prologue-screen-surface--fallback {
     top: 120px;

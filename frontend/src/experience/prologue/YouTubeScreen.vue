@@ -42,6 +42,9 @@ function changed(event: YouTubeStateEvent) {
 const visibility = () => {
   if (document.hidden) pause();
 };
+const blur = () => {
+  if (!document.hasFocus()) pause();
+};
 watch(
   () => [props.active, props.suspended],
   () => {
@@ -50,6 +53,7 @@ watch(
 );
 onMounted(async () => {
   document.addEventListener("visibilitychange", visibility);
+  window.addEventListener("blur", blur);
   const configured = import.meta.env.VITE_SYMBIOSE_INTRO_YOUTUBE_URL as
     | string
     | undefined;
@@ -76,7 +80,7 @@ onMounted(async () => {
         onReady(event) {
           if (disposed) return;
           const iframe = event.target.getIframe();
-          iframe.title = "Vidéo provisoire du prologue — lecteur YouTube";
+          iframe.title = "Vidéo officielle du prologue — lecteur YouTube";
           iframe.referrerPolicy = "strict-origin-when-cross-origin";
           iframe.allow =
             "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen";
@@ -109,6 +113,7 @@ onBeforeUnmount(() => {
   pause();
   disposed = true;
   document.removeEventListener("visibilitychange", visibility);
+  window.removeEventListener("blur", blur);
   player?.destroy();
   player = undefined;
 });
