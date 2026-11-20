@@ -1,4 +1,29 @@
 /* Presentation panels sample the shared narrative clock; no independent animation. */
+.sx-experience .sx-exploration-detail,
+.sx-experience .sx-territory-limit {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 65ch;
+  margin: 0 0 18px;
+  color: #e3ead3;
+}
+.sx-experience .sx-case-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 18px;
+}
+.sx-experience .sx-case-steps button {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: left;
+  padding: 5px 0;
+  border-bottom: 1px solid #c1d3ab6e;
+}
+.sx-experience .sx-case-steps [aria-pressed="true"] {
+  color: var(--sx-lime);
+  border-color: var(--sx-lime);
+}
 .sx-experience .sx-jury-demo {
   max-width: 560px;
   margin: 20px 0 0;
@@ -172,20 +197,16 @@
   border-left: 1px solid #c1dea9;
 }
 @media (max-width: 760px) {
-  .sx-experience[data-mode="presentation"][data-prologue-active="false"]
-    .sx-pitch-content[data-jury="true"] {
+  .sx-experience[data-prologue-active="false"] .sx-pitch-content {
     top: 178px;
   }
-  .sx-experience[data-mode="presentation"][data-prologue-active="false"]
-    .sx-excursion-copy[data-jury="true"] {
+  .sx-experience[data-prologue-active="false"] .sx-excursion-copy {
     top: 178px;
     bottom: 175px;
     max-height: none;
     transform: none;
   }
-  .sx-experience[data-mode="presentation"][data-prologue-active="false"]
-    .sx-fallback-scene
-    > p {
+  .sx-experience[data-prologue-active="false"] .sx-fallback-scene > p {
     top: auto;
     bottom: 170px;
     left: var(--sx-gutter);
@@ -230,8 +251,15 @@
   }
 }
 
-/* Keep the jury copy below both command rows; public discovery keeps its framing. */
+/* Keep both modes below the command rows while retaining their content density. */
 @media (min-width: 761px) {
+  .sx-experience[data-mode="exploration"][data-prologue-active="false"]
+    :is(.sx-pitch-content, .sx-excursion-copy) {
+    top: 190px;
+    bottom: 152px;
+    transform: none;
+    max-height: none;
+  }
   .sx-experience[data-mode="presentation"][data-prologue-active="false"]
     .sx-pitch-content[data-jury="true"] {
     top: 190px;

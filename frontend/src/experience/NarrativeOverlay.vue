@@ -9,6 +9,7 @@ import {
 } from "./pitch";
 import PitchVisual from "./PitchVisual.vue";
 import { narrativeCueAt, narrativeEventAt } from "./narrative-cues";
+import { editorialFacts, sceneEditorial } from "./editorial-content";
 import "./narrative-cues.css";
 const logoUrl = "/experience-art/shared/symbiose-logo.png";
 const props = withDefaults(
@@ -26,6 +27,7 @@ defineEmits<{ begin: []; sources: [] }>();
 const cue = computed(() => narrativeCueAt(props.seconds ?? 0));
 const event = computed(() => narrativeEventAt(props.seconds ?? 0));
 const usesCue = computed(() => props.seconds !== undefined);
+const editorial = computed(() => sceneEditorial(cue.value));
 const chapter = computed(() =>
   usesCue.value
     ? pitchChapters.find((item) => item.id === cue.value.chapter)!
@@ -37,14 +39,10 @@ const signature = computed(
 );
 const display = computed(() => ({
   subject: usesCue.value ? cue.value.subject : chapter.value.subject,
-  title: usesCue.value
-    ? final.value && !signature.value
-      ? (event.value?.label ?? cue.value.title)
-      : cue.value.title
-    : chapter.value.title,
+  title: usesCue.value ? editorial.value.title : chapter.value.title,
   message: usesCue.value
     ? props.presentation && final.value
-      ? (event.value?.detail ?? cue.value.message)
+      ? [event.value?.label, event.value?.detail].filter(Boolean).join(" · ")
       : cue.value.message
     : chapter.value.message,
   start: usesCue.value
@@ -54,6 +52,7 @@ const display = computed(() => ({
     ? cue.value.end
     : (props.timeMap?.(chapter.value.start + chapter.value.duration) ??
       chapter.value.start + chapter.value.duration),
+  screen: usesCue.value ? cue.value.screen : chapter.value.screen,
 }));
 const demonstrated = computed(
   () =>
@@ -81,7 +80,7 @@ watch(
     :data-jury="!!presentation"
     :data-cue="usesCue ? cue.id : undefined"
   >
-    <h1 class="sx-sr-only">Symbiose — Comprendre le vivant avant d’aménager</h1>
+    <h1 class="sx-sr-only">Symbiose — {{ editorialFacts.signature }}</h1>
     <section
       :key="usesCue ? cue.id : chapter.id"
       class="sx-pitch-scene"
@@ -125,6 +124,9 @@ watch(
       >
         {{ statusLabels[chapter.status] }}
       </p>
+      <p v-if="!presentation && usesCue" class="sx-exploration-detail">
+        {{ editorial.exploration }}
+      </p>
       <PitchVisual
         :chapter="chapter.id"
         :presentation="presentation"
@@ -136,13 +138,20 @@ watch(
         v-if="!presentation && ['forest', 'sky', 'meadow'].includes(chapter.id)"
         class="sx-pitch-points"
       >
-        <li v-for="item in chapter.screen" :key="item">{{ item }}</li>
+        <li v-for="item in display.screen" :key="item">{{ item }}</li>
       </ul>
-      <p v-if="chapter.id === 'coast' && !presentation" class="sx-next-steps">
-        Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour.
+      <p
+        v-if="
+          chapter.id === 'coast' &&
+          !presentation &&
+          (!usesCue || cue.id === 'coast')
+        "
+        class="sx-next-steps"
+      >
+        {{ editorialFacts.partnership }}
       </p>
       <a v-if="final && signature" class="sx-cta" :href="appHref"
-        >Commencer l’expérience Symbiose <span aria-hidden="true">↗</span></a
+        >{{ editorialFacts.application }} <span aria-hidden="true">↗</span></a
       >
       <button
         v-if="chapter.id === 'forest' && !presentation"

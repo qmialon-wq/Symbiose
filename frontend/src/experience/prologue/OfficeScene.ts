@@ -1,4 +1,5 @@
 import * as T from "three";
+import { editorialFacts } from "../editorial-content";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { seededRandom } from "../world-utils";
@@ -356,7 +357,7 @@ export function createOfficeScene(
       ctx.fillText("au vivant.", 105, 470);
       ctx.fillStyle = "#c5cdb8";
       ctx.font = "28px 'Segoe UI', sans-serif";
-      ctx.fillText("Observer. Comprendre. Préserver.", 110, 580);
+      ctx.fillText(editorialFacts.signature, 110, 580, 720);
       ctx.strokeStyle = "#bdd694";
       ctx.beginPath();
       ctx.moveTo(110, 667);

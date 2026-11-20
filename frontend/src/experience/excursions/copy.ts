@@ -1,5 +1,6 @@
 import type { ExcursionId } from "./route";
 import { narrativeCues } from "../narrative-cues";
+import { excursionDisclaimers } from "../editorial-content";
 
 export interface ExcursionCopy {
   number: string;
@@ -17,18 +18,15 @@ const excursionMetadata: Record<
 > = {
   soil: {
     number: "01 BIS",
-    disclaimer:
-      "Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée",
+    disclaimer: excursionDisclaimers.soil,
   },
   drone: {
     number: "06 BIS",
-    disclaimer:
-      "Survol illustratif · le relevé par drone reste une piste d’évolution",
+    disclaimer: excursionDisclaimers.drone,
   },
   marine: {
     number: "07 BIS",
-    disclaimer:
-      "Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé",
+    disclaimer: excursionDisclaimers.marine,
   },
 };
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { editorialFacts } from "../editorial-content";
 import { computed } from "vue";
 import type { ExcursionState } from "./route";
 const props = defineProps<{ state: ExcursionState; reducedMotion?: boolean }>();
@@ -176,8 +177,8 @@ const droneY = computed(() => 270 + Math.cos(local.value * Math.PI * 3) * 28);
         </g>
       </g>
     </svg>
-    <span class="sx-excursion-fallback-label"
-      >Aperçu illustratif · sans WebGL</span
-    >
+    <span class="sx-excursion-fallback-label">{{
+      editorialFacts.excursionFallback
+    }}</span>
   </div>
 </template>

@@ -1,29 +1,32 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { ChapterId } from "./config";
 import { narrativeCueAt, narrativeEventAt } from "./narrative-cues";
+import { editorialFacts, lightingOptions } from "./editorial-content";
 import "./narrative-cues.css";
 
-const props = defineProps<{
-  chapter: ChapterId;
-  seconds: number;
-  reducedMotion?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    chapter: ChapterId;
+    seconds: number;
+    reducedMotion?: boolean;
+    presentation?: boolean;
+  }>(),
+  { presentation: true },
+);
 const emit = defineEmits<{ sources: [] }>();
+const selected = ref(0);
 const cue = computed(() => narrativeCueAt(props.seconds));
 const event = computed(() =>
   cue.value.chapter === props.chapter
-    ? narrativeEventAt(props.seconds)
+    ? props.presentation
+      ? narrativeEventAt(props.seconds)
+      : cue.value.events[selected.value]
     : undefined,
 );
 const stage = computed(() =>
   cue.value.events.findIndex((item) => item.id === event.value?.id),
 );
-const lightingOptions = [
-  "Éviter ou déplacer certains points lumineux",
-  "Réduire la durée de fonctionnement",
-  "Cibler l’orientation sur les usages nécessaires",
-];
 </script>
 
 <template>
@@ -33,6 +36,21 @@ const lightingOptions = [
     :data-demo-stage="event.id"
     :data-reduced-motion="!!reducedMotion"
   >
+    <div
+      v-if="!presentation"
+      class="sx-case-steps"
+      role="group"
+      aria-label="Étapes du cas d’éclairage illustratif"
+    >
+      <button
+        v-for="(phase, index) in cue.events"
+        :key="phase.id"
+        :aria-pressed="selected === index"
+        @click="selected = index"
+      >
+        {{ phase.label }}
+      </button>
+    </div>
     <div v-if="chapter === 'rivers'" class="sx-recognition-example">
       <svg
         viewBox="0 0 360 150"
@@ -63,13 +81,13 @@ const lightingOptions = [
         </g>
       </svg>
       <p class="sx-demo-disclosure">
-        Illustration du parcours · aucune analyse de cette image
+        {{ editorialFacts.recognition }}
       </p>
       <p v-if="event.id === 'river-identify'" class="sx-demo-qualification">
-        Classification illustrative · espèce à confirmer
+        {{ editorialFacts.classification }}
       </p>
       <p v-if="event.id === 'river-review'" class="sx-demo-qualification">
-        Confirmer, corriger ou rejeter · jamais de validation automatique
+        {{ editorialFacts.review }}
       </p>
     </div>
     <svg
@@ -105,13 +123,13 @@ const lightingOptions = [
       <li v-for="option in lightingOptions" :key="option">{{ option }}</li>
     </ul>
     <p v-if="chapter === 'meadow'" class="sx-demo-disclosure">
-      Scénario illustratif en Normandie · sans relevé de terrain
+      {{ editorialFacts.lighting }}
     </p>
     <p v-if="event.id === 'lighting-project'" class="sx-demo-disclosure">
       {{ cue.screen.join(" · ") }}
     </p>
     <p v-if="event.id === 'river-identify'" class="sx-demo-disclosure">
-      Classificateur PyTorch actuel · SpeciesNet reste une piste d’évolution
+      {{ editorialFacts.classifier }}
     </p>
     <template v-if="event.id === 'lighting-sources'">
       <button class="sx-inline-source" @click="emit('sources')">

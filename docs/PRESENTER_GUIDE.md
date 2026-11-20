@@ -2,6 +2,11 @@
 
 > Conducteur de référence : [CONDUCTEUR_SYMBIOSE.md](CONDUCTEUR_SYMBIOSE.md), généré depuis `frontend/src/experience/narrative-cues.ts`. Après un changement de version, recharger en ligne et actualiser l’installation hors ligne. Le mode `?render=2d` reste le secours sans GPU.
 
+L’[audit éditorial des deux modes](AUDIT_EDITORIAL_SYMBIOSE.md) compare les
+treize séquences, les panneaux ouverts, le carnet et les rendus 2D/WebGL avant
+et après harmonisation. Les titres et les faits sont communs ; les explications
+développées et les réserves proviennent de `frontend/src/experience/editorial-content.ts`.
+
 
 ## Avant la séance
 
@@ -128,6 +133,7 @@ Les chemins de cette table sont relatifs à `frontend/`, sauf indication contrai
 | Fichiers | Rôle |
 | --- | --- |
 | `src/experience/narrative-cues.ts` | Source des treize scènes, horaires, paroles A/B, textes, événements et pauses de caméra. |
+| `src/experience/editorial-content.ts` | Descriptions exploratoires des treize scènes, pipeline, catalogue, références, réserves et consignes partagées. |
 | `src/experience/pitch.ts`, `src/experience/excursions/copy.ts` | Contenus des chapitres et sous-scènes dérivés du conducteur. |
 | `src/experience/excursions/route.ts`, `src/experience/NarrativeTimeline.ts` | Conversion entre coordonnées de défilement et secondes ; lecture, pause, reprise et navigation sur les treize repères. |
 | `src/pages/LandingPage.vue`, `src/jury/JuryApp.vue`, `src/experience/PresentationControls.vue` | Entrées public/jury, départ manuel, contrôles et compteur. |
@@ -164,6 +170,8 @@ npm.cmd run build
 node scripts/export-conducteur.mjs --check
 node scripts/export-pitch.mjs --check
 node node_modules/@playwright/test/cli.js test jury-conductor.spec.ts
+node node_modules/@playwright/test/cli.js test editorial-consistency.spec.ts
+node scripts/audit-editorial.mjs --base-url http://127.0.0.1:8080 --output ../output/symbiose/editorial/relecture.json
 ```
 
 Après reconstruction du frontend Docker, pour inclure les vérifications du cache :
@@ -178,14 +186,16 @@ node node_modules/@playwright/test/cli.js test jury-conductor.spec.ts jury.spec.
 
 - **Compilation et TypeScript : réussis**, y compris dans la reconstruction
   Docker finale. Vite conserve son avertissement sur un paquet dépassant 500 Ko.
-- **Tests unitaires : 262 réussis, un échec préexistant.**
+- **Tests unitaires : 267 réussis, un échec préexistant.**
   `tree-atlas-metadata.json` contient 43 octets contre 44 déclarés dans son
   inventaire ; ces fichiers sont identiques à ceux du dépôt avant cette mission.
-- **Navigateur : douze tests de production réussis**, couvrant notamment les
-  cinq minutes complètes, les treize séquences, la pause et la reprise, les
-  démonstrations, les poses WebGL, les mouvements réduits et le cache hors ligne.
-  Les cinq contrôles concernés ont également été relancés après la dernière
-  correction de disposition mobile : tous réussis.
+- **Navigateur : 35 scénarios distincts validés**, dont 23 contre le frontend
+  Docker de production. Ils couvrent les cinq minutes, les treize séquences,
+  les titres des deux modes, la pause et la reprise, les démonstrations, les
+  poses WebGL, les mouvements réduits, le prologue et le cache hors ligne.
+  La série finale de six tests est réussie sur la dernière reconstruction :
+  cohérence 2D/WebGL, disposition des textes, cas manuel, cache, vidéo avec
+  mouvements réduits et panne du secours YouTube.
 - **Régressions publiques vérifiées :** prologue, lecture et commandes du MP4
   officiel, secours YouTube manuel, navigation libre, carnet et accès final.
 - **Contrôle visuel :** compositions à 1600 × 900, 1280 × 720 et 390 × 844 ;

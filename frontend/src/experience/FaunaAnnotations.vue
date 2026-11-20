@@ -2,6 +2,7 @@
 import type { AnimalBox } from "./world-fauna";
 import { computed } from "vue";
 import { layoutAnimalLabels } from "./animal-labels";
+import { editorialFacts } from "./editorial-content";
 const props = defineProps<{ animals: AnimalBox[] }>();
 const labels = computed(() => layoutAnimalLabels(props.animals));
 </script>
@@ -42,7 +43,7 @@ const labels = computed(() => layoutAnimalLabels(props.animals));
       >{{ animal.label }}</span
     >
     <p class="sx-fauna-note">
-      Animaux 3D illustratifs · identifications non calculées
+      {{ editorialFacts.animals }}
     </p>
   </div>
 </template>

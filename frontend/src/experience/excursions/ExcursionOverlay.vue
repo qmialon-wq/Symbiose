@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { excursions, type ExcursionState } from "./route";
 import { excursionCopy } from "./copy";
 import { narrativeCueAt, narrativeEventAt } from "../narrative-cues";
+import { sceneEditorial } from "../editorial-content";
 import "./excursions.css";
 import "../narrative-cues.css";
 const props = defineProps<{
@@ -16,6 +17,7 @@ const entry = computed(() => excursions.find((e) => e.id === props.state.id)!);
 const copy = computed(() => excursionCopy[props.state.id]);
 const cue = computed(() => narrativeCueAt(props.seconds ?? 0));
 const usesCue = computed(() => props.seconds !== undefined);
+const editorial = computed(() => sceneEditorial(cue.value));
 const event = computed(() =>
   cue.value.excursion === props.state.id
     ? narrativeEventAt(props.seconds ?? 0)
@@ -52,6 +54,9 @@ const ready = computed(
     <ul v-if="!presentation">
       <li v-for="note in copy.notes" :key="note">{{ note }}</li>
     </ul>
+    <p v-if="!presentation && usesCue" class="sx-exploration-detail">
+      {{ editorial.exploration }}
+    </p>
     <p class="sx-excursion-disclaimer">{{ copy.disclaimer }}</p>
     <button class="sx-excursion-leave" @click="emit('leave')">
       Poursuivre le voyage <span aria-hidden="true">↗</span>

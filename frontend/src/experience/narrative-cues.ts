@@ -3,6 +3,17 @@ import type { ExcursionId } from "./excursions/route";
 
 export const narrativeDurationSeconds = 300;
 
+const currentClassifier = "classificateur PyTorch";
+const futureClassifier = "SpeciesNet";
+/** Current/future model status is shared by the oral script and both UI modes. */
+export const classificationEditorial = {
+  current: currentClassifier,
+  status: `${currentClassifier[0].toUpperCase()}${currentClassifier.slice(1)} actuel · ${futureClassifier} reste une piste d’évolution`,
+  discovery: `MegaDetector localise les animaux, puis un second modèle propose l’espèce : ${currentClassifier} aujourd’hui, ${futureClassifier} en piste pour la suite. Le suivi relie les observations dans le temps.`,
+  proposal: `Le ${currentClassifier} propose une espèce, avec une incertitude à examiner ; détection, classification et suivi restent séparés.`,
+  note: `Écart explicite avec le script reçu : ${futureClassifier} y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le ${currentClassifier} existant ; ${futureClassifier} reste une piste à évaluer.`,
+} as const;
+
 export interface NarrativeSpeech {
   speaker: "A" | "B";
   text: string;
@@ -239,7 +250,7 @@ export const narrativeCues: readonly NarrativeCue[] = [
     speeches: [
       {
         speaker: "B",
-        text: "Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un classificateur PyTorch propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.",
+        text: `Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un ${classificationEditorial.current} propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.`,
       },
     ],
     events: [
@@ -256,8 +267,7 @@ export const narrativeCues: readonly NarrativeCue[] = [
         start: 73,
         end: 80,
         label: "Proposer une espèce",
-        detail:
-          "Le classificateur PyTorch propose une espèce, avec une incertitude à examiner ; détection, classification et suivi restent séparés.",
+        detail: classificationEditorial.proposal,
       },
       {
         id: "river-review",
@@ -292,7 +302,7 @@ export const narrativeCues: readonly NarrativeCue[] = [
     ],
     transition:
       "À 1:27, immersion sous l’eau : identifier ne suffit pas à comprendre le milieu.",
-    note: "Écart explicite avec le script reçu : SpeciesNet y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le classificateur PyTorch existant ; SpeciesNet reste une piste à évaluer.",
+    note: classificationEditorial.note,
   },
   {
     id: "underwater",

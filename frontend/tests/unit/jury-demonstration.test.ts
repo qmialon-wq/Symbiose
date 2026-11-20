@@ -165,7 +165,8 @@ describe("restrained narrative overlays", () => {
     expect(wrapper.get("h2").text()).toContain("Comprendre le vivant");
     await wrapper.setProps({ seconds: 280 });
     expect(wrapper.find(".sx-final-logo").exists()).toBe(false);
-    expect(wrapper.get("h2").text()).toContain("La même forêt");
+    expect(wrapper.get("h2").text()).toContain("Comprendre le vivant");
+    expect(wrapper.get(".sx-pitch-message").text()).toContain("La même forêt");
   });
 
   it("reveals one ARQ skill after the flyover and one marine need per clock phase", async () => {

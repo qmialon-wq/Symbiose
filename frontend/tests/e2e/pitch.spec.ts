@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { narrativeCues } from "../../src/experience/narrative-cues";
 
 function routeAtOriginal(progress: number) {
   const units = progress * 210;
@@ -147,21 +148,9 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   await page.getByRole("button", { name: "Pitch chronométré" }).click();
   // Thirteen timed cues include the forest and coast return passages.
   await expect(page.locator(".sx-speaker-chapter")).toHaveCount(13);
-  await expect(page.locator(".sx-speaker-chapter h3")).toHaveText([
-    "Ce que l’on ne voit pas",
-    "Sous nos pas",
-    "Des données à relier",
-    "L’idée Symbiose",
-    "De la vidéo à l’observation validée",
-    "Comprendre le milieu",
-    "Croiser les données",
-    "Un projet d’éclairage à examiner",
-    "L’équipe ARQ",
-    "Du démonstrateur au terrain",
-    "Ce qu’il reste à construire ensemble",
-    "L’expertise au bon moment",
-    "La même forêt, un autre regard",
-  ]);
+  await expect(page.locator(".sx-speaker-chapter h3")).toHaveText(
+    narrativeCues.map((cue) => cue.title),
+  );
   await expect(
     page.locator(".sx-speaker-chapter").last().locator(".sx-eyebrow"),
   ).toContainText("4:30–5:00");
