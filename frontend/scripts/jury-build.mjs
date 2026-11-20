@@ -160,7 +160,7 @@ self.addEventListener('fetch', event => {
 `;
       await writeFile(path.join(directory, "jury/sw.js"), worker);
       console.log(
-        `Jury offline: ${records.length} assets, ${(report.totalBytes / 1024 / 1024).toFixed(2)} MiB; intro ${report.intro.available ? "present" : "MISSING"}; product demo ${report.demo.available ? "present" : "MISSING"}.`,
+        `Jury offline: ${records.length} assets, ${(report.totalBytes / 1024 / 1024).toFixed(2)} MiB; conductor 5:00; public intro ${report.intro.available ? "present" : "not bundled"}.`,
       );
     },
   };

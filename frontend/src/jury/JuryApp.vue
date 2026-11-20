@@ -4,8 +4,7 @@ import LandingPage from "../pages/LandingPage.vue";
 import { applicationUrl } from "../experience/pitch";
 const busy = ref(false),
   status = ref("Installation hors ligne à préparer"),
-  installed = ref(false),
-  demoMissing = ref(false);
+  installed = ref(false);
 const installedRevision = ref("");
 const appHref = applicationUrl(
   import.meta.env.VITE_SYMBIOSE_APP_URL ||
@@ -33,8 +32,7 @@ async function readStatus() {
     }
   installed.value = true;
   installedRevision.value = manifest.revision;
-  demoMissing.value = !manifest.demo.available;
-  status.value = `Installation locale prête · ${(manifest.totalBytes / 1024 / 1024).toFixed(1)} Mio${demoMissing.value ? " · vidéo produit à ajouter" : " · vidéo incluse"}`;
+  status.value = `Installation locale prête · ${(manifest.totalBytes / 1024 / 1024).toFixed(1)} Mio`;
 }
 async function install() {
   if (!navigator.serviceWorker || !window.isSecureContext) {
@@ -109,9 +107,9 @@ onMounted(() => {
     <button :disabled="busy" @click="install">
       {{ busy ? "Installation en cours…" : installationText }}
     </button>
-    <p v-if="demoMissing">
-      Le fichier de démonstration de 90 s est absent de ce build. Une capture le
-      remplace ; aucun parcours produit complet n’est revendiqué.
+    <p>
+      Le pitch commence dans la forêt. Lancez les cinq minutes avec « Démarrer
+      le pitch ».
     </p>
     <a href="?render=2d">Ouvrir le secours sans WebGL</a>
   </details>

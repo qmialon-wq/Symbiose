@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { ExcursionState } from "./route";
-const props = defineProps<{ state: ExcursionState }>();
-const underwater = computed(
-  () => props.state.local > 0.32 && props.state.local < 0.73,
-);
-const droneX = computed(
-  () => 810 + Math.sin(props.state.local * Math.PI * 5) * 190,
-);
-const droneY = computed(
-  () => 270 + Math.cos(props.state.local * Math.PI * 3) * 28,
-);
+const props = defineProps<{ state: ExcursionState; reducedMotion?: boolean }>();
+const local = computed(() => (props.reducedMotion ? 0.5 : props.state.local));
+const underwater = computed(() => local.value > 0.32 && local.value < 0.73);
+const droneX = computed(() => 810 + Math.sin(local.value * Math.PI * 5) * 190);
+const droneY = computed(() => 270 + Math.cos(local.value * Math.PI * 3) * 28);
 </script>
 <template>
   <div

@@ -69,9 +69,9 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
     page.getByRole("heading", { name: /Une forêt ordinaire/ }),
   ).toBeVisible();
   await expect(
-    page.getByText("Inventaires dispersés", { exact: true }),
+    page.getByText("Qui habite ici ?", { exact: true }),
   ).toBeVisible();
-  await page.screenshot({ path: "../output/symbiose/pitch/01-probleme.png" });
+  await page.screenshot({ path: "test-results/pitch-01-probleme.png" });
   await chapter(page, "3. Rivières", "rivers");
   await page.getByRole("button", { name: "03 Reconnaissance" }).click();
   await expect(page.locator(".sx-pipeline-detail")).toContainText(
@@ -83,7 +83,7 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   await expect(page.locator(".sx-pipeline-detail")).toContainText(
     "Le suivi relie",
   );
-  await page.screenshot({ path: "../output/symbiose/pitch/03-moteur.png" });
+  await page.screenshot({ path: "test-results/pitch-03-moteur.png" });
   await chapter(page, "4. Monde sous-marin", "underwater");
   await expect(
     page.getByRole("heading", { name: /Reconnaître un animal/ }),
@@ -99,7 +99,7 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
     page.getByText("Aucun objet renvoyé", { exact: true }),
   ).toHaveCount(4);
   await expect(page.getByText(/ARCHIVES IGN/)).toBeVisible();
-  await page.screenshot({ path: "../output/symbiose/pitch/05-donnees.png" });
+  await page.screenshot({ path: "test-results/pitch-05-donnees.png" });
   await chapter(page, "6. Prairie et bocage", "meadow");
   await expect(
     page.getByText("alternatives documentées", { exact: true }),
@@ -107,23 +107,33 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   await expect(
     page.getByText("Bénéfice attendu · non mesuré", { exact: true }),
   ).toBeVisible();
+  await page
+    .getByText("Explorer les 12 alternatives et leurs conditions", {
+      exact: true,
+    })
+    .click();
+  await expect(page.locator(".sx-design-catalogue section li")).toHaveCount(12);
+  await expect(page.locator(".sx-design-references a")).toHaveCount(3);
+  await expect(page.locator(".sx-design-catalogue")).toContainText(
+    "Réduire la durée de fonctionnement",
+  );
   // The 90-second demo slot is gone: no player, no shortcut.
-  await expect(page.locator("video")).toHaveCount(0);
+  await expect(page.locator(".sx-pitch-content video")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: "Démonstration", exact: true }),
   ).toHaveCount(0);
-  await page.screenshot({ path: "../output/symbiose/pitch/06-decision.png" });
+  await page.screenshot({ path: "test-results/pitch-06-decision.png" });
   await chapter(page, "7. Littoral — Étretat", "coast");
   await expect(page.getByText(/aucun partenariat annoncé/)).toBeVisible();
   await chapter(page, "8. Forêt nocturne", "night-forest");
   await expect(
-    page.getByRole("heading", { name: /Comprendre le vivant/ }),
+    page.getByRole("heading", { level: 2, name: /Comprendre le vivant/ }),
   ).toBeVisible();
   const cta = page.getByRole("link", {
     name: "Commencer l’expérience Symbiose",
   });
   await expect(cta).toHaveAttribute("href", "/connexion");
-  await page.screenshot({ path: "../output/symbiose/pitch/08-conclusion.png" });
+  await page.screenshot({ path: "test-results/pitch-08-conclusion.png" });
   await page.getByRole("button", { name: "Sources et texte oral" }).click();
   await expect(
     page.getByRole("heading", { name: /Les preuves, les mots/ }),
@@ -135,20 +145,22 @@ test("eight sourced scenes, archived observations, jury coverage and final appli
   await expect(page.getByRole("table")).toBeVisible();
   await expect(page.getByRole("row")).toHaveCount(13);
   await page.getByRole("button", { name: "Pitch chronométré" }).click();
-  // Eight chapters and three explorations, in the order of the five-minute clock.
-  await expect(page.locator(".sx-speaker-chapter")).toHaveCount(11);
+  // Thirteen timed cues include the forest and coast return passages.
+  await expect(page.locator(".sx-speaker-chapter")).toHaveCount(13);
   await expect(page.locator(".sx-speaker-chapter h3")).toHaveText([
     "Ce que l’on ne voit pas",
-    "Sous nos pas · Le sol vivant",
+    "Sous nos pas",
+    "Des données à relier",
     "L’idée Symbiose",
-    "De la vidéo à l’espèce",
+    "De la vidéo à l’observation validée",
     "Comprendre le milieu",
     "Croiser les données",
-    "Vers la décision",
-    "L’équipe ARQ · Survol du bocage",
-    "Et demain ?",
-    "Changer d’échelle · Plongée à Étretat",
-    "La même forêt",
+    "Un projet d’éclairage à examiner",
+    "L’équipe ARQ",
+    "Du démonstrateur au terrain",
+    "Ce qu’il reste à construire ensemble",
+    "L’expertise au bon moment",
+    "La même forêt, un autre regard",
   ]);
   await expect(
     page.locator(".sx-speaker-chapter").last().locator(".sx-eyebrow"),
@@ -173,10 +185,20 @@ test("presentation keyboard, continuous narrative, reverse navigation and reduce
   );
   await page.keyboard.press("ArrowRight");
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-cue",
+    "forest-return",
+  );
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     "sky",
   );
   await expect(page.locator(".sx-counter")).toHaveText("0:50 / 5:00");
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-cue",
+    "forest-return",
+  );
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator(".sx-experience")).toHaveAttribute(
     "data-excursion",
@@ -282,7 +304,7 @@ test("mobile scenes and source book remain readable and accessible", async ({
     content!.y + content!.height,
   );
   await page.screenshot({
-    path: "../output/symbiose/pitch/mobile-conclusion.png",
+    path: "test-results/pitch-mobile-conclusion.png",
   });
   await page.getByRole("button", { name: "Le projet", exact: true }).click();
   await expect(

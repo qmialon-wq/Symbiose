@@ -1,5 +1,12 @@
 # Symbiose — Du bureau au vivant
 
+Le prologue décrit ici concerne le parcours public `/`. L’entrée `/jury/`
+commence directement dans la forêt à 0:00 et attend **Démarrer le pitch**.
+Le [conducteur actuel](CONDUCTEUR_SYMBIOSE.md) pilote les cinq minutes, sans
+vidéo préalable ni travelling du bureau. Le public conserve ces deux étapes
+et sa navigation libre ; les indications historiques ci-dessous restent
+utiles pour le décor et le lecteur.
+
 Avec les [trois explorations supplémentaires](EXPLORATIONS_SYMBIOSE.md), le bureau
 occupe toujours trois hauteurs de scroll, sur un total de 42. Son raccord à la
 forêt et son lecteur restent conservés ; la présentation complète dure désormais

@@ -29,6 +29,7 @@ test("les trois scènes 3D restent disponibles après installation hors ligne", 
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 45000,
   });
+  await useDiscovery(page);
   // Reload may restore the forest position saved before installation.
   await page.getByRole("button", { name: "1. Forêt", exact: true }).click();
   for (const id of ["soil", "drone", "marine"] as const) {
@@ -68,10 +69,21 @@ async function open(page: Page, fallback = true) {
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
     timeout: 60000,
   });
-  await page
-    .getByRole("button", { name: "Passer l’introduction", exact: true })
-    .click();
   await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await expect(
+    page.getByRole("button", { name: "Démarrer le pitch", exact: true }),
+  ).toBeVisible();
+  await useDiscovery(page);
+}
+async function useDiscovery(page: Page) {
+  const presentation = page.getByRole("button", {
+    name: "Mode présentation",
+    exact: true,
+  });
+  if (await presentation.isVisible()) await presentation.click();
+  await expect(
+    page.getByRole("button", { name: "Mode exploration", exact: true }),
+  ).toBeVisible();
 }
 async function jump(page: Page, id: ExtraId, local: number) {
   const scene = scenes.find((item) => item.id === id)!;
@@ -114,7 +126,7 @@ async function gpuJump(page: Page, id: ExtraId, local: number) {
   return gpuState(page);
 }
 
-test("le voyage offre 42 écrans de défilement et trois explorations pédagogiques accessibles", async ({
+test("le jury offre 39 écrans hors prologue et trois explorations pédagogiques accessibles", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -123,8 +135,7 @@ test("le voyage offre 42 écrans de défilement et trois explorations pédagogiq
     (element) =>
       (element.getBoundingClientRect().height - innerHeight) / innerHeight,
   );
-  expect(scrollScreens).toBeCloseTo(42, 2);
-  expect(scrollScreens / 24).toBeCloseTo(1.75, 2);
+  expect(scrollScreens).toBeCloseTo(39, 2);
   for (const scene of scenes) {
     await page.getByRole("button", { name: scene.label, exact: true }).click();
     await expect(root(page)).toHaveAttribute("data-excursion", scene.id);
@@ -137,16 +148,20 @@ test("le voyage offre 42 écrans de défilement et trois explorations pédagogiq
       /illustr|pédagogique|Mise en scène|Évocation artistique/i,
     );
     if (scene.id === "soil") {
-      await expect(copy).toContainText("un annélide, pas un insecte");
-      await expect(copy).toContainText("Un projet d’aménagement prévu ici");
+      await expect(copy).toContainText("Une route, une clôture, un éclairage");
+      await expect(copy).toContainText("Que risquerions-nous de perturber ?");
       await expect(copy).toContainText("aucune analyse de sol exécutée");
     }
     if (scene.id === "drone") {
       await expect(copy).toContainText("une piste d’évolution");
       await expect(copy).toContainText("Arden, Romain et Quentin");
     }
-    if (scene.id === "marine")
+    if (scene.id === "marine") {
       await expect(copy).toContainText("aucun partenariat annoncé");
+      await expect(copy.getByRole("heading", { level: 2 })).toHaveText(
+        "Ce qu’il reste à construire ensemble.",
+      );
+    }
     await copy
       .getByRole("button", { name: "Poursuivre le voyage", exact: false })
       .click();
@@ -156,6 +171,39 @@ test("le voyage offre 42 écrans de défilement et trois explorations pédagogiq
       scene.returns,
     );
   }
+});
+
+test("la découverte publique conserve les 42 écrans avec son prologue", async ({
+  page,
+}) => {
+  await page.route("**/api/**", (route) =>
+    route.fulfill(
+      new URL(route.request().url()).pathname.endsWith("/auth/me")
+        ? { status: 401, json: { detail: "Connexion requise" } }
+        : { json: { setup_required: false, registration_open: true } },
+    ),
+  );
+  await page.goto("/?render=2d");
+  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
+    timeout: 45000,
+  });
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "true");
+  await expect(
+    page.getByRole("button", { name: "Découvrir Symbiose", exact: true }),
+  ).toBeVisible();
+  const scrollScreens = await root(page).evaluate(
+    (element) =>
+      (element.getBoundingClientRect().height - innerHeight) / innerHeight,
+  );
+  expect(scrollScreens).toBeCloseTo(42, 2);
+  await page
+    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-cue",
+    "forest-opening",
+  );
 });
 
 test("le curseur permet de parcourir les nouveaux passages dans les deux sens", async ({
@@ -182,13 +230,26 @@ test("la navigation clavier inclut le sol entre forêt et ciel sans perdre les h
   page,
 }) => {
   await open(page);
+  await page
+    .getByRole("button", { name: "Mode exploration", exact: true })
+    .click();
   await page.locator("#main-content").focus();
   await page.keyboard.press("ArrowRight");
   await expect(root(page)).toHaveAttribute("data-excursion", "soil");
   await page.keyboard.press("ArrowRight");
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-cue",
+    "forest-return",
+  );
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     "sky",
+  );
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-cue",
+    "forest-return",
   );
   await page.keyboard.press("ArrowLeft");
   await expect(root(page)).toHaveAttribute("data-excursion", "soil");
@@ -210,6 +271,19 @@ test("la navigation clavier inclut le sol entre forêt et ciel sans perdre les h
     );
     await expect(root(page)).toHaveAttribute("data-excursion", "");
   }
+  await page
+    .getByRole("button", { name: "Changer d’échelle", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-excursion", "marine");
+  await page.locator("#main-content").focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
+    "data-cue",
+    "coast-return",
+  );
+  await expect(page.locator(".sx-counter")).toHaveText("4:18 / 5:00");
+  await page.keyboard.press("ArrowLeft");
+  await expect(root(page)).toHaveAttribute("data-excursion", "marine");
   await page.locator("#main-content").focus();
   await page.keyboard.press("End");
   await expect(page.locator(".sx-counter")).toHaveText("5:00 / 5:00");

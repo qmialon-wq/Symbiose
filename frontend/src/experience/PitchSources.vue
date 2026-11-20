@@ -2,44 +2,28 @@
 import { ref } from "vue";
 import { sources, producers } from "./sources";
 import { pitchChapters, juryCoverage, clock, statusLabels } from "./pitch";
-import {
-  excursions,
-  excursionProgress,
-  expandedTime,
-  routeClock,
-} from "./excursions/route";
-import { excursionCopy } from "./excursions/copy";
+import { narrativeCues } from "./narrative-cues";
 const props = defineProps<{ chapterId: string }>();
 const tab = ref<"sources" | "speaker" | "jury">("sources");
-// The eight chapters and three explorations, in the order of the five-minute clock.
-const steps = [
-  ...pitchChapters.map((chapter) => ({
-    id: chapter.id,
-    title: chapter.subject,
-    start: expandedTime(chapter.start),
-    end: expandedTime(chapter.start + chapter.duration),
-    message: chapter.message,
-    oral: chapter.oral,
-    status: chapter.status,
-    screen: chapter.screen,
-    details: [chapter.interaction, chapter.transition],
-  })),
-  ...excursions.map((excursion) => {
-    const copy = excursionCopy[excursion.id],
-      start = routeClock.seconds(excursionProgress(excursion.id, 0));
-    return {
-      id: excursion.id,
-      title: `${excursion.label} · ${excursion.name}`,
-      start,
-      end: start + excursion.seconds,
-      message: copy.body,
-      oral: copy.oral,
-      status: undefined,
-      screen: copy.notes,
-      details: [copy.disclaimer],
-    };
-  }),
-].sort((a, b) => a.start - b.start);
+const steps = narrativeCues.map((cue) => ({
+  id: cue.id,
+  title: cue.subject,
+  start: cue.start,
+  end: cue.end,
+  message: cue.message,
+  oral: cue.speeches
+    .map((speech) => `${speech.speaker} — ${speech.text}`)
+    .join("\n\n"),
+  status: cue.excursion
+    ? undefined
+    : pitchChapters.find((chapter) => chapter.id === cue.chapter)?.status,
+  screen: cue.screen,
+  details: [
+    ...cue.camera.map((span) => span.description),
+    cue.transition,
+    ...(cue.note ? [cue.note] : []),
+  ],
+}));
 </script>
 <template>
   <div class="sx-source-book">

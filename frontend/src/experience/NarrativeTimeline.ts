@@ -20,6 +20,7 @@ export class NarrativeTimeline {
   private scrollTop = 0;
   private scrollRange = 0;
   private smooth!: gsap.QuickToFunc;
+  private exactPresentation = false;
   constructor(
     private root: HTMLElement,
     private reduced: boolean,
@@ -31,6 +32,7 @@ export class NarrativeTimeline {
       seconds: (p: number) => number;
       progress: (seconds: number) => number;
     },
+    private allowReducedPlayback = false,
   ) {
     this.context = gsap.context(() => {
       // Reuse a tween created before playback. Replacing it on each playback
@@ -55,7 +57,7 @@ export class NarrativeTimeline {
           // Scroll positions are rounded to physical pixels. Keep the exact
           // requested chapter boundary until native user input takes control.
           const progress = this.requestedProgress ?? trigger.progress;
-          if (this.reduced) this.snap(progress);
+          if (this.reduced || this.exactPresentation) this.snap(progress);
           else this.smooth(progress);
         },
         onRefresh: (trigger) => {
@@ -199,7 +201,8 @@ export class NarrativeTimeline {
     // Synchronize programmatic seeks before a queued viewport refresh can sample
     // an outdated scroll position. Camera interpolation stays on the scrub tween.
     this.trigger.update();
-    if (this.reduced) this.snap(this.requestedProgress);
+    if (this.reduced || this.exactPresentation)
+      this.snap(this.requestedProgress);
     else this.smooth(this.requestedProgress);
   }
   play() {
@@ -218,7 +221,7 @@ export class NarrativeTimeline {
   }
   /** Advance the configured presentation clock, defaulting to the original five minutes. */
   playPresentation() {
-    if (this.reduced) return;
+    if (this.reduced && !this.allowReducedPlayback) return;
     this.pause();
     const prefix = this.prefix || 0;
     const clock = this.presentationClock ?? {
@@ -228,9 +231,15 @@ export class NarrativeTimeline {
     };
     const cursor = {
       seconds: clock.seconds(
-        clamp01((this.trigger.progress - prefix) / (1 - prefix)),
+        clamp01(
+          ((this.requestedProgress ?? this.trigger.progress) - prefix) /
+            (1 - prefix),
+        ),
       ),
     };
+    // One clock drives the camera, text and demonstrations. Scrub easing is
+    // reserved for free exploration, so it cannot delay a scheduled cue.
+    this.exactPresentation = true;
     this.playback = gsap.to(cursor, {
       seconds: clock.duration,
       duration: Math.max(0.01, clock.duration - cursor.seconds),
@@ -266,6 +275,7 @@ export class NarrativeTimeline {
   pause() {
     this.playback?.kill();
     this.playback = undefined;
+    this.exactPresentation = false;
     this.onPause();
   }
   refresh() {

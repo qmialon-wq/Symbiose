@@ -29,6 +29,7 @@ const props = defineProps<{
   routeSeconds?: number;
   excursion?: ExcursionId;
   quality?: QualityPreference;
+  jury?: boolean;
 }>();
 const emit = defineEmits<{
   seek: [progress: number];
@@ -183,13 +184,23 @@ const seek = (event: Event) => {
     </div>
     <div class="sx-transport">
       <button
-        v-if="mode === 'presentation' && !reducedMotion"
+        v-if="mode === 'presentation' && (!reducedMotion || jury)"
         class="sx-play"
-        :aria-label="playing ? 'Mettre en pause' : 'Lire le récit'"
+        :class="{ 'sx-play--start': jury && !playing && seconds < 0.001 }"
+        :aria-label="
+          playing
+            ? 'Mettre en pause'
+            : jury && seconds < 0.001
+              ? 'Démarrer le pitch'
+              : 'Lire le récit'
+        "
         :title="`Lecture continue jusqu’à ${duration}`"
         @click="playing ? emit('pause') : emit('play')"
       >
-        {{ playing ? "Ⅱ" : "▶" }}
+        <span v-if="jury && !playing && seconds < 0.001" class="sx-start-label"
+          >Démarrer<span class="sx-start-detail"> le pitch</span></span
+        >
+        <span v-else aria-hidden="true">{{ playing ? "Ⅱ" : "▶" }}</span>
       </button>
       <label class="sx-progress"
         ><span class="sx-sr-only">Position dans le récit</span
@@ -230,3 +241,23 @@ const seek = (event: Event) => {
     </button>
   </footer>
 </template>
+
+<style scoped>
+.sx-play.sx-play--start {
+  width: auto;
+  min-width: 110px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .sx-play.sx-play--start {
+    min-width: 80px;
+    padding: 0 8px;
+  }
+  .sx-start-detail {
+    display: none;
+  }
+}
+</style>

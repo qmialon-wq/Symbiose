@@ -90,6 +90,18 @@ export function createObservation() {
   const trap = new T.Mesh(new T.BoxGeometry(0.45, 0.6, 0.25), metal);
   trap.position.set(5.6, 1.5, -3);
   group.add(trap);
+  // A reused, illustrative accessory beside the river demonstration. It neither
+  // captures images nor runs detection; the timed UI explains that distinction.
+  const riverTrap = new T.Group();
+  riverTrap.name = "illustrative-river-camera-trap";
+  riverTrap.position.set(9, 1.8, -220);
+  const housing = new T.Mesh(new T.BoxGeometry(1.05, 1.4, 0.65), metal);
+  const lens = new T.Mesh(new T.CylinderGeometry(0.21, 0.21, 0.2, 12), dark);
+  lens.rotation.x = Math.PI / 2;
+  lens.position.set(0, 0.22, 0.4);
+  riverTrap.add(housing, lens);
+  riverTrap.visible = false;
+  group.add(riverTrap);
   const box = new T.Box3();
   function screenBounds(camera: T.Camera) {
     animal.updateWorldMatrix(true, true);
@@ -112,5 +124,12 @@ export function createObservation() {
       height: (max.y - min.y) / 2,
     };
   }
-  return { group, animal, screenBounds };
+  return {
+    group,
+    animal,
+    screenBounds,
+    setRiverTrapVisible: (visible: boolean) => {
+      riverTrap.visible = visible;
+    },
+  };
 }

@@ -37,9 +37,17 @@ async function open(page: Page) {
     (await page.locator(".sx-canvas").count()) === 0,
     "Nécessite un GPU matériel",
   );
+  await expect(page.locator(".sx-experience")).toHaveAttribute(
+    "data-prologue-active",
+    "false",
+  );
+  // Geometry assertions exercise the reversible discovery path, without jury holds.
   await page
-    .getByRole("button", { name: "Passer l’introduction", exact: true })
+    .getByRole("button", { name: "Mode présentation", exact: true })
     .click();
+  await expect(
+    page.getByRole("button", { name: "Mode exploration", exact: true }),
+  ).toBeVisible();
 }
 
 async function state(page: Page) {
@@ -100,7 +108,7 @@ test("les détours raccordent exactement la caméra initiale et se rejouent à l
         passage[field].forEach((value, index) =>
           expect(frame[field][index]).toBeCloseTo(value, 8),
         );
-      expect(frame.fov).toBe(passage.fov);
+      expect(frame.fov).toBeCloseTo(passage.fov, 8);
     }
     const snapshots = [];
     for (const local of [0.001, 0.01, 0.1, 0.35, 0.5, 0.85, 0.99, 0.999]) {
