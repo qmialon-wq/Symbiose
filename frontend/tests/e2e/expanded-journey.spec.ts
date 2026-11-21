@@ -1,6 +1,290 @@
 import { expect, test, type Page } from "@playwright/test";
+import { narrativeCues } from "../../src/experience/narrative-cues";
 
 const root = (page: Page) => page.locator(".sx-experience");
+
+const photoViews = [
+  { id: "soil", local: 0.03, base: "soil", blend: 0, capture: "01-soil" },
+  {
+    id: "drone",
+    local: 11 / 30,
+    base: "drone-bocage",
+    blend: 0,
+    capture: "02-team",
+  },
+  {
+    id: "marine",
+    local: 0.2,
+    base: "marine-surface",
+    blend: 0,
+    capture: "03-marine-surface",
+  },
+  {
+    id: "marine",
+    local: 0.5,
+    base: "marine-surface",
+    blend: 1,
+    capture: "04-marine-underwater",
+  },
+] as const;
+
+async function photoReady(page: Page, id: ExtraId) {
+  const view = page.locator(`[data-excursion-fallback="${id}"]`);
+  await expect(view).toHaveAttribute("data-image-state", "ready");
+  await expect(view.locator("svg")).toHaveCount(0);
+  const decoded = await view.locator("img").evaluateAll((images) =>
+    Promise.all(
+      images.map(async (node) => {
+        const image = node as HTMLImageElement;
+        await image.decode();
+        return [image.naturalWidth, image.naturalHeight];
+      }),
+    ),
+  );
+  expect(decoded.length).toBeGreaterThan(0);
+  expect(
+    decoded.every(([width, height]) => width === 1664 && height === 936),
+  ).toBe(true);
+  return view;
+}
+
+for (const viewport of [
+  { width: 1600, height: 900 },
+  { width: 1920, height: 1080 },
+  { width: 390, height: 844 },
+]) {
+  test(`les quatre décors photographiques restent lisibles dans les deux modes à ${viewport.width}x${viewport.height}`, async ({
+    page,
+  }) => {
+    test.setTimeout(120000);
+    await page.setViewportSize(viewport);
+    const requested: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().includes("/experience-art/excursions/"))
+        requested.push(request.url());
+    });
+    await open(page);
+    for (const presentation of [true, false]) {
+      const currentMode = page.getByRole("button", {
+        name: presentation ? "Mode exploration" : "Mode présentation",
+        exact: true,
+      });
+      await currentMode.click();
+      for (const entry of photoViews) {
+        await jump(page, entry.id, entry.local);
+        const view = await photoReady(page, entry.id);
+        await expect(view).toHaveAttribute("data-image-base", entry.base);
+        expect(Number(await view.getAttribute("data-image-blend"))).toBeCloseTo(
+          entry.blend,
+          5,
+        );
+        const title = page.locator(".sx-excursion-copy h2");
+        await expect(title).toHaveText(
+          narrativeCues.find((cue) => cue.excursion === entry.id)!.title,
+        );
+        await expect(title).toBeInViewport({ ratio: 1 });
+        const image = view.locator(".sx-excursion-photo").first();
+        const box = await image.boundingBox();
+        expect(box!.width).toBeCloseTo(viewport.width, 0);
+        expect(box!.height).toBeCloseTo(viewport.height, 0);
+        expect(
+          await image.evaluate((node) => getComputedStyle(node).objectFit),
+        ).toBe("cover");
+        await expect(view.locator(".sx-excursion-photographs")).toHaveAttribute(
+          "aria-hidden",
+          "true",
+        );
+        if (presentation && viewport.width === 1600) {
+          await page.waitForTimeout(300);
+          await page.screenshot({
+            path: `../output/symbiose/step22/after/${entry.capture}.png`,
+          });
+        }
+        if (entry.id === "soil")
+          await expect
+            .poll(() =>
+              requested.some((url) => url.endsWith("drone-bocage.webp")),
+            )
+            .toBe(true);
+        if (entry.id === "drone")
+          await expect
+            .poll(() =>
+              requested.some((url) => url.endsWith("marine-underwater.webp")),
+            )
+            .toBe(true);
+      }
+    }
+  });
+}
+
+test("le fondu marin est plein écran, réversible et indépendant du texte exploratoire", async ({
+  page,
+}) => {
+  await open(page);
+  const title = narrativeCues.find((cue) => cue.excursion === "marine")!.title;
+  const samples = [
+    [0.05, 0],
+    [0.2, 0],
+    [0.3, 0.5],
+    [0.4, 1],
+    [0.6, 1],
+    [0.7, 1],
+    [0.8, 0.5],
+    [0.9, 0],
+    [0.98, 0],
+  ];
+  for (const [local, blend] of [...samples, ...[...samples].reverse()]) {
+    await jump(page, "marine", local);
+    const view = await photoReady(page, "marine");
+    await expect
+      .poll(async () => Number(await view.getAttribute("data-image-blend")))
+      .toBeCloseTo(blend, 5);
+    await expect(page.locator(".sx-excursion-copy h2")).toHaveText(title);
+    const boxes = await view.locator("img").evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const box = node.getBoundingClientRect();
+        return [box.x, box.y, box.width, box.height];
+      }),
+    );
+    expect(boxes[0]).toEqual(boxes[1]);
+  }
+});
+
+test("les mouvements réduits gardent une photographie fixe sans arrêter l’horloge", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await open(page);
+  for (const local of [0.05, 0.4, 0.8, 0.98]) {
+    await jump(page, "marine", local);
+    const view = await photoReady(page, "marine");
+    await expect(view).toHaveAttribute("data-image-blend", "1.000000");
+    expect(
+      await view
+        .locator(".sx-excursion-photographs")
+        .evaluate((node) => getComputedStyle(node).transitionDuration),
+    ).toBe("0s");
+  }
+  await jump(page, "marine", 0.5);
+  await page
+    .getByRole("button", { name: "Mode exploration", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Lire le récit", exact: true })
+    .click();
+  await expect
+    .poll(async () => Number(await root(page).getAttribute("data-seconds")))
+    .toBeGreaterThan(243.1);
+  await page
+    .getByRole("button", { name: "Mettre en pause", exact: true })
+    .click();
+  await expect(page.locator(".sx-excursion-fallback")).toHaveAttribute(
+    "data-image-blend",
+    "1.000000",
+  );
+});
+
+test("un chargement tardif est annulé sans bloquer la navigation ni repeindre une autre scène", async ({
+  page,
+}) => {
+  let release!: () => void;
+  const delayed = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/experience-art/excursions/soil.webp", async (route) => {
+    await delayed;
+    await route.continue().catch(() => {});
+  });
+  await open(page);
+  await jump(page, "soil", 0.2);
+  await expect(page.locator(".sx-excursion-fallback")).toHaveAttribute(
+    "data-image-state",
+    "loading",
+  );
+  await expect(page.locator(".sx-fallback-scene img").first()).toBeVisible();
+  await page
+    .getByRole("button", { name: "Poursuivre le voyage", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-excursion", "");
+  await jump(page, "drone", 0.4);
+  await photoReady(page, "drone");
+  release();
+  await page.waitForTimeout(200);
+  await expect(page.locator(".sx-excursion-fallback")).toHaveAttribute(
+    "data-image-base",
+    "drone-bocage",
+  );
+});
+
+test("une photographie indisponible garde un paysage et les contrôles du récit", async ({
+  page,
+}) => {
+  await page.route("**/experience-art/excursions/*.webp", (route) =>
+    route.abort(),
+  );
+  await open(page);
+  await jump(page, "marine", 0.5);
+  await expect(page.locator(".sx-excursion-fallback")).toHaveAttribute(
+    "data-image-state",
+    "degraded",
+  );
+  await expect(
+    page.getByRole("status").filter({ hasText: "Un décor est indisponible" }),
+  ).toBeVisible();
+  expect(
+    await page
+      .locator(".sx-fallback-scene img")
+      .first()
+      .evaluate((node) => (node as HTMLImageElement).naturalWidth),
+  ).toBeGreaterThan(0);
+  await page
+    .getByRole("button", { name: "Poursuivre le voyage", exact: true })
+    .click();
+  await expect(root(page)).toHaveAttribute("data-excursion", "");
+});
+
+test("les quatre photos restent décodables après installation du secours hors ligne", async ({
+  page,
+  context,
+}) => {
+  test.skip(!process.env.E2E_PRODUCTION, "Nécessite le cache de production");
+  test.setTimeout(120000);
+  await open(page);
+  await page.locator(".jury-installation summary").click();
+  await page
+    .getByRole("button", { name: "Installer hors ligne", exact: true })
+    .click();
+  await expect(page.locator(".jury-installation [role=status]")).toContainText(
+    "Installation locale prête",
+    { timeout: 65000 },
+  );
+  await context.setOffline(true);
+  await page.reload();
+  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
+    timeout: 45000,
+  });
+  for (const entry of photoViews) {
+    await jump(page, entry.id, entry.local);
+    await photoReady(page, entry.id);
+  }
+});
+
+test("le parcours WebGL ne charge pas les nouvelles photographies du secours", async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  const requested: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().includes("/experience-art/excursions/"))
+      requested.push(request.url());
+  });
+  await open(page, false);
+  await expect(page.locator(".sx-canvas canvas")).toHaveCount(1);
+  for (const id of ["soil", "drone", "marine"] as const)
+    await gpuJump(page, id, 0.55);
+  await expect(page.locator(".sx-excursion-fallback")).toHaveCount(0);
+  expect(requested).toEqual([]);
+});
 
 test("les trois scènes 3D restent disponibles après installation hors ligne", async ({
   page,

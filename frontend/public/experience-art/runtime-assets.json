@@ -222,5 +222,55 @@
     "estimatedRgbaMipBytes": 5191680,
     "alphaExactAtDeliveryResolution": true,
     "quality": 90
+  },
+  "excursions": {
+    "soil": {
+      "url": "/experience-art/excursions/soil.webp",
+      "width": 1664,
+      "height": 936,
+      "bytes": 339936,
+      "sha256": "5536487213b35c967fce82e7d105e32eb0912ffe1f7d204bea77454660222a06",
+      "sourceBytes": 2709614,
+      "sourceSha256": "a96906d0dc3d5fad478f072005a05a5d2f409f5456d674eaa234b9359f0cdb4b",
+      "quality": 88,
+      "provenance": "/experience-art/excursions/provenance.json",
+      "generated": true
+    },
+    "drone-bocage": {
+      "url": "/experience-art/excursions/drone-bocage.webp",
+      "width": 1664,
+      "height": 936,
+      "bytes": 290606,
+      "sha256": "00e9b71c0cb45ef2e807e2d14b4008412bf5d0407138461a00c24c0383bc22bb",
+      "sourceBytes": 2612104,
+      "sourceSha256": "abe4ea40234fbac4d1fb1d49c9604686efc23535e579e314cad523f98646fb9c",
+      "quality": 88,
+      "provenance": "/experience-art/excursions/provenance.json",
+      "generated": true
+    },
+    "marine-surface": {
+      "url": "/experience-art/excursions/marine-surface.webp",
+      "width": 1664,
+      "height": 936,
+      "bytes": 243836,
+      "sha256": "94849b589c03cf1368b4c388d38ab2975d14e27b28cb852e6698d1c35c000e5d",
+      "sourceBytes": 2509684,
+      "sourceSha256": "be63e169d81f8750432a96169373c3dfba1b3ace2dc91343e925296454371d89",
+      "quality": 88,
+      "provenance": "/experience-art/excursions/provenance.json",
+      "generated": true
+    },
+    "marine-underwater": {
+      "url": "/experience-art/excursions/marine-underwater.webp",
+      "width": 1664,
+      "height": 936,
+      "bytes": 241484,
+      "sha256": "7d8942acd8ee958123d2f4ad7a747c4305e2e4086ba06519857bc5965a091fb4",
+      "sourceBytes": 2495771,
+      "sourceSha256": "cca26af49b3da8a9d711dbd3dc1175068a44fed61e38f647d40e8f243367c300",
+      "quality": 88,
+      "provenance": "/experience-art/excursions/provenance.json",
+      "generated": true
+    }
   }
 }

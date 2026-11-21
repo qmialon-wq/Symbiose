@@ -67,6 +67,8 @@ export function juryBuild() {
       for (const asset of Object.values(spatial.assets)) files.add(asset.url);
       for (const scene of Object.values(inventory.scenes))
         files.add(scene.primary.url);
+      for (const image of Object.values(inventory.excursions || {}))
+        files.add(image.url);
       const media = await readdir(path.join(directory, "experience-media"));
       const demos = media
         .filter((name) => /^demo\.(mp4|webm)$/.test(name))

@@ -63,6 +63,53 @@
   height: 100%;
   display: block;
 }
+.sx-experience .sx-excursion-fallback--photographic {
+  background: transparent;
+  pointer-events: none;
+}
+.sx-experience .sx-excursion-photographs {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.sx-experience .sx-excursion-photographs--ready {
+  opacity: 1;
+}
+.sx-experience .sx-excursion-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.sx-experience .sx-excursion-photo-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #03130b55, #03130b14 50%, transparent 75%);
+}
+.sx-experience .sx-excursion-image-notice {
+  position: absolute;
+  bottom: 190px;
+  right: var(--sx-gutter);
+  max-width: 300px;
+  padding: 8px 12px;
+  background: #0b241ced;
+  color: #eef2dc;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.sx-experience
+  .sx-excursion-fallback[data-reduced-motion="true"]
+  .sx-excursion-photographs {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sx-experience .sx-excursion-photographs {
+    transition: none;
+  }
+}
 .sx-experience .sx-excursion-fallback-label {
   position: absolute;
   bottom: 165px;
