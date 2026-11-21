@@ -12,6 +12,7 @@ import { RouterLink } from "vue-router";
 import NarrativeOverlay from "../experience/NarrativeOverlay.vue";
 import PresentationControls from "../experience/PresentationControls.vue";
 import { NarrativeTimeline } from "../experience/NarrativeTimeline";
+import { narrativeCueAt } from "../experience/narrative-cues";
 import { scrollScreens } from "../experience/config";
 import {
   appUrl,
@@ -156,7 +157,8 @@ const debug = ["experience", "transitions"].includes(
   new URLSearchParams(window.location.search).get("debug") ?? "",
 );
 // Existing renderers and editorial content retain their original 0–1 coordinates.
-const prefix = debug ? 0 : prologueFraction;
+const hasPrologue = !debug && !props.jury;
+const prefix = hasPrologue ? prologueFraction : 0;
 const routeProgress = computed(() => toJourney(totalProgress.value, prefix));
 const route = computed(() =>
   debug
@@ -173,14 +175,22 @@ const route = computed(() =>
       : sampleRoute(routeProgress.value),
 );
 const progress = computed(() => route.value.progress);
+const currentCue = computed(() => narrativeCueAt(route.value.seconds));
+const presentationEnding = computed(
+  () =>
+    !debug &&
+    mode.value === "presentation" &&
+    !inPrologue.value &&
+    currentCue.value.id === "night-forest",
+);
 const excursion = computed(() =>
   !inPrologue.value ? route.value.excursion : undefined,
 );
 const prologueLocal = computed(() =>
-  debug ? 1 : prologueAt(totalProgress.value),
+  hasPrologue ? prologueAt(totalProgress.value) : 1,
 );
 const inPrologue = computed(
-  () => !debug && totalProgress.value < prefix - 1e-8,
+  () => hasPrologue && totalProgress.value < prefix - 1e-8,
 );
 const prologueVideo = ref<HTMLVideoElement | null>(null);
 const prologuePlaying = ref(false),
@@ -300,6 +310,7 @@ function buildTimeline() {
       () => (playing.value = false),
       prefix,
       debug ? undefined : routeClock,
+      props.jury,
     );
   if (rebuilding) timeline?.seek(destination, true);
 }
@@ -388,13 +399,22 @@ watch(
 function setMode(value: "exploration" | "presentation") {
   timeline?.pause();
   mode.value = value;
+  if (value === "presentation" && inPrologue.value) {
+    // Presentation starts in the forest; the public introduction stays available
+    // when returning to free exploration.
+    prologueOverlay.value?.resetScreen();
+    prologueFocus.value = false;
+    approachingScreen.value = leavingScreen.value = false;
+    timeline?.seek(prefix, true);
+  }
 }
 function play() {
+  if (document.hidden || dialogOpen.value) return;
   if (inPrologue.value) {
     intro();
     return;
   }
-  if (!reducedMotion.value) {
+  if ((!reducedMotion.value || props.jury) && !showLoading.value) {
     if (progress.value >= 0.999) {
       seek(0);
     }
@@ -534,10 +554,13 @@ onBeforeUnmount(() => {
     :data-prologue-video-focus="prologueFocus"
     :data-screen-focus="(officeScreen?.focus ?? 0).toFixed(5)"
     :data-jury="jury"
+    :data-seconds="route.seconds.toFixed(3)"
+    :data-cue="inPrologue ? 'prologue' : currentCue.id"
+    :data-ending="presentationEnding"
     :style="{
       '--sx-scroll-screens': debug
         ? scrollScreens
-        : expandedScrollScreens + prologueScreens,
+        : expandedScrollScreens + (hasPrologue ? prologueScreens : 0),
       '--sx-flow': `${-progress * 96}px`,
     }"
   >
@@ -559,6 +582,11 @@ onBeforeUnmount(() => {
         :prologue-video="prologueVideo"
         :prologue-focus="prologueFocus"
         :excursion="excursion"
+        :presentation-seconds="
+          !debug && mode === 'presentation' && !inPrologue
+            ? route.seconds
+            : undefined
+        "
         :suspended="dialogOpen"
         @ready="ready = true"
         @loading="loading = $event"
@@ -582,6 +610,7 @@ onBeforeUnmount(() => {
       <ExcursionFallback
         v-if="excursion && (error || forced2d)"
         :state="excursion"
+        :reduced-motion="reducedMotion"
       />
       <div class="sx-vignette" aria-hidden="true" />
       <header class="sx-header">
@@ -611,19 +640,24 @@ onBeforeUnmount(() => {
         :reduced-motion="reducedMotion"
         :app-href="applicationHref"
         :time-map="expandedTime"
+        :presentation="mode === 'presentation'"
+        :seconds="route.seconds"
         @begin="seek(chapterProgress(1))"
         @sources="openProject"
       />
       <ExcursionOverlay
         v-if="excursion"
         :state="excursion"
+        :presentation="mode === 'presentation'"
+        :seconds="route.seconds"
+        :reduced-motion="reducedMotion"
         @leave="seekRoute(excursionProgress(excursion.id, 1), true)"
       />
       <h1 v-if="excursion" class="sx-sr-only">
         Symbiose — nouvelles explorations
       </h1>
       <PrologueOverlay
-        v-if="!debug"
+        v-if="hasPrologue"
         ref="prologueOverlay"
         :local="prologueLocal"
         :active="inPrologue"
@@ -638,7 +672,7 @@ onBeforeUnmount(() => {
         @enter="intro()"
         @skip="intro(true)"
       />
-      <h1 v-else class="sx-sr-only">Symbiose — Le vivant nous relie</h1>
+      <h1 v-if="debug" class="sx-sr-only">Symbiose — Le vivant nous relie</h1>
       <JourneyAnnotations
         v-if="debug"
         :frame="frame"
@@ -647,18 +681,19 @@ onBeforeUnmount(() => {
       <FaunaAnnotations
         v-if="
           !inPrologue &&
+          !presentationEnding &&
           (!excursion || excursion.id === 'marine') &&
           frame?.animals?.length
         "
         :animals="frame.animals"
       />
-      <div class="sx-location">
+      <div v-show="!presentationEnding" class="sx-location">
         <span class="sx-location-mark" aria-hidden="true">⌖</span> NORMANDIE,
         FRANCE<span class="sx-location-rule" aria-hidden="true" /><span>{{
           "TRAJET ILLUSTRATIF · NON GÉOLOCALISÉ"
         }}</span>
       </div>
-      <div class="sx-prototype">
+      <div v-show="!presentationEnding" class="sx-prototype">
         <span>VOYAGE · 8 ATMOSPHÈRES · 3 EXPLORATIONS</span
         ><button @click="openProject">
           {{
@@ -700,8 +735,9 @@ onBeforeUnmount(() => {
         :reduced-motion="reducedMotion"
         :fullscreen="fullscreen"
         :fallback="!!error || forced2d"
+        :jury="jury"
         :prologue="inPrologue"
-        :include-prologue="!debug"
+        :include-prologue="hasPrologue"
         :route-progress="debug ? undefined : routeProgress"
         :route-seconds="debug ? undefined : route.seconds"
         :excursion="excursion?.id"

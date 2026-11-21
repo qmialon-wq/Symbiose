@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { existsSync, readFileSync } from "node:fs";
+import { openPublicLanding } from "./public-landing";
 
 async function open(page: Page, fixture = true, fallback = true) {
   // Test signal only: this does not replace the supplied official MP4.
@@ -28,27 +29,13 @@ async function open(page: Page, fixture = true, fallback = true) {
       });
     });
   }
-  await page.route("**/api/**", (route) =>
-    route.fulfill(
-      new URL(route.request().url()).pathname.endsWith("/auth/me")
-        ? { status: 401, json: { detail: "Connexion requise" } }
-        : { json: { setup_required: false, registration_open: true } },
-    ),
-  );
-  await page.goto(`/jury/${fallback ? "?render=2d" : ""}`);
-  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
-    timeout: 45000,
-  });
-  await expect(page.locator(".sx-experience")).toHaveAttribute(
-    "data-prologue-active",
-    "true",
-  );
+  await openPublicLanding(page, fallback);
 }
 const root = (page: Page) => page.locator(".sx-experience");
 const chapter = (page: Page, name: string) =>
   page.getByRole("button", { name, exact: true });
 
-test("le poster et le MP4 officiel restent disponibles après installation hors ligne", async ({
+test("le paquet jury conserve le MP4 en cache sans monter le prologue", async ({
   page,
   context,
 }) => {
@@ -57,7 +44,10 @@ test("le poster et le MP4 officiel restent disponibles après installation hors 
     "Nécessite le service worker du build de production",
   );
   test.setTimeout(90000);
-  await open(page, false);
+  await page.goto("/jury/?render=2d");
+  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
+    timeout: 45000,
+  });
   await page.locator(".jury-installation summary").click();
   await page
     .getByRole("button", { name: "Installer hors ligne", exact: true })
@@ -68,43 +58,31 @@ test("le poster et le MP4 officiel restent disponibles après installation hors 
   );
   await context.setOffline(true);
   await page.reload();
-  const poster = page.locator(".sx-prologue-poster");
-  await expect(poster).toBeVisible();
-  await expect
-    .poll(() =>
-      poster.evaluate((image: HTMLImageElement) => image.naturalWidth),
-    )
-    .toBe(2560);
-  const video = page.locator(".sx-prologue-media");
-  await expect(video).toHaveAttribute("src", "/experience-media/intro.mp4");
-  await expect
-    .poll(() =>
-      video.evaluate((element: HTMLVideoElement) => element.readyState),
-    )
-    .toBeGreaterThanOrEqual(1);
-  expect(
-    await video.evaluate((element: HTMLVideoElement) => element.paused),
-  ).toBe(true);
-  await page
-    .getByRole("button", { name: "Découvrir Symbiose", exact: true })
-    .click();
-  await expect
-    .poll(() =>
-      video.evaluate((element: HTMLVideoElement) => element.currentTime),
-    )
-    .toBeGreaterThan(0);
-  await page
-    .getByRole("button", { name: "Mettre la vidéo en pause", exact: true })
-    .click();
-  expect(
-    await video.evaluate((element: HTMLVideoElement) => element.paused),
-  ).toBe(true);
-  await page
-    .getByRole("button", { name: "Passer l’introduction", exact: true })
-    .click();
+  await expect(
+    page.getByRole("heading", { name: /Une forêt ordinaire/ }),
+  ).toBeVisible();
   await expect(root(page)).toHaveAttribute("data-prologue-active", "false");
-  await chapter(page, "0. Bureau d’études — Prologue").click();
-  await expect(poster).toBeVisible();
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
+  await expect(page.locator(".sx-prologue-overlay")).toHaveCount(0);
+  await expect(page.locator("video, .sx-youtube-screen iframe")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Démarrer le pitch", exact: true }),
+  ).toBeVisible();
+  const range = await page.evaluate(async () => {
+    const response = await fetch("/experience-media/intro.mp4", {
+      headers: { Range: "bytes=0-31" },
+    });
+    return {
+      controlled: !!navigator.serviceWorker.controller,
+      status: response.status,
+      bytes: (await response.arrayBuffer()).byteLength,
+      contentRange: response.headers.get("Content-Range"),
+    };
+  });
+  expect(range.controlled).toBe(true);
+  expect(range.status).toBe(206);
+  expect(range.bytes).toBe(32);
+  expect(range.contentRange).toMatch(/^bytes 0-31\/\d+$/);
 });
 
 test("le bureau ouvre le récit, peut être passé et reste accessible depuis 00", async ({
@@ -286,7 +264,7 @@ test("le vrai MP4 officiel installé est décodable sans lecture automatique", a
   ).toBe(true);
 });
 
-test("le travelling rejoint la forêt, lance le récit et le scroll natif permet de revenir au bureau", async ({
+test("le travelling public rejoint la forêt arrêtée et le scroll natif permet de revenir au bureau", async ({
   page,
 }) => {
   await open(page);
@@ -299,17 +277,13 @@ test("le travelling rejoint la forêt, lance le récit et le scroll natif permet
   await expect(root(page)).toHaveAttribute("data-prologue-active", "false", {
     timeout: 20000,
   });
-  // In presentation mode the five-minute narrative starts on arrival.
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     "forest",
   );
-  await expect(
-    page.getByRole("button", { name: "Mettre en pause", exact: true }),
-  ).toBeVisible();
-  await expect
-    .poll(async () => Number(await root(page).getAttribute("data-progress")))
-    .toBeGreaterThan(0);
+  await expect(root(page)).toHaveAttribute("data-mode", "exploration");
+  await page.waitForTimeout(400);
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
   await page.mouse.move(700, 500);
   await page.mouse.wheel(0, -600);
   await expect(root(page)).toHaveAttribute("data-prologue-active", "true");
@@ -367,6 +341,9 @@ test("les mouvements réduits rejoignent immédiatement les huit chapitres prés
       exact: true,
     }),
   ).toHaveAttribute("href", applicationHref!);
+  await page
+    .getByRole("button", { name: "Mode exploration", exact: false })
+    .click();
   await chapter(page, "0. Bureau d’études — Prologue").click();
   await root(page).focus();
   await page.keyboard.press("ArrowRight");

@@ -1,0 +1,1661 @@
+{
+  "baseURL": "http://127.0.0.1:8080",
+  "scenes": [
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "forest-opening",
+      "seconds": 0.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "soil",
+      "seconds": 18.25,
+      "title": "Ce qui vit ici nous échappe.",
+      "text": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "forest-return",
+      "seconds": 42.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "sky",
+      "seconds": 50.25,
+      "title": "Rendre l’invisible visible.",
+      "text": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "rivers",
+      "seconds": 67.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image 1 / 3 Détecter MegaDetector repère une présence animale ; les cadres de la scène illustrent cette étape sans exécuter d’inférence. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image 1 / 3 Détecter MegaDetector repère une présence animale ; les cadres de la scène illustrent cette étape sans exécuter d’inférence. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "rivers",
+      "seconds": 73.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Classification illustrative · espèce à confirmer 2 / 3 Proposer une espèce Le classificateur PyTorch propose une espèce, avec une incertitude à examiner ; détection, classification et suivi restent séparés. Classificateur PyTorch actuel · SpeciesNet reste une piste d’évolution Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Classification illustrative · espèce à confirmer 2 / 3 Proposer une espèce Le classificateur PyTorch propose une espèce, avec une incertitude à examiner ; détection, classification et suivi restent séparés. Classificateur PyTorch actuel · SpeciesNet reste une piste d’évolution Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "rivers",
+      "seconds": 80.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Confirmer, corriger ou rejeter · jamais de validation automatique 3 / 3 L’humain valide La validation de l’espèce et du recadrage reste humaine. Les six étapes détaillées restent consultables dans le parcours libre. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Confirmer, corriger ou rejeter · jamais de validation automatique 3 / 3 L’humain valide La validation de l’espèce et du recadrage reste humaine. Les six étapes détaillées restent consultables dans le parcours libre. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "underwater",
+      "seconds": 87.25,
+      "title": "Reconnaître un animal ne suffit pas.",
+      "text": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 103.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 111.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 119.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 127.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 135.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 1 / 5 Un projet d’éclairage Scénario illustratif : une collectivité envisage d’éclairer un chemin près d’un bocage normand. Aucun projet réel ni dossier écologique calculé ici. Scénario illustratif en Normandie · sans relevé de terrain Aménageurs · Acteurs de l’environnement · Territoires Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 1 / 5 Un projet d’éclairage Scénario illustratif : une collectivité envisage d’éclairer un chemin près d’un bocage normand. Aucun projet réel ni dossier écologique calculé ici. Scénario illustratif en Normandie · sans relevé de terrain Aménageurs · Acteurs de l’environnement · Territoires Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 144.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 2 / 5 Observer et situer Relier les observations disponibles aux caractéristiques du milieu. Les données de démonstration ne constituent pas un inventaire réel du site. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 2 / 5 Observer et situer Relier les observations disponibles aux caractéristiques du milieu. Les données de démonstration ne constituent pas un inventaire réel du site. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 154.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 3 / 5 Examiner les vigilances Identifier les informations manquantes et les usages du milieu à vérifier avec un spécialiste ; aucun effet écologique n’est mesuré dans cette animation. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 3 / 5 Examiner les vigilances Identifier les informations manquantes et les usages du milieu à vérifier avec un spécialiste ; aucun effet écologique n’est mesuré dans cette animation. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 164.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 4 / 5 Discuter des adaptations Éviter ou déplacer certains points lumineux Réduire la durée de fonctionnement Cibler l’orientation sur les usages nécessaires Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 4 / 5 Discuter des adaptations Éviter ou déplacer certains points lumineux Réduire la durée de fonctionnement Cibler l’orientation sur les usages nécessaires Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 176.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 5 / 5 Consulter les justifications Le registre des douze alternatives documentées reste consultable avec ses sources et conditions. Cette illustration ne calcule ni autorisation ni recommandation personnalisée. Scénario illustratif en Normandie · sans relevé de terrain Consulter les justifications et leurs limites Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 5 / 5 Consulter les justifications Le registre des douze alternatives documentées reste consultable avec ses sources et conditions. Cette illustration ne calcule ni autorisation ni recommandation personnalisée. Scénario illustratif en Normandie · sans relevé de terrain Consulter les justifications et leurs limites Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Options de conception conditionnelles, à examiner avec des spécialistes. Aucune efficacité sur ce site n’est établie. Clôture Modifier le tracé Limiter le périmètre clôturé Examiner une conception adaptée à la faune Repérer les éléments présents, confirmer les déplacements et vérifier les usages et la sécurité. Éclairage extérieur Éviter certains points lumineux Réduire la durée de fonctionnement Adapter l’orientation de l’éclairage Justifier les points et horaires nécessaires ; faire examiner visibilité, sécurité et éléments voisins réellement présents. Végétation Implanter le projet en préservant la végétation présente Réduire l’emprise de suppression de végétation Inventorier les arbres ou haies effectivement présents et vérifier les contraintes avant intervention. Terrassement Comparer une implantation différente Réduire l’emprise des terrassements Disposer d’un plan et d’une topographie ; vérifier les enjeux localisés et la faisabilité du chantier. Imperméabilisation Éviter des surfaces imperméabilisées non indispensables Examiner des revêtements perméables compatibles avec les usages Étudier le sol, l’infiltration, les usages, les charges et l’entretien avant tout choix technique. Références générales de conception, sans qualification scientifique locale : Ministère · Trame verte, bleue et noire OFB · Clôtures et faune Cerema · Désimperméabilisation Lire les preuves archivées et la documentation du prototype Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 185.25,
+      "title": null,
+      "text": "",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ]
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 191.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Réunir les compétences pour traiter les observations tout en gardant la validation humaine. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Réunir les compétences pour traiter les observations tout en gardant la validation humaine. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 198.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Développement logiciel Relier les étapes dans un démonstrateur local utilisable par les acteurs du territoire. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Développement logiciel Relier les étapes dans un démonstrateur local utilisable par les acteurs du territoire. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 205.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Exploitation des données Documenter les données et leurs limites pour rendre les informations examinables. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Exploitation des données Documenter les données et leurs limites pour rendre les informations examinables. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "coast",
+      "seconds": 215.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "marine",
+      "seconds": 228.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Partenaires de terrain Collectivités, associations naturalistes et professionnels de l’aménagement : des partenaires recherchés, aucun partenariat annoncé. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Partenaires de terrain Collectivités, associations naturalistes et professionnels de l’aménagement : des partenaires recherchés, aucun partenariat annoncé. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "marine",
+      "seconds": 238.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Données fiables et expertise scientifique Confronter les propositions à des données documentées et à l’expertise des spécialistes. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Données fiables et expertise scientifique Confronter les propositions à des données documentées et à l’expertise des spécialistes. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "marine",
+      "seconds": 248.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Moyens d’expérimenter Évaluer les usages, les améliorations nécessaires et le coût numérique des traitements. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Moyens d’expérimenter Évaluer les usages, les améliorations nécessaires et le coût numérique des traitements. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "coast-return",
+      "seconds": 258.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Sources et limites ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 270.25,
+      "title": "Vous reconnaissez cette forêt ?",
+      "text": "Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé.",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé."
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 280.25,
+      "title": "La même forêt, un autre regard",
+      "text": "La même forêt, un autre regard Ce qui a changé, c’est ce que nous en savons.",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "La même forêt, un autre regard Ce qui a changé, c’est ce que nous en savons."
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 289.25,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 300,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "forest-opening",
+      "seconds": 0.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "soil",
+      "seconds": 18.25,
+      "title": "Ce qui vit ici nous échappe.",
+      "text": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Une route, une clôture, un éclairage Que risquerions-nous de perturber ? Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Une route, une clôture, un éclairage Que risquerions-nous de perturber ? Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "forest-return",
+      "seconds": 42.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "sky",
+      "seconds": 50.25,
+      "title": "Rendre l’invisible visible.",
+      "text": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Fonction documentée Observer la faune Comprendre le territoire Éclairer les projets Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Fonction documentée Observer la faune Comprendre le territoire Éclairer les projets Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "rivers",
+      "seconds": 67.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les vidéos sont importées dans le stockage local et associées au dossier. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗",
+      "panels": [
+        {
+          "label": "01 Vidéo",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les vidéos sont importées dans le stockage local et associées au dossier. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "02 Extraction",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Des images sont extraites pour permettre l’analyse visuelle. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "03 Reconnaissance",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions MegaDetector localise les animaux, puis un second modèle propose l’espèce : classificateur PyTorch aujourd’hui, SpeciesNet en piste pour la suite. Le suivi relie les observations dans le temps. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "04 Validation",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Une personne confirme, corrige ou rejette l’espèce et le recadrage. Une prédiction seule ne confirme pas une présence. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "05 Enrichissement",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les observations confirmées sont rapprochées des données ouvertes et des publications, avec leur provenance. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "06 Propositions",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Des alternatives conditionnelles sont reliées au projet, aux sources et aux vérifications encore nécessaires. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        }
+      ],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les vidéos sont importées dans le stockage local et associées au dossier. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "underwater",
+      "seconds": 87.25,
+      "title": "Reconnaître un animal ne suffit pas.",
+      "text": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "wetland",
+      "seconds": 103.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands Sources et texte oral ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et texte oral ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et texte oral ↗"
+        }
+      ],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "meadow",
+      "seconds": 135.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. Un cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes. Bénéfice attendu · non mesuré 12 alternatives documentées Clôture · éclairage · végétation · terrassement · imperméabilisation Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Aménageurs Acteurs de l’environnement Territoires Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. Un cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes. Bénéfice attendu · non mesuré 12 alternatives documentées Clôture · éclairage · végétation · terrassement · imperméabilisation Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Options de conception conditionnelles, à examiner avec des spécialistes. Aucune efficacité sur ce site n’est établie. Clôture Modifier le tracé Limiter le périmètre clôturé Examiner une conception adaptée à la faune Repérer les éléments présents, confirmer les déplacements et vérifier les usages et la sécurité. Éclairage extérieur Éviter certains points lumineux Réduire la durée de fonctionnement Adapter l’orientation de l’éclairage Justifier les points et horaires nécessaires ; faire examiner visibilité, sécurité et éléments voisins réellement présents. Végétation Implanter le projet en préservant la végétation présente Réduire l’emprise de suppression de végétation Inventorier les arbres ou haies effectivement présents et vérifier les contraintes avant intervention. Terrassement Comparer une implantation différente Réduire l’emprise des terrassements Disposer d’un plan et d’une topographie ; vérifier les enjeux localisés et la faisabilité du chantier. Imperméabilisation Éviter des surfaces imperméabilisées non indispensables Examiner des revêtements perméables compatibles avec les usages Étudier le sol, l’infiltration, les usages, les charges et l’entretien avant tout choix technique. Références générales de conception, sans qualification scientifique locale : Ministère · Trame verte, bleue et noire OFB · Clôtures et faune Cerema · Désimperméabilisation Lire les preuves archivées et la documentation du prototype Aménageurs Acteurs de l’environnement Territoires Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "drone",
+      "seconds": 185.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Développement logiciel Exploitation des données Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Développement logiciel Exploitation des données Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "coast",
+      "seconds": 215.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "marine",
+      "seconds": 228.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Confronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter. Partenaires de terrain Données fiables et expertise scientifique Moyens d’expérimenter Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES",
+        "Aperçu illustratif · sans WebGL"
+      ],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Confronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter. Partenaires de terrain Données fiables et expertise scientifique Moyens d’expérimenter Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "coast-return",
+      "seconds": 258.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "night-forest",
+      "seconds": 270.25,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗"
+    },
+    {
+      "render": "2d",
+      "actualRender": "2d",
+      "mode": "exploration",
+      "cue": "night-forest",
+      "seconds": 300,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        "VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES"
+      ],
+      "expanded": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "forest-opening",
+      "seconds": 0.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "soil",
+      "seconds": 18.25,
+      "title": "Ce qui vit ici nous échappe.",
+      "text": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "forest-return",
+      "seconds": 42.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "sky",
+      "seconds": 50.25,
+      "title": "Rendre l’invisible visible.",
+      "text": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "rivers",
+      "seconds": 67.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image 1 / 3 Détecter MegaDetector repère une présence animale ; les cadres de la scène illustrent cette étape sans exécuter d’inférence. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image 1 / 3 Détecter MegaDetector repère une présence animale ; les cadres de la scène illustrent cette étape sans exécuter d’inférence. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "rivers",
+      "seconds": 73.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Classification illustrative · espèce à confirmer 2 / 3 Proposer une espèce Le classificateur PyTorch propose une espèce, avec une incertitude à examiner ; détection, classification et suivi restent séparés. Classificateur PyTorch actuel · SpeciesNet reste une piste d’évolution Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Classification illustrative · espèce à confirmer 2 / 3 Proposer une espèce Le classificateur PyTorch propose une espèce, avec une incertitude à examiner ; détection, classification et suivi restent séparés. Classificateur PyTorch actuel · SpeciesNet reste une piste d’évolution Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "rivers",
+      "seconds": 80.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Confirmer, corriger ou rejeter · jamais de validation automatique 3 / 3 L’humain valide La validation de l’espèce et du recadrage reste humaine. Les six étapes détaillées restent consultables dans le parcours libre. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Illustration du parcours · aucune analyse de cette image Confirmer, corriger ou rejeter · jamais de validation automatique 3 / 3 L’humain valide La validation de l’espèce et du recadrage reste humaine. Les six étapes détaillées restent consultables dans le parcours libre. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "underwater",
+      "seconds": 87.25,
+      "title": "Reconnaître un animal ne suffit pas.",
+      "text": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 103.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 1 / 4 Observations validées Une observation humaine validée constitue le point de départ ; les observations de la recette territoriale sont synthétiques. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 111.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 2 / 4 Cadastre · RPG 2024 Situer les parcelles et les usages documentés, avec les millésimes et les limites des données disponibles. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 119.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 3 / 4 IGN · DREAL Normandie Consulter les zonages et les zones humides lorsque l’information existe ; les résultats normands affichés proviennent des archives du projet. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "wetland",
+      "seconds": 127.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+        }
+      ],
+      "renderNotes": [],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. 4 / 4 Publications scientifiques Rendre les sources consultables et distinguer les informations disponibles des vérifications encore nécessaires sur le terrain. Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 135.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 1 / 5 Un projet d’éclairage Scénario illustratif : une collectivité envisage d’éclairer un chemin près d’un bocage normand. Aucun projet réel ni dossier écologique calculé ici. Scénario illustratif en Normandie · sans relevé de terrain Aménageurs · Acteurs de l’environnement · Territoires Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 1 / 5 Un projet d’éclairage Scénario illustratif : une collectivité envisage d’éclairer un chemin près d’un bocage normand. Aucun projet réel ni dossier écologique calculé ici. Scénario illustratif en Normandie · sans relevé de terrain Aménageurs · Acteurs de l’environnement · Territoires Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 144.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 2 / 5 Observer et situer Relier les observations disponibles aux caractéristiques du milieu. Les données de démonstration ne constituent pas un inventaire réel du site. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 2 / 5 Observer et situer Relier les observations disponibles aux caractéristiques du milieu. Les données de démonstration ne constituent pas un inventaire réel du site. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 154.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 3 / 5 Examiner les vigilances Identifier les informations manquantes et les usages du milieu à vérifier avec un spécialiste ; aucun effet écologique n’est mesuré dans cette animation. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 3 / 5 Examiner les vigilances Identifier les informations manquantes et les usages du milieu à vérifier avec un spécialiste ; aucun effet écologique n’est mesuré dans cette animation. Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 164.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 4 / 5 Discuter des adaptations Éviter ou déplacer certains points lumineux Réduire la durée de fonctionnement Cibler l’orientation sur les usages nécessaires Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 4 / 5 Discuter des adaptations Éviter ou déplacer certains points lumineux Réduire la durée de fonctionnement Cibler l’orientation sur les usages nécessaires Scénario illustratif en Normandie · sans relevé de terrain Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "meadow",
+      "seconds": 176.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 5 / 5 Consulter les justifications Le registre des douze alternatives documentées reste consultable avec ses sources et conditions. Cette illustration ne calcule ni autorisation ni recommandation personnalisée. Scénario illustratif en Normandie · sans relevé de terrain Consulter les justifications et leurs limites Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. 5 / 5 Consulter les justifications Le registre des douze alternatives documentées reste consultable avec ses sources et conditions. Cette illustration ne calcule ni autorisation ni recommandation personnalisée. Scénario illustratif en Normandie · sans relevé de terrain Consulter les justifications et leurs limites Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Options de conception conditionnelles, à examiner avec des spécialistes. Aucune efficacité sur ce site n’est établie. Clôture Modifier le tracé Limiter le périmètre clôturé Examiner une conception adaptée à la faune Repérer les éléments présents, confirmer les déplacements et vérifier les usages et la sécurité. Éclairage extérieur Éviter certains points lumineux Réduire la durée de fonctionnement Adapter l’orientation de l’éclairage Justifier les points et horaires nécessaires ; faire examiner visibilité, sécurité et éléments voisins réellement présents. Végétation Implanter le projet en préservant la végétation présente Réduire l’emprise de suppression de végétation Inventorier les arbres ou haies effectivement présents et vérifier les contraintes avant intervention. Terrassement Comparer une implantation différente Réduire l’emprise des terrassements Disposer d’un plan et d’une topographie ; vérifier les enjeux localisés et la faisabilité du chantier. Imperméabilisation Éviter des surfaces imperméabilisées non indispensables Examiner des revêtements perméables compatibles avec les usages Étudier le sol, l’infiltration, les usages, les charges et l’entretien avant tout choix technique. Références générales de conception, sans qualification scientifique locale : Ministère · Trame verte, bleue et noire OFB · Clôtures et faune Cerema · Désimperméabilisation Lire les preuves archivées et la documentation du prototype Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 185.25,
+      "title": null,
+      "text": "",
+      "panels": [],
+      "renderNotes": []
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 191.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Réunir les compétences pour traiter les observations tout en gardant la validation humaine. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Réunir les compétences pour traiter les observations tout en gardant la validation humaine. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 198.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Développement logiciel Relier les étapes dans un démonstrateur local utilisable par les acteurs du territoire. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Développement logiciel Relier les étapes dans un démonstrateur local utilisable par les acteurs du territoire. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "drone",
+      "seconds": 205.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Exploitation des données Documenter les données et leurs limites pour rendre les informations examinables. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Exploitation des données Documenter les données et leurs limites pour rendre les informations examinables. Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "coast",
+      "seconds": 215.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "marine",
+      "seconds": 228.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Partenaires de terrain Collectivités, associations naturalistes et professionnels de l’aménagement : des partenaires recherchés, aucun partenariat annoncé. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Partenaires de terrain Collectivités, associations naturalistes et professionnels de l’aménagement : des partenaires recherchés, aucun partenariat annoncé. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "marine",
+      "seconds": 238.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Données fiables et expertise scientifique Confronter les propositions à des données documentées et à l’expertise des spécialistes. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Données fiables et expertise scientifique Confronter les propositions à des données documentées et à l’expertise des spécialistes. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "marine",
+      "seconds": 248.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Moyens d’expérimenter Évaluer les usages, les améliorations nécessaires et le coût numérique des traitements. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Moyens d’expérimenter Évaluer les usages, les améliorations nécessaires et le coût numérique des traitements. Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "coast-return",
+      "seconds": 258.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Sources et limites ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Sources et limites ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 270.25,
+      "title": "Vous reconnaissez cette forêt ?",
+      "text": "Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé.",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé."
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 280.25,
+      "title": "La même forêt, un autre regard",
+      "text": "La même forêt, un autre regard Ce qui a changé, c’est ce que nous en savons.",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "La même forêt, un autre regard Ce qui a changé, c’est ce que nous en savons."
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 289.25,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "jury",
+      "cue": "night-forest",
+      "seconds": 300,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "Comprendre le vivant avant d’aménager. Commencer l’expérience Symbiose ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "forest-opening",
+      "seconds": 0.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "CE QUE L’ON NE VOIT PAS 0:00—0:18 Une forêt ordinaire. Vraiment ? Une vie discrète s’organise autour de nous. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "soil",
+      "seconds": 18.25,
+      "title": "Ce qui vit ici nous échappe.",
+      "text": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Une route, une clôture, un éclairage Que risquerions-nous de perturber ? Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "01 BIS / SOUS NOS PAS Ce qui vit ici nous échappe. Un projet d’aménagement peut perturber une vie que nous observons peu. Une route, une clôture, un éclairage Que risquerions-nous de perturber ? Coupe pédagogique · organismes illustrés · aucune analyse de sol exécutée Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "forest-return",
+      "seconds": 42.25,
+      "title": "Une forêt ordinaire. Vraiment ?",
+      "text": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DES DONNÉES À RELIER 0:42—0:50 Une forêt ordinaire. Vraiment ? Des données existent. Encore faut-il les relier pour mieux décider. Qui habite ici ? Découvrir la solution ↘ Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "sky",
+      "seconds": 50.25,
+      "title": "Rendre l’invisible visible.",
+      "text": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Fonction documentée Observer la faune Comprendre le territoire Éclairer les projets Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "L’IDÉE SYMBIOSE 0:50—1:07 Rendre l’invisible visible. Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix. Fonction documentée Observer la faune Comprendre le territoire Éclairer les projets Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "rivers",
+      "seconds": 67.25,
+      "title": "L’IA détecte et propose. L’humain valide.",
+      "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les vidéos sont importées dans le stockage local et associées au dossier. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗",
+      "panels": [
+        {
+          "label": "01 Vidéo",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les vidéos sont importées dans le stockage local et associées au dossier. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "02 Extraction",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Des images sont extraites pour permettre l’analyse visuelle. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "03 Reconnaissance",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions MegaDetector localise les animaux, puis un second modèle propose l’espèce : classificateur PyTorch aujourd’hui, SpeciesNet en piste pour la suite. Le suivi relie les observations dans le temps. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "04 Validation",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Une personne confirme, corrige ou rejette l’espèce et le recadrage. Une prédiction seule ne confirme pas une présence. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "05 Enrichissement",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les observations confirmées sont rapprochées des données ouvertes et des publications, avec leur provenance. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        },
+        {
+          "label": "06 Propositions",
+          "text": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Des alternatives conditionnelles sont reliées au projet, aux sources et aux vérifications encore nécessaires. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+        }
+      ],
+      "renderNotes": [],
+      "expanded": "DE LA VIDÉO À L’OBSERVATION VALIDÉE 1:07—1:27 L’IA détecte et propose. L’humain valide. Détection, proposition d’espèce et validation humaine restent trois étapes distinctes. Fonction documentée 01 Vidéo 02 Extraction 03 Reconnaissance 04 Validation 05 Enrichissement 06 Propositions Les vidéos sont importées dans le stockage local et associées au dossier. Une proposition d’espèce reste à vérifier par une personne. Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "underwater",
+      "seconds": 87.25,
+      "title": "Reconnaître un animal ne suffit pas.",
+      "text": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "COMPRENDRE LE MILIEU 1:27—1:43 Reconnaître un animal ne suffit pas. Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer. Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "wetland",
+      "seconds": 103.25,
+      "title": "Le vivant, replacé dans son territoire.",
+      "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands Sources et texte oral ↗",
+      "panels": [
+        {
+          "label": "Caen",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.1829, -0.3707 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II Aucun objet renvoyé Natura · Habitats Aucun objet renvoyé Natura · Oiseaux Aucun objet renvoyé Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et texte oral ↗"
+        },
+        {
+          "label": "Carentan",
+          "text": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et texte oral ↗"
+        }
+      ],
+      "renderNotes": [],
+      "expanded": "CROISER LES DONNÉES 1:43—2:15 Le vivant, replacé dans son territoire. Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier. Fonction documentée Observations validées Cadastre · RPG 2024 IGN · DREAL Normandie Publications scientifiques Résultats vérifiés · deux points normands ARCHIVES IGN · 10 NOVEMBRE 2026 · AUCUN APPEL EN DIRECT Caen Carentan 49.316, -1.235 · WGS84 ZNIEFF I Aucun objet renvoyé ZNIEFF II 250008148 Natura · Habitats FR2500088 Natura · Oiseaux FR2510046 Ces réponses concernent seulement le point interrogé. Une réponse vide ne prouve pas l’absence d’enjeu écologique. Consulter les preuves et leurs limites ↗ Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "meadow",
+      "seconds": 135.25,
+      "title": "Observer, situer, décider : un seul parcours.",
+      "text": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. Un cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes. Bénéfice attendu · non mesuré 12 alternatives documentées Clôture · éclairage · végétation · terrassement · imperméabilisation Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Aménageurs Acteurs de l’environnement Territoires Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "UN PROJET D’ÉCLAIRAGE À EXAMINER 2:15—3:05 Observer, situer, décider : un seul parcours. Un cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes. Bénéfice attendu · non mesuré 12 alternatives documentées Clôture · éclairage · végétation · terrassement · imperméabilisation Inventaire du prototype et limites ↗ Efficacité écologique locale : non mesurée Explorer les 12 alternatives et leurs conditions Options de conception conditionnelles, à examiner avec des spécialistes. Aucune efficacité sur ce site n’est établie. Clôture Modifier le tracé Limiter le périmètre clôturé Examiner une conception adaptée à la faune Repérer les éléments présents, confirmer les déplacements et vérifier les usages et la sécurité. Éclairage extérieur Éviter certains points lumineux Réduire la durée de fonctionnement Adapter l’orientation de l’éclairage Justifier les points et horaires nécessaires ; faire examiner visibilité, sécurité et éléments voisins réellement présents. Végétation Implanter le projet en préservant la végétation présente Réduire l’emprise de suppression de végétation Inventorier les arbres ou haies effectivement présents et vérifier les contraintes avant intervention. Terrassement Comparer une implantation différente Réduire l’emprise des terrassements Disposer d’un plan et d’une topographie ; vérifier les enjeux localisés et la faisabilité du chantier. Imperméabilisation Éviter des surfaces imperméabilisées non indispensables Examiner des revêtements perméables compatibles avec les usages Étudier le sol, l’infiltration, les usages, les charges et l’entretien avant tout choix technique. Références générales de conception, sans qualification scientifique locale : Ministère · Trame verte, bleue et noire OFB · Clôtures et faune Cerema · Désimperméabilisation Lire les preuves archivées et la documentation du prototype Aménageurs Acteurs de l’environnement Territoires Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "drone",
+      "seconds": 185.25,
+      "title": "Derrière Symbiose, l’équipe ARQ.",
+      "text": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Développement logiciel Exploitation des données Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "06 BIS / L’ÉQUIPE ARQ Derrière Symbiose, l’équipe ARQ. Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données. Intelligence artificielle Développement logiciel Exploitation des données Survol illustratif · le relevé par drone reste une piste d’évolution Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "coast",
+      "seconds": 215.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "DU DÉMONSTRATEUR AU TERRAIN 3:35—3:48 Rendre l’expertise accessible au bon moment. Un parcours démontré ; un impact réel sur le terrain encore à mesurer. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "marine",
+      "seconds": 228.25,
+      "title": "Ce qu’il reste à construire ensemble.",
+      "text": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Confronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter. Partenaires de terrain Données fiables et expertise scientifique Moyens d’expérimenter Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "07 BIS / CHANGER D’ÉCHELLE Ce qu’il reste à construire ensemble. Confronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter. Partenaires de terrain Données fiables et expertise scientifique Moyens d’expérimenter Évocation artistique du littoral · besoins proposés, aucun partenariat annoncé Poursuivre le voyage ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "coast-return",
+      "seconds": 258.25,
+      "title": "Rendre l’expertise accessible au bon moment.",
+      "text": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "L’EXPERTISE AU BON MOMENT 4:18—4:30 Rendre l’expertise accessible au bon moment. Rendre l’expertise accessible lorsqu’une décision se prépare. Perspective · non opérationnelle Besoins proposés par l’équipe · aucun partenariat annoncé à ce jour. Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "night-forest",
+      "seconds": 270.25,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [],
+      "expanded": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗"
+    },
+    {
+      "render": "webgl",
+      "actualRender": "webgl",
+      "mode": "exploration",
+      "cue": "night-forest",
+      "seconds": 300,
+      "title": "Comprendre le vivant avant d’aménager.",
+      "text": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗",
+      "panels": [],
+      "renderNotes": [
+        " Animaux 3D illustratifs · identifications non calculées "
+      ],
+      "expanded": "LA MÊME FORÊT, UN AUTRE REGARD 4:30—5:00 Comprendre le vivant avant d’aménager. La forêt est la même. Ce qui a changé, c’est ce que nous en savons. Commencer l’expérience Symbiose ↗ Sources et texte oral ↗"
+    }
+  ],
+  "notebooks": [
+    {
+      "render": "2d",
+      "mode": "jury",
+      "tab": "Sources et technique",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Le manifeste, ses captures et les livrables du dépôt étayent ce parcours. Les textes ci-dessous sont embarqués localement et restent consultables sans Internet. Attendus vérifiés : les cinq questions de l’image fournie, les sept rubriques du descriptif et les six critères du règlement (§ 5, p. 3). Fonction documentée Capacité décrite dans les livrables ; configuration locale requise pour l’exécuter. Résultat technique vérifié Recette ou archive datée ; aucune efficacité écologique déduite. Bénéfice attendu Utilité visée ; aucun gain de temps ou de biodiversité mesuré. PerspectiveDéveloppement ou évaluation à venir.Documents examinésRèglement officiel · annexe Datathon Normandie 20265 pages. § 5, p. 3 : pertinence, originalité, innovation, sobriété numérique, faisabilité et qualité orale. § 3, p. 2 : le texte mentionne emploi-formation et cite la biodiversité dans sa note de bas de page. Cette ambiguïté éditoriale est conservée, sans réécrire le règlement.annexe_règlement_datathon_2026 (1).pdfTrame du descriptif projetTrame vierge à sept rubriques ; elle précise le format attendu, sans fournir de faits supplémentaires sur Symbiose. Le manifeste contient les réponses rédigées.Descriptif_projet_Datathon (1).docxLes cinq questions de la présentationImage fournie par l’équipe, lue et transcrite ; correspondance avec les scènes dans l’onglet jury.image (4).pngManifeste final · équipe ARQp. 1–3 : projet, équipe, bénéfices attendus et données ; p. 3–13 : captures et description du prototype. Transcription du document fourni.Manifeste - Symbiose - Equipe ARQ.pdfDescriptif et architecture localeFastAPI, Vue, workers séparés, files asynchrones, modèles locaux et garde-fous GPU.README.mdParcelles et données réellement mobiliséesCommune, cadastre et RPG 2024 : suggestions à vérifier. Les déclarations utilisateur gardent leur provenance.docs/PARCEL_DOSSIERS.mdContexte territorialQuatre couches IGN et analyse déterministe au point. Pas d’extrapolation à toute une emprise.docs/TERRITORIAL_CONTEXT.mdRecette et archives IGN · 10 novembre 2026Consultations réelles de deux points. Les observations animales des tests sont synthétiques. Aucun effet écologique mesuré.docs/TERRITORIAL_VALIDATION.mdDREAL Normandie · zones humidesInventaire consulté ponctuellement ; couverture et qualité variables. La prédisposition n’est pas intégrée.docs/DREAL_WETLANDS.mdDouze alternatives de conceptionCinq interventions ; propositions conditionnelles avec preuves et limites. Compensation non évaluée.docs/PROJECT_DESIGN.mdRecette des alternativesRésultats techniques documentés ; captures navigateur basées sur des données de test. Efficacité locale non mesurée.docs/PROJECT_DESIGN_VALIDATION.mdDétection, classification et suiviÉtapes séparées. Modèles à préparer explicitement, aucune performance scientifique déduite des captures.workers/vision/INFERENCE.mdValidation humaineConfirmer, corriger ou rejeter l’espèce et le recadrage ; conserver l’historique.HUMAN_REVIEW.mdRecherche de publications scientifiquesOpenAlex, Crossref et Europe PMC ; téléchargement conditionné aux droits disponibles.workers/documents/README.mdRecherche et génération documentaires localesPréparation explicite du modèle local. Les sources candidates ne deviennent pas automatiquement des preuves applicables.docs/RAG.mdProducteurs des données utilisées Ces liens externes sont facultatifs et nécessitent Internet. La scène ne consulte aucun service distant. Etalab / DINUM · commune ↗IGN · cadastre ↗IGN · occupation agricole, RPG 2024 ↗IGN / MNHN · ZNIEFF et Natura 2000 ↗DREAL Normandie · zones humides inventoriées ↗OpenAlex ↗Crossref ↗Europe PMC ↗Faisabilité et numérique responsable FastAPI et Vue 3, workers vision et documentaire séparés, PostgreSQL et Redis, stockage local persistant. La détection, la classification et le suivi restent distincts. Les tâches longues passent par une file ; une seule tâche GPU lourde s’exécute à la fois. Les modèles se préparent explicitement. Les traitements locaux et l’absence d’entraînement automatique sont des choix d’architecture. La consommation énergétique, le gain de temps et l’impact écologique restent à mesurer. Le RPG décrit une occupation agricole déclarée pour 2024. Un point et un zonage n’établissent ni l’état de toute une parcelle ni l’efficacité d’une adaptation. Les suggestions et publications doivent être examinées avant décision ; la compensation reste non évaluée.",
+      "archives": [
+        {
+          "words": 1923,
+          "speciesNet": false
+        },
+        {
+          "words": 52,
+          "speciesNet": false
+        },
+        {
+          "words": 30,
+          "speciesNet": false
+        },
+        {
+          "words": 2174,
+          "speciesNet": false
+        },
+        {
+          "words": 641,
+          "speciesNet": false
+        },
+        {
+          "words": 2033,
+          "speciesNet": false
+        },
+        {
+          "words": 1474,
+          "speciesNet": false
+        },
+        {
+          "words": 1511,
+          "speciesNet": false
+        },
+        {
+          "words": 675,
+          "speciesNet": false
+        },
+        {
+          "words": 1027,
+          "speciesNet": false
+        },
+        {
+          "words": 804,
+          "speciesNet": false
+        },
+        {
+          "words": 1216,
+          "speciesNet": true
+        },
+        {
+          "words": 1535,
+          "speciesNet": false
+        },
+        {
+          "words": 2992,
+          "speciesNet": false
+        },
+        {
+          "words": 2296,
+          "speciesNet": false
+        }
+      ]
+    },
+    {
+      "render": "2d",
+      "mode": "jury",
+      "tab": "Pitch chronométré",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury La vidéo d’ouverture (environ une minute) et le travelling vers la forêt précèdent le récit. Le récit dure ensuite cinq minutes, à deux voix (A et B). En mode présentation, la lecture continue démarre à l’arrivée en forêt ; Espace la met en pause, les flèches changent d’étape. Une répétition chronométrée reste nécessaire. 0:00–0:18 · 18 S Ce que l’on ne voit pasUne vie discrète s’organise autour de nous.A — Regardez cette forêt. Des arbres, quelques rayons de soleil. Rien d’extraordinaire, à première vue. Pourtant, une vie discrète s’organise autour de nous. Savons-nous vraiment qui habite ici ?À l’écran et transitionQui habite ici ?Amorce très lente depuis le cadrage initial de la forêt.Pause visuelle dans la forêt ; le chronomètre continue.Approche progressive de la litière.À 0:18, le regard descend sous la litière vers le sol vivant.0:18–0:42 · 24 S Sous nos pasUn projet d’aménagement peut perturber une vie que nous observons peu.B — Sous nos pas, des animaux circulent, se nourrissent, trouvent refuge. La plupart échappent à notre regard. Maintenant, imaginons qu’un projet d’aménagement soit prévu à cet endroit. Une route, une clôture, un éclairage. Comment savoir ce que nous risquons de perturber ?À l’écran et transitionUne route, une clôture, un éclairage · Que risquerions-nous de perturber ?Descente sous le sol, découverte des organismes, puis remontée progressive.À 0:42, retour à la surface et au cadrage forestier.Coupe pédagogique : les organismes représentés ne constituent pas un inventaire du lieu.0:42–0:50 · 8 S Des données à relierDes données existent. Encore faut-il les relier pour mieux décider.A — Les données existent. Mais elles sont dispersées. Alors, comment mieux décider ?À l’écran et transitionObservations dispersées · Comment mieux décider ?Retour à la surface, puis élévation douce au-dessus de la forêt.À 0:50, ouverture sur le ciel et révélation de l’identité Symbiose.0:50–1:07 · 17 S L’idée SymbioseRelier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix.B — C’est là que commence Symbiose. Notre ambition : rendre visible ce qui nous échappe, en reliant l’intelligence artificielle aux données environnementales ouvertes. Pas pour décider à notre place. Pour éclairer nos choix.Fonction documentéeÀ l’écran et transitionObserver la faune · Comprendre le territoire · Éclairer les projetsTravelling vers le ciel, puis suivi de la vallée vers la rivière.À 1:07, approche du piège photographique et démarrage de la chaîne de reconnaissance.1:07–1:27 · 20 S De la vidéo à l’observation validéeDétection, proposition d’espèce et validation humaine restent trois étapes distinctes.B — Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un classificateur PyTorch propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.Fonction documentéeÀ l’écran et transitionDétection · Identification proposée · Validation humaineApproche progressive du piège photographique.Cadrage stable près de la caméra pendant la démonstration en trois temps.Reprise lente vers la surface de l’eau.À 1:27, immersion sous l’eau : identifier ne suffit pas à comprendre le milieu.Écart explicite avec le script reçu : SpeciesNet y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le classificateur PyTorch existant ; SpeciesNet reste une piste à évaluer.1:27–1:43 · 16 S Comprendre le milieuUne présence observée ne dit pas encore ce qu’un aménagement pourrait changer.A — Mais reconnaître un animal, est-ce suffisant ? Non. Savoir qu’une espèce est présente ne nous dit ni comment elle utilise ce milieu, ni ce qu’un aménagement pourrait changer pour elle.À l’écran et transitionUne présence observée · Un milieu à comprendreImmersion sous l’eau puis approche lente des roseaux.À 1:43, remontée vers la zone humide et croisement des informations territoriales.1:43–2:15 · 32 S Croiser les donnéesSavoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier.B — Symbiose replace alors l’observation dans son territoire. Nous la croisons avec des données ouvertes : occupation des sols, parcelles, zonages environnementaux, zones humides lorsque l’information existe. Nous y associons des sources scientifiques consultables. Ce rapprochement ne remplace pas une étude écologique. Il permet de savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier sur le terrain.Fonction documentéeÀ l’écran et transitionObservations validées · Cadastre · RPG 2024 · IGN · DREAL Normandie · Publications scientifiquesRemontée lente dans les roseaux ; les quatre catégories apparaissent successivement.À 2:15, ouverture du bocage et stabilisation pour le cas d’usage.2:15–3:05 · 50 S Un projet d’éclairage à examinerUn cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes.A — Prenons un exemple. Une collectivité prévoit d’éclairer un chemin près de ce bocage. Sur une carte, elle voit l’emplacement. Avec Symbiose, elle découvre aussi les observations de faune disponibles et les caractéristiques du milieu. Des informations à examiner avant de décider. B — Peut-on éteindre à certaines heures ? Réduire l’intensité ? Déplacer l’installation ? Symbiose fait émerger des points de vigilance et des alternatives documentées, avec leurs sources consultables. Ces pistes restent à discuter avec les spécialistes. L’outil n’autorise rien, n’interdit rien : il aide à poser les bonnes questions, plus tôt.Bénéfice attendu · non mesuréÀ l’écran et transitionAménageurs · Acteurs de l’environnement · TerritoiresArrivée douce sur le bocage et installation du cas illustratif.Cadrage stable pendant le projet, les vigilances et les adaptations.Élévation progressive vers le survol du bocage.À 3:05, passage au survol et présentation de l’équipe ARQ.Scénario illustratif, bénéfices attendus non mesurés ; les propositions ne remplacent pas l’expertise écologique.3:05–3:35 · 30 S L’équipe ARQArden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données.B — Derrière Symbiose, il y a ARQ : une équipe qui réunit intelligence artificielle, développement logiciel et exploitation des données. Nous avons combiné ces compétences pour construire un démonstrateur fonctionnel, pensé pour les enjeux du territoire normand. A — Nous ne développons pas de la technologie pour la technologie. Nous voulons la rendre utile à ceux qui agissent sur le terrain.À l’écran et transitionIntelligence artificielle · Développement logiciel · Exploitation des donnéesSurvol du bocage ; six premières secondes sans panneau de compétence.Composition stable pendant la présentation des compétences d’ARQ.Reprise progressive du mouvement vers le littoral.À 3:35, ouverture sur Étretat et changement d’échelle.Survol illustratif ; le relevé par drone reste une piste d’évolution.3:35–3:48 · 13 S Du démonstrateur au terrainUn parcours démontré ; un impact réel sur le terrain encore à mesurer.A — Aujourd’hui, Symbiose est un démonstrateur. Nous avons montré un parcours possible, pas encore mesuré son impact réel sur le terrain.Perspective · non opérationnelleÀ l’écran et transitionDémonstrateur · Impact réel à mesurerOuverture sur les falaises d’Étretat puis préparation de la plongée.À 3:48, plongée vers les besoins à construire ensemble.3:48–4:18 · 30 S Ce qu’il reste à construire ensembleConfronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter.B — Pour aller plus loin, il nous faut des partenaires : collectivités, associations naturalistes, professionnels de l’aménagement. Leur regard permettra de confronter Symbiose à de vrais usages. Il nous faut aussi des données fiables, une expertise scientifique et des moyens d’expérimenter. Nous voulons mesurer ce qui fonctionne, ce qui doit être amélioré et le coût numérique de nos traitements.À l’écran et transitionPartenaires de terrain · Données fiables et expertise scientifique · Moyens d’expérimenterPlongée existante à Étretat ; apparition successive des trois besoins, puis remontée.À 4:18, retour apaisé à la surface, face au littoral.Évocation artistique du littoral ; besoins proposés et partenaires recherchés.4:18–4:30 · 12 S L’expertise au bon momentRendre l’expertise accessible lorsqu’une décision se prépare.A — Parce que l’enjeu n’est pas de remplacer l’expertise. Il est de la rendre accessible au moment où une décision se prépare.Perspective · non opérationnelleÀ l’écran et transitionÉclairer les choix · Préserver la place de l’expertiseRetour à la surface puis transition douce vers la forêt nocturne.À 4:30, retrouver la forêt du début, désormais de nuit.4:30–5:00 · 30 S La même forêt, un autre regardLa forêt est la même. Ce qui a changé, c’est ce que nous en savons.A — Regardez autour de vous. Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé. B — Elle est la même qu’il y a cinq minutes. Ce qui a changé, c’est ce que nous en savons. A — Et c’est peut-être là que commence une autre façon d’aménager nos territoires. Symbiose. Comprendre le vivant avant d’aménager.À l’écran et transitionSymbiose · Comprendre le vivant avant d’aménagerRalentir et retrouver de nuit un cadrage rappelant la forêt initiale.Cadrage final stable ; le chronomètre atteint 5:00 puis s’arrête.À 5:00, récit immobile, logo, signature et accès à l’application conservés.",
+      "archives": []
+    },
+    {
+      "render": "2d",
+      "mode": "jury",
+      "tab": "Attendus du jury",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Correspondance avec les cinq questions fournies et les six critères du règlement (§ 5, p. 3), complétée par l’Open Data et l’ancrage normand. Les rôles individuels et les moyens financiers ne sont pas documentés. Attendus et scènes du pitch AttenduScènesÉléments présentésProblèmeForêt · Sous nos pasUn vivant qui passe inaperçu ; des données dispersées, difficiles à traduire en décisions.SolutionCiel · Rivières · Sous-marin · Zone humideDétection et proposition d’espèce, validation humaine, croisement avec les données officielles et alternatives sourcées.ImpactsPrairie et bocageBénéfices attendus pour aménageurs, acteurs de l’environnement et territoires ; impact réel à mesurer.ÉquipeL’équipe ARQARQ : Arden, Romain et Quentin ; IA, développement logiciel et données ; rôles individuels non détaillés.Besoins pour changer d’échelleLittoral · Changer d’échellePartenaires de terrain, données fiables et expertise scientifique, moyens d’expérimentation ; aucun partenariat annoncé.OriginalitéCiel · Zone humidePartir d’un projet concret et rendre visibles vérifications, alternatives et sources.InnovationRivières · Zone humideVision par ordinateur, validation humaine et contexte territorial reliés au projet d’aménagement.Données ouvertesZone humideZNIEFF, Natura 2000, zones humides DREAL, cadastre et RPG 2024 ; limites des consultations ponctuelles.FaisabilitéRivières · Prairie et bocageDémonstrateur fonctionnel, socle local existant et recettes techniques archivées.Numérique responsableRivières · Carnet de présentationTraitements locaux, GPU sérialisé ; consommation et utilité à mesurer.Pertinence territorialeZone humide · LittoralSources DREAL Normandie et archives de points normands ; usages proposés aux acteurs locaux.Qualité de la présentation oraleEnsemble du parcoursMode jury de cinq minutes à deux voix, sans prologue ; vidéo d’ouverture réservée à la découverte publique. Répétition à effectuer.",
+      "archives": []
+    },
+    {
+      "render": "2d",
+      "mode": "exploration",
+      "tab": "Sources et technique",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Le manifeste, ses captures et les livrables du dépôt étayent ce parcours. Les textes ci-dessous sont embarqués localement et restent consultables sans Internet. Attendus vérifiés : les cinq questions de l’image fournie, les sept rubriques du descriptif et les six critères du règlement (§ 5, p. 3). Fonction documentée Capacité décrite dans les livrables ; configuration locale requise pour l’exécuter. Résultat technique vérifié Recette ou archive datée ; aucune efficacité écologique déduite. Bénéfice attendu Utilité visée ; aucun gain de temps ou de biodiversité mesuré. PerspectiveDéveloppement ou évaluation à venir.Documents examinésRèglement officiel · annexe Datathon Normandie 20265 pages. § 5, p. 3 : pertinence, originalité, innovation, sobriété numérique, faisabilité et qualité orale. § 3, p. 2 : le texte mentionne emploi-formation et cite la biodiversité dans sa note de bas de page. Cette ambiguïté éditoriale est conservée, sans réécrire le règlement.annexe_règlement_datathon_2026 (1).pdfTrame du descriptif projetTrame vierge à sept rubriques ; elle précise le format attendu, sans fournir de faits supplémentaires sur Symbiose. Le manifeste contient les réponses rédigées.Descriptif_projet_Datathon (1).docxLes cinq questions de la présentationImage fournie par l’équipe, lue et transcrite ; correspondance avec les scènes dans l’onglet jury.image (4).pngManifeste final · équipe ARQp. 1–3 : projet, équipe, bénéfices attendus et données ; p. 3–13 : captures et description du prototype. Transcription du document fourni.Manifeste - Symbiose - Equipe ARQ.pdfDescriptif et architecture localeFastAPI, Vue, workers séparés, files asynchrones, modèles locaux et garde-fous GPU.README.mdParcelles et données réellement mobiliséesCommune, cadastre et RPG 2024 : suggestions à vérifier. Les déclarations utilisateur gardent leur provenance.docs/PARCEL_DOSSIERS.mdContexte territorialQuatre couches IGN et analyse déterministe au point. Pas d’extrapolation à toute une emprise.docs/TERRITORIAL_CONTEXT.mdRecette et archives IGN · 10 novembre 2026Consultations réelles de deux points. Les observations animales des tests sont synthétiques. Aucun effet écologique mesuré.docs/TERRITORIAL_VALIDATION.mdDREAL Normandie · zones humidesInventaire consulté ponctuellement ; couverture et qualité variables. La prédisposition n’est pas intégrée.docs/DREAL_WETLANDS.mdDouze alternatives de conceptionCinq interventions ; propositions conditionnelles avec preuves et limites. Compensation non évaluée.docs/PROJECT_DESIGN.mdRecette des alternativesRésultats techniques documentés ; captures navigateur basées sur des données de test. Efficacité locale non mesurée.docs/PROJECT_DESIGN_VALIDATION.mdDétection, classification et suiviÉtapes séparées. Modèles à préparer explicitement, aucune performance scientifique déduite des captures.workers/vision/INFERENCE.mdValidation humaineConfirmer, corriger ou rejeter l’espèce et le recadrage ; conserver l’historique.HUMAN_REVIEW.mdRecherche de publications scientifiquesOpenAlex, Crossref et Europe PMC ; téléchargement conditionné aux droits disponibles.workers/documents/README.mdRecherche et génération documentaires localesPréparation explicite du modèle local. Les sources candidates ne deviennent pas automatiquement des preuves applicables.docs/RAG.mdProducteurs des données utilisées Ces liens externes sont facultatifs et nécessitent Internet. La scène ne consulte aucun service distant. Etalab / DINUM · commune ↗IGN · cadastre ↗IGN · occupation agricole, RPG 2024 ↗IGN / MNHN · ZNIEFF et Natura 2000 ↗DREAL Normandie · zones humides inventoriées ↗OpenAlex ↗Crossref ↗Europe PMC ↗Faisabilité et numérique responsable FastAPI et Vue 3, workers vision et documentaire séparés, PostgreSQL et Redis, stockage local persistant. La détection, la classification et le suivi restent distincts. Les tâches longues passent par une file ; une seule tâche GPU lourde s’exécute à la fois. Les modèles se préparent explicitement. Les traitements locaux et l’absence d’entraînement automatique sont des choix d’architecture. La consommation énergétique, le gain de temps et l’impact écologique restent à mesurer. Le RPG décrit une occupation agricole déclarée pour 2024. Un point et un zonage n’établissent ni l’état de toute une parcelle ni l’efficacité d’une adaptation. Les suggestions et publications doivent être examinées avant décision ; la compensation reste non évaluée.",
+      "archives": [
+        {
+          "words": 1923,
+          "speciesNet": false
+        },
+        {
+          "words": 52,
+          "speciesNet": false
+        },
+        {
+          "words": 30,
+          "speciesNet": false
+        },
+        {
+          "words": 2174,
+          "speciesNet": false
+        },
+        {
+          "words": 641,
+          "speciesNet": false
+        },
+        {
+          "words": 2033,
+          "speciesNet": false
+        },
+        {
+          "words": 1474,
+          "speciesNet": false
+        },
+        {
+          "words": 1511,
+          "speciesNet": false
+        },
+        {
+          "words": 675,
+          "speciesNet": false
+        },
+        {
+          "words": 1027,
+          "speciesNet": false
+        },
+        {
+          "words": 804,
+          "speciesNet": false
+        },
+        {
+          "words": 1216,
+          "speciesNet": true
+        },
+        {
+          "words": 1535,
+          "speciesNet": false
+        },
+        {
+          "words": 2992,
+          "speciesNet": false
+        },
+        {
+          "words": 2296,
+          "speciesNet": false
+        }
+      ]
+    },
+    {
+      "render": "2d",
+      "mode": "exploration",
+      "tab": "Pitch chronométré",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury La vidéo d’ouverture (environ une minute) et le travelling vers la forêt précèdent le récit. Le récit dure ensuite cinq minutes, à deux voix (A et B). En mode présentation, la lecture continue démarre à l’arrivée en forêt ; Espace la met en pause, les flèches changent d’étape. Une répétition chronométrée reste nécessaire. 0:00–0:18 · 18 S Ce que l’on ne voit pasUne vie discrète s’organise autour de nous.A — Regardez cette forêt. Des arbres, quelques rayons de soleil. Rien d’extraordinaire, à première vue. Pourtant, une vie discrète s’organise autour de nous. Savons-nous vraiment qui habite ici ?À l’écran et transitionQui habite ici ?Amorce très lente depuis le cadrage initial de la forêt.Pause visuelle dans la forêt ; le chronomètre continue.Approche progressive de la litière.À 0:18, le regard descend sous la litière vers le sol vivant.0:18–0:42 · 24 S Sous nos pasUn projet d’aménagement peut perturber une vie que nous observons peu.B — Sous nos pas, des animaux circulent, se nourrissent, trouvent refuge. La plupart échappent à notre regard. Maintenant, imaginons qu’un projet d’aménagement soit prévu à cet endroit. Une route, une clôture, un éclairage. Comment savoir ce que nous risquons de perturber ?À l’écran et transitionUne route, une clôture, un éclairage · Que risquerions-nous de perturber ?Descente sous le sol, découverte des organismes, puis remontée progressive.À 0:42, retour à la surface et au cadrage forestier.Coupe pédagogique : les organismes représentés ne constituent pas un inventaire du lieu.0:42–0:50 · 8 S Des données à relierDes données existent. Encore faut-il les relier pour mieux décider.A — Les données existent. Mais elles sont dispersées. Alors, comment mieux décider ?À l’écran et transitionObservations dispersées · Comment mieux décider ?Retour à la surface, puis élévation douce au-dessus de la forêt.À 0:50, ouverture sur le ciel et révélation de l’identité Symbiose.0:50–1:07 · 17 S L’idée SymbioseRelier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix.B — C’est là que commence Symbiose. Notre ambition : rendre visible ce qui nous échappe, en reliant l’intelligence artificielle aux données environnementales ouvertes. Pas pour décider à notre place. Pour éclairer nos choix.Fonction documentéeÀ l’écran et transitionObserver la faune · Comprendre le territoire · Éclairer les projetsTravelling vers le ciel, puis suivi de la vallée vers la rivière.À 1:07, approche du piège photographique et démarrage de la chaîne de reconnaissance.1:07–1:27 · 20 S De la vidéo à l’observation validéeDétection, proposition d’espèce et validation humaine restent trois étapes distinctes.B — Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un classificateur PyTorch propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.Fonction documentéeÀ l’écran et transitionDétection · Identification proposée · Validation humaineApproche progressive du piège photographique.Cadrage stable près de la caméra pendant la démonstration en trois temps.Reprise lente vers la surface de l’eau.À 1:27, immersion sous l’eau : identifier ne suffit pas à comprendre le milieu.Écart explicite avec le script reçu : SpeciesNet y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le classificateur PyTorch existant ; SpeciesNet reste une piste à évaluer.1:27–1:43 · 16 S Comprendre le milieuUne présence observée ne dit pas encore ce qu’un aménagement pourrait changer.A — Mais reconnaître un animal, est-ce suffisant ? Non. Savoir qu’une espèce est présente ne nous dit ni comment elle utilise ce milieu, ni ce qu’un aménagement pourrait changer pour elle.À l’écran et transitionUne présence observée · Un milieu à comprendreImmersion sous l’eau puis approche lente des roseaux.À 1:43, remontée vers la zone humide et croisement des informations territoriales.1:43–2:15 · 32 S Croiser les donnéesSavoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier.B — Symbiose replace alors l’observation dans son territoire. Nous la croisons avec des données ouvertes : occupation des sols, parcelles, zonages environnementaux, zones humides lorsque l’information existe. Nous y associons des sources scientifiques consultables. Ce rapprochement ne remplace pas une étude écologique. Il permet de savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier sur le terrain.Fonction documentéeÀ l’écran et transitionObservations validées · Cadastre · RPG 2024 · IGN · DREAL Normandie · Publications scientifiquesRemontée lente dans les roseaux ; les quatre catégories apparaissent successivement.À 2:15, ouverture du bocage et stabilisation pour le cas d’usage.2:15–3:05 · 50 S Un projet d’éclairage à examinerUn cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes.A — Prenons un exemple. Une collectivité prévoit d’éclairer un chemin près de ce bocage. Sur une carte, elle voit l’emplacement. Avec Symbiose, elle découvre aussi les observations de faune disponibles et les caractéristiques du milieu. Des informations à examiner avant de décider. B — Peut-on éteindre à certaines heures ? Réduire l’intensité ? Déplacer l’installation ? Symbiose fait émerger des points de vigilance et des alternatives documentées, avec leurs sources consultables. Ces pistes restent à discuter avec les spécialistes. L’outil n’autorise rien, n’interdit rien : il aide à poser les bonnes questions, plus tôt.Bénéfice attendu · non mesuréÀ l’écran et transitionAménageurs · Acteurs de l’environnement · TerritoiresArrivée douce sur le bocage et installation du cas illustratif.Cadrage stable pendant le projet, les vigilances et les adaptations.Élévation progressive vers le survol du bocage.À 3:05, passage au survol et présentation de l’équipe ARQ.Scénario illustratif, bénéfices attendus non mesurés ; les propositions ne remplacent pas l’expertise écologique.3:05–3:35 · 30 S L’équipe ARQArden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données.B — Derrière Symbiose, il y a ARQ : une équipe qui réunit intelligence artificielle, développement logiciel et exploitation des données. Nous avons combiné ces compétences pour construire un démonstrateur fonctionnel, pensé pour les enjeux du territoire normand. A — Nous ne développons pas de la technologie pour la technologie. Nous voulons la rendre utile à ceux qui agissent sur le terrain.À l’écran et transitionIntelligence artificielle · Développement logiciel · Exploitation des donnéesSurvol du bocage ; six premières secondes sans panneau de compétence.Composition stable pendant la présentation des compétences d’ARQ.Reprise progressive du mouvement vers le littoral.À 3:35, ouverture sur Étretat et changement d’échelle.Survol illustratif ; le relevé par drone reste une piste d’évolution.3:35–3:48 · 13 S Du démonstrateur au terrainUn parcours démontré ; un impact réel sur le terrain encore à mesurer.A — Aujourd’hui, Symbiose est un démonstrateur. Nous avons montré un parcours possible, pas encore mesuré son impact réel sur le terrain.Perspective · non opérationnelleÀ l’écran et transitionDémonstrateur · Impact réel à mesurerOuverture sur les falaises d’Étretat puis préparation de la plongée.À 3:48, plongée vers les besoins à construire ensemble.3:48–4:18 · 30 S Ce qu’il reste à construire ensembleConfronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter.B — Pour aller plus loin, il nous faut des partenaires : collectivités, associations naturalistes, professionnels de l’aménagement. Leur regard permettra de confronter Symbiose à de vrais usages. Il nous faut aussi des données fiables, une expertise scientifique et des moyens d’expérimenter. Nous voulons mesurer ce qui fonctionne, ce qui doit être amélioré et le coût numérique de nos traitements.À l’écran et transitionPartenaires de terrain · Données fiables et expertise scientifique · Moyens d’expérimenterPlongée existante à Étretat ; apparition successive des trois besoins, puis remontée.À 4:18, retour apaisé à la surface, face au littoral.Évocation artistique du littoral ; besoins proposés et partenaires recherchés.4:18–4:30 · 12 S L’expertise au bon momentRendre l’expertise accessible lorsqu’une décision se prépare.A — Parce que l’enjeu n’est pas de remplacer l’expertise. Il est de la rendre accessible au moment où une décision se prépare.Perspective · non opérationnelleÀ l’écran et transitionÉclairer les choix · Préserver la place de l’expertiseRetour à la surface puis transition douce vers la forêt nocturne.À 4:30, retrouver la forêt du début, désormais de nuit.4:30–5:00 · 30 S La même forêt, un autre regardLa forêt est la même. Ce qui a changé, c’est ce que nous en savons.A — Regardez autour de vous. Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé. B — Elle est la même qu’il y a cinq minutes. Ce qui a changé, c’est ce que nous en savons. A — Et c’est peut-être là que commence une autre façon d’aménager nos territoires. Symbiose. Comprendre le vivant avant d’aménager.À l’écran et transitionSymbiose · Comprendre le vivant avant d’aménagerRalentir et retrouver de nuit un cadrage rappelant la forêt initiale.Cadrage final stable ; le chronomètre atteint 5:00 puis s’arrête.À 5:00, récit immobile, logo, signature et accès à l’application conservés.",
+      "archives": []
+    },
+    {
+      "render": "2d",
+      "mode": "exploration",
+      "tab": "Attendus du jury",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Correspondance avec les cinq questions fournies et les six critères du règlement (§ 5, p. 3), complétée par l’Open Data et l’ancrage normand. Les rôles individuels et les moyens financiers ne sont pas documentés. Attendus et scènes du pitch AttenduScènesÉléments présentésProblèmeForêt · Sous nos pasUn vivant qui passe inaperçu ; des données dispersées, difficiles à traduire en décisions.SolutionCiel · Rivières · Sous-marin · Zone humideDétection et proposition d’espèce, validation humaine, croisement avec les données officielles et alternatives sourcées.ImpactsPrairie et bocageBénéfices attendus pour aménageurs, acteurs de l’environnement et territoires ; impact réel à mesurer.ÉquipeL’équipe ARQARQ : Arden, Romain et Quentin ; IA, développement logiciel et données ; rôles individuels non détaillés.Besoins pour changer d’échelleLittoral · Changer d’échellePartenaires de terrain, données fiables et expertise scientifique, moyens d’expérimentation ; aucun partenariat annoncé.OriginalitéCiel · Zone humidePartir d’un projet concret et rendre visibles vérifications, alternatives et sources.InnovationRivières · Zone humideVision par ordinateur, validation humaine et contexte territorial reliés au projet d’aménagement.Données ouvertesZone humideZNIEFF, Natura 2000, zones humides DREAL, cadastre et RPG 2024 ; limites des consultations ponctuelles.FaisabilitéRivières · Prairie et bocageDémonstrateur fonctionnel, socle local existant et recettes techniques archivées.Numérique responsableRivières · Carnet de présentationTraitements locaux, GPU sérialisé ; consommation et utilité à mesurer.Pertinence territorialeZone humide · LittoralSources DREAL Normandie et archives de points normands ; usages proposés aux acteurs locaux.Qualité de la présentation oraleEnsemble du parcoursMode jury de cinq minutes à deux voix, sans prologue ; vidéo d’ouverture réservée à la découverte publique. Répétition à effectuer.",
+      "archives": []
+    },
+    {
+      "render": "webgl",
+      "mode": "jury",
+      "tab": "Sources et technique",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Le manifeste, ses captures et les livrables du dépôt étayent ce parcours. Les textes ci-dessous sont embarqués localement et restent consultables sans Internet. Attendus vérifiés : les cinq questions de l’image fournie, les sept rubriques du descriptif et les six critères du règlement (§ 5, p. 3). Fonction documentée Capacité décrite dans les livrables ; configuration locale requise pour l’exécuter. Résultat technique vérifié Recette ou archive datée ; aucune efficacité écologique déduite. Bénéfice attendu Utilité visée ; aucun gain de temps ou de biodiversité mesuré. PerspectiveDéveloppement ou évaluation à venir.Documents examinésRèglement officiel · annexe Datathon Normandie 20265 pages. § 5, p. 3 : pertinence, originalité, innovation, sobriété numérique, faisabilité et qualité orale. § 3, p. 2 : le texte mentionne emploi-formation et cite la biodiversité dans sa note de bas de page. Cette ambiguïté éditoriale est conservée, sans réécrire le règlement.annexe_règlement_datathon_2026 (1).pdfTrame du descriptif projetTrame vierge à sept rubriques ; elle précise le format attendu, sans fournir de faits supplémentaires sur Symbiose. Le manifeste contient les réponses rédigées.Descriptif_projet_Datathon (1).docxLes cinq questions de la présentationImage fournie par l’équipe, lue et transcrite ; correspondance avec les scènes dans l’onglet jury.image (4).pngManifeste final · équipe ARQp. 1–3 : projet, équipe, bénéfices attendus et données ; p. 3–13 : captures et description du prototype. Transcription du document fourni.Manifeste - Symbiose - Equipe ARQ.pdfDescriptif et architecture localeFastAPI, Vue, workers séparés, files asynchrones, modèles locaux et garde-fous GPU.README.mdParcelles et données réellement mobiliséesCommune, cadastre et RPG 2024 : suggestions à vérifier. Les déclarations utilisateur gardent leur provenance.docs/PARCEL_DOSSIERS.mdContexte territorialQuatre couches IGN et analyse déterministe au point. Pas d’extrapolation à toute une emprise.docs/TERRITORIAL_CONTEXT.mdRecette et archives IGN · 10 novembre 2026Consultations réelles de deux points. Les observations animales des tests sont synthétiques. Aucun effet écologique mesuré.docs/TERRITORIAL_VALIDATION.mdDREAL Normandie · zones humidesInventaire consulté ponctuellement ; couverture et qualité variables. La prédisposition n’est pas intégrée.docs/DREAL_WETLANDS.mdDouze alternatives de conceptionCinq interventions ; propositions conditionnelles avec preuves et limites. Compensation non évaluée.docs/PROJECT_DESIGN.mdRecette des alternativesRésultats techniques documentés ; captures navigateur basées sur des données de test. Efficacité locale non mesurée.docs/PROJECT_DESIGN_VALIDATION.mdDétection, classification et suiviÉtapes séparées. Modèles à préparer explicitement, aucune performance scientifique déduite des captures.workers/vision/INFERENCE.mdValidation humaineConfirmer, corriger ou rejeter l’espèce et le recadrage ; conserver l’historique.HUMAN_REVIEW.mdRecherche de publications scientifiquesOpenAlex, Crossref et Europe PMC ; téléchargement conditionné aux droits disponibles.workers/documents/README.mdRecherche et génération documentaires localesPréparation explicite du modèle local. Les sources candidates ne deviennent pas automatiquement des preuves applicables.docs/RAG.mdProducteurs des données utilisées Ces liens externes sont facultatifs et nécessitent Internet. La scène ne consulte aucun service distant. Etalab / DINUM · commune ↗IGN · cadastre ↗IGN · occupation agricole, RPG 2024 ↗IGN / MNHN · ZNIEFF et Natura 2000 ↗DREAL Normandie · zones humides inventoriées ↗OpenAlex ↗Crossref ↗Europe PMC ↗Faisabilité et numérique responsable FastAPI et Vue 3, workers vision et documentaire séparés, PostgreSQL et Redis, stockage local persistant. La détection, la classification et le suivi restent distincts. Les tâches longues passent par une file ; une seule tâche GPU lourde s’exécute à la fois. Les modèles se préparent explicitement. Les traitements locaux et l’absence d’entraînement automatique sont des choix d’architecture. La consommation énergétique, le gain de temps et l’impact écologique restent à mesurer. Le RPG décrit une occupation agricole déclarée pour 2024. Un point et un zonage n’établissent ni l’état de toute une parcelle ni l’efficacité d’une adaptation. Les suggestions et publications doivent être examinées avant décision ; la compensation reste non évaluée.",
+      "archives": [
+        {
+          "words": 1923,
+          "speciesNet": false
+        },
+        {
+          "words": 52,
+          "speciesNet": false
+        },
+        {
+          "words": 30,
+          "speciesNet": false
+        },
+        {
+          "words": 2174,
+          "speciesNet": false
+        },
+        {
+          "words": 641,
+          "speciesNet": false
+        },
+        {
+          "words": 2033,
+          "speciesNet": false
+        },
+        {
+          "words": 1474,
+          "speciesNet": false
+        },
+        {
+          "words": 1511,
+          "speciesNet": false
+        },
+        {
+          "words": 675,
+          "speciesNet": false
+        },
+        {
+          "words": 1027,
+          "speciesNet": false
+        },
+        {
+          "words": 804,
+          "speciesNet": false
+        },
+        {
+          "words": 1216,
+          "speciesNet": true
+        },
+        {
+          "words": 1535,
+          "speciesNet": false
+        },
+        {
+          "words": 2992,
+          "speciesNet": false
+        },
+        {
+          "words": 2296,
+          "speciesNet": false
+        }
+      ]
+    },
+    {
+      "render": "webgl",
+      "mode": "jury",
+      "tab": "Pitch chronométré",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury La vidéo d’ouverture (environ une minute) et le travelling vers la forêt précèdent le récit. Le récit dure ensuite cinq minutes, à deux voix (A et B). En mode présentation, la lecture continue démarre à l’arrivée en forêt ; Espace la met en pause, les flèches changent d’étape. Une répétition chronométrée reste nécessaire. 0:00–0:18 · 18 S Ce que l’on ne voit pasUne vie discrète s’organise autour de nous.A — Regardez cette forêt. Des arbres, quelques rayons de soleil. Rien d’extraordinaire, à première vue. Pourtant, une vie discrète s’organise autour de nous. Savons-nous vraiment qui habite ici ?À l’écran et transitionQui habite ici ?Amorce très lente depuis le cadrage initial de la forêt.Pause visuelle dans la forêt ; le chronomètre continue.Approche progressive de la litière.À 0:18, le regard descend sous la litière vers le sol vivant.0:18–0:42 · 24 S Sous nos pasUn projet d’aménagement peut perturber une vie que nous observons peu.B — Sous nos pas, des animaux circulent, se nourrissent, trouvent refuge. La plupart échappent à notre regard. Maintenant, imaginons qu’un projet d’aménagement soit prévu à cet endroit. Une route, une clôture, un éclairage. Comment savoir ce que nous risquons de perturber ?À l’écran et transitionUne route, une clôture, un éclairage · Que risquerions-nous de perturber ?Descente sous le sol, découverte des organismes, puis remontée progressive.À 0:42, retour à la surface et au cadrage forestier.Coupe pédagogique : les organismes représentés ne constituent pas un inventaire du lieu.0:42–0:50 · 8 S Des données à relierDes données existent. Encore faut-il les relier pour mieux décider.A — Les données existent. Mais elles sont dispersées. Alors, comment mieux décider ?À l’écran et transitionObservations dispersées · Comment mieux décider ?Retour à la surface, puis élévation douce au-dessus de la forêt.À 0:50, ouverture sur le ciel et révélation de l’identité Symbiose.0:50–1:07 · 17 S L’idée SymbioseRelier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix.B — C’est là que commence Symbiose. Notre ambition : rendre visible ce qui nous échappe, en reliant l’intelligence artificielle aux données environnementales ouvertes. Pas pour décider à notre place. Pour éclairer nos choix.Fonction documentéeÀ l’écran et transitionObserver la faune · Comprendre le territoire · Éclairer les projetsTravelling vers le ciel, puis suivi de la vallée vers la rivière.À 1:07, approche du piège photographique et démarrage de la chaîne de reconnaissance.1:07–1:27 · 20 S De la vidéo à l’observation validéeDétection, proposition d’espèce et validation humaine restent trois étapes distinctes.B — Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un classificateur PyTorch propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.Fonction documentéeÀ l’écran et transitionDétection · Identification proposée · Validation humaineApproche progressive du piège photographique.Cadrage stable près de la caméra pendant la démonstration en trois temps.Reprise lente vers la surface de l’eau.À 1:27, immersion sous l’eau : identifier ne suffit pas à comprendre le milieu.Écart explicite avec le script reçu : SpeciesNet y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le classificateur PyTorch existant ; SpeciesNet reste une piste à évaluer.1:27–1:43 · 16 S Comprendre le milieuUne présence observée ne dit pas encore ce qu’un aménagement pourrait changer.A — Mais reconnaître un animal, est-ce suffisant ? Non. Savoir qu’une espèce est présente ne nous dit ni comment elle utilise ce milieu, ni ce qu’un aménagement pourrait changer pour elle.À l’écran et transitionUne présence observée · Un milieu à comprendreImmersion sous l’eau puis approche lente des roseaux.À 1:43, remontée vers la zone humide et croisement des informations territoriales.1:43–2:15 · 32 S Croiser les donnéesSavoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier.B — Symbiose replace alors l’observation dans son territoire. Nous la croisons avec des données ouvertes : occupation des sols, parcelles, zonages environnementaux, zones humides lorsque l’information existe. Nous y associons des sources scientifiques consultables. Ce rapprochement ne remplace pas une étude écologique. Il permet de savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier sur le terrain.Fonction documentéeÀ l’écran et transitionObservations validées · Cadastre · RPG 2024 · IGN · DREAL Normandie · Publications scientifiquesRemontée lente dans les roseaux ; les quatre catégories apparaissent successivement.À 2:15, ouverture du bocage et stabilisation pour le cas d’usage.2:15–3:05 · 50 S Un projet d’éclairage à examinerUn cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes.A — Prenons un exemple. Une collectivité prévoit d’éclairer un chemin près de ce bocage. Sur une carte, elle voit l’emplacement. Avec Symbiose, elle découvre aussi les observations de faune disponibles et les caractéristiques du milieu. Des informations à examiner avant de décider. B — Peut-on éteindre à certaines heures ? Réduire l’intensité ? Déplacer l’installation ? Symbiose fait émerger des points de vigilance et des alternatives documentées, avec leurs sources consultables. Ces pistes restent à discuter avec les spécialistes. L’outil n’autorise rien, n’interdit rien : il aide à poser les bonnes questions, plus tôt.Bénéfice attendu · non mesuréÀ l’écran et transitionAménageurs · Acteurs de l’environnement · TerritoiresArrivée douce sur le bocage et installation du cas illustratif.Cadrage stable pendant le projet, les vigilances et les adaptations.Élévation progressive vers le survol du bocage.À 3:05, passage au survol et présentation de l’équipe ARQ.Scénario illustratif, bénéfices attendus non mesurés ; les propositions ne remplacent pas l’expertise écologique.3:05–3:35 · 30 S L’équipe ARQArden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données.B — Derrière Symbiose, il y a ARQ : une équipe qui réunit intelligence artificielle, développement logiciel et exploitation des données. Nous avons combiné ces compétences pour construire un démonstrateur fonctionnel, pensé pour les enjeux du territoire normand. A — Nous ne développons pas de la technologie pour la technologie. Nous voulons la rendre utile à ceux qui agissent sur le terrain.À l’écran et transitionIntelligence artificielle · Développement logiciel · Exploitation des donnéesSurvol du bocage ; six premières secondes sans panneau de compétence.Composition stable pendant la présentation des compétences d’ARQ.Reprise progressive du mouvement vers le littoral.À 3:35, ouverture sur Étretat et changement d’échelle.Survol illustratif ; le relevé par drone reste une piste d’évolution.3:35–3:48 · 13 S Du démonstrateur au terrainUn parcours démontré ; un impact réel sur le terrain encore à mesurer.A — Aujourd’hui, Symbiose est un démonstrateur. Nous avons montré un parcours possible, pas encore mesuré son impact réel sur le terrain.Perspective · non opérationnelleÀ l’écran et transitionDémonstrateur · Impact réel à mesurerOuverture sur les falaises d’Étretat puis préparation de la plongée.À 3:48, plongée vers les besoins à construire ensemble.3:48–4:18 · 30 S Ce qu’il reste à construire ensembleConfronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter.B — Pour aller plus loin, il nous faut des partenaires : collectivités, associations naturalistes, professionnels de l’aménagement. Leur regard permettra de confronter Symbiose à de vrais usages. Il nous faut aussi des données fiables, une expertise scientifique et des moyens d’expérimenter. Nous voulons mesurer ce qui fonctionne, ce qui doit être amélioré et le coût numérique de nos traitements.À l’écran et transitionPartenaires de terrain · Données fiables et expertise scientifique · Moyens d’expérimenterPlongée existante à Étretat ; apparition successive des trois besoins, puis remontée.À 4:18, retour apaisé à la surface, face au littoral.Évocation artistique du littoral ; besoins proposés et partenaires recherchés.4:18–4:30 · 12 S L’expertise au bon momentRendre l’expertise accessible lorsqu’une décision se prépare.A — Parce que l’enjeu n’est pas de remplacer l’expertise. Il est de la rendre accessible au moment où une décision se prépare.Perspective · non opérationnelleÀ l’écran et transitionÉclairer les choix · Préserver la place de l’expertiseRetour à la surface puis transition douce vers la forêt nocturne.À 4:30, retrouver la forêt du début, désormais de nuit.4:30–5:00 · 30 S La même forêt, un autre regardLa forêt est la même. Ce qui a changé, c’est ce que nous en savons.A — Regardez autour de vous. Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé. B — Elle est la même qu’il y a cinq minutes. Ce qui a changé, c’est ce que nous en savons. A — Et c’est peut-être là que commence une autre façon d’aménager nos territoires. Symbiose. Comprendre le vivant avant d’aménager.À l’écran et transitionSymbiose · Comprendre le vivant avant d’aménagerRalentir et retrouver de nuit un cadrage rappelant la forêt initiale.Cadrage final stable ; le chronomètre atteint 5:00 puis s’arrête.À 5:00, récit immobile, logo, signature et accès à l’application conservés.",
+      "archives": []
+    },
+    {
+      "render": "webgl",
+      "mode": "jury",
+      "tab": "Attendus du jury",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Correspondance avec les cinq questions fournies et les six critères du règlement (§ 5, p. 3), complétée par l’Open Data et l’ancrage normand. Les rôles individuels et les moyens financiers ne sont pas documentés. Attendus et scènes du pitch AttenduScènesÉléments présentésProblèmeForêt · Sous nos pasUn vivant qui passe inaperçu ; des données dispersées, difficiles à traduire en décisions.SolutionCiel · Rivières · Sous-marin · Zone humideDétection et proposition d’espèce, validation humaine, croisement avec les données officielles et alternatives sourcées.ImpactsPrairie et bocageBénéfices attendus pour aménageurs, acteurs de l’environnement et territoires ; impact réel à mesurer.ÉquipeL’équipe ARQARQ : Arden, Romain et Quentin ; IA, développement logiciel et données ; rôles individuels non détaillés.Besoins pour changer d’échelleLittoral · Changer d’échellePartenaires de terrain, données fiables et expertise scientifique, moyens d’expérimentation ; aucun partenariat annoncé.OriginalitéCiel · Zone humidePartir d’un projet concret et rendre visibles vérifications, alternatives et sources.InnovationRivières · Zone humideVision par ordinateur, validation humaine et contexte territorial reliés au projet d’aménagement.Données ouvertesZone humideZNIEFF, Natura 2000, zones humides DREAL, cadastre et RPG 2024 ; limites des consultations ponctuelles.FaisabilitéRivières · Prairie et bocageDémonstrateur fonctionnel, socle local existant et recettes techniques archivées.Numérique responsableRivières · Carnet de présentationTraitements locaux, GPU sérialisé ; consommation et utilité à mesurer.Pertinence territorialeZone humide · LittoralSources DREAL Normandie et archives de points normands ; usages proposés aux acteurs locaux.Qualité de la présentation oraleEnsemble du parcoursMode jury de cinq minutes à deux voix, sans prologue ; vidéo d’ouverture réservée à la découverte publique. Répétition à effectuer.",
+      "archives": []
+    },
+    {
+      "render": "webgl",
+      "mode": "exploration",
+      "tab": "Sources et technique",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Le manifeste, ses captures et les livrables du dépôt étayent ce parcours. Les textes ci-dessous sont embarqués localement et restent consultables sans Internet. Attendus vérifiés : les cinq questions de l’image fournie, les sept rubriques du descriptif et les six critères du règlement (§ 5, p. 3). Fonction documentée Capacité décrite dans les livrables ; configuration locale requise pour l’exécuter. Résultat technique vérifié Recette ou archive datée ; aucune efficacité écologique déduite. Bénéfice attendu Utilité visée ; aucun gain de temps ou de biodiversité mesuré. PerspectiveDéveloppement ou évaluation à venir.Documents examinésRèglement officiel · annexe Datathon Normandie 20265 pages. § 5, p. 3 : pertinence, originalité, innovation, sobriété numérique, faisabilité et qualité orale. § 3, p. 2 : le texte mentionne emploi-formation et cite la biodiversité dans sa note de bas de page. Cette ambiguïté éditoriale est conservée, sans réécrire le règlement.annexe_règlement_datathon_2026 (1).pdfTrame du descriptif projetTrame vierge à sept rubriques ; elle précise le format attendu, sans fournir de faits supplémentaires sur Symbiose. Le manifeste contient les réponses rédigées.Descriptif_projet_Datathon (1).docxLes cinq questions de la présentationImage fournie par l’équipe, lue et transcrite ; correspondance avec les scènes dans l’onglet jury.image (4).pngManifeste final · équipe ARQp. 1–3 : projet, équipe, bénéfices attendus et données ; p. 3–13 : captures et description du prototype. Transcription du document fourni.Manifeste - Symbiose - Equipe ARQ.pdfDescriptif et architecture localeFastAPI, Vue, workers séparés, files asynchrones, modèles locaux et garde-fous GPU.README.mdParcelles et données réellement mobiliséesCommune, cadastre et RPG 2024 : suggestions à vérifier. Les déclarations utilisateur gardent leur provenance.docs/PARCEL_DOSSIERS.mdContexte territorialQuatre couches IGN et analyse déterministe au point. Pas d’extrapolation à toute une emprise.docs/TERRITORIAL_CONTEXT.mdRecette et archives IGN · 10 novembre 2026Consultations réelles de deux points. Les observations animales des tests sont synthétiques. Aucun effet écologique mesuré.docs/TERRITORIAL_VALIDATION.mdDREAL Normandie · zones humidesInventaire consulté ponctuellement ; couverture et qualité variables. La prédisposition n’est pas intégrée.docs/DREAL_WETLANDS.mdDouze alternatives de conceptionCinq interventions ; propositions conditionnelles avec preuves et limites. Compensation non évaluée.docs/PROJECT_DESIGN.mdRecette des alternativesRésultats techniques documentés ; captures navigateur basées sur des données de test. Efficacité locale non mesurée.docs/PROJECT_DESIGN_VALIDATION.mdDétection, classification et suiviÉtapes séparées. Modèles à préparer explicitement, aucune performance scientifique déduite des captures.workers/vision/INFERENCE.mdValidation humaineConfirmer, corriger ou rejeter l’espèce et le recadrage ; conserver l’historique.HUMAN_REVIEW.mdRecherche de publications scientifiquesOpenAlex, Crossref et Europe PMC ; téléchargement conditionné aux droits disponibles.workers/documents/README.mdRecherche et génération documentaires localesPréparation explicite du modèle local. Les sources candidates ne deviennent pas automatiquement des preuves applicables.docs/RAG.mdProducteurs des données utilisées Ces liens externes sont facultatifs et nécessitent Internet. La scène ne consulte aucun service distant. Etalab / DINUM · commune ↗IGN · cadastre ↗IGN · occupation agricole, RPG 2024 ↗IGN / MNHN · ZNIEFF et Natura 2000 ↗DREAL Normandie · zones humides inventoriées ↗OpenAlex ↗Crossref ↗Europe PMC ↗Faisabilité et numérique responsable FastAPI et Vue 3, workers vision et documentaire séparés, PostgreSQL et Redis, stockage local persistant. La détection, la classification et le suivi restent distincts. Les tâches longues passent par une file ; une seule tâche GPU lourde s’exécute à la fois. Les modèles se préparent explicitement. Les traitements locaux et l’absence d’entraînement automatique sont des choix d’architecture. La consommation énergétique, le gain de temps et l’impact écologique restent à mesurer. Le RPG décrit une occupation agricole déclarée pour 2024. Un point et un zonage n’établissent ni l’état de toute une parcelle ni l’efficacité d’une adaptation. Les suggestions et publications doivent être examinées avant décision ; la compensation reste non évaluée.",
+      "archives": [
+        {
+          "words": 1923,
+          "speciesNet": false
+        },
+        {
+          "words": 52,
+          "speciesNet": false
+        },
+        {
+          "words": 30,
+          "speciesNet": false
+        },
+        {
+          "words": 2174,
+          "speciesNet": false
+        },
+        {
+          "words": 641,
+          "speciesNet": false
+        },
+        {
+          "words": 2033,
+          "speciesNet": false
+        },
+        {
+          "words": 1474,
+          "speciesNet": false
+        },
+        {
+          "words": 1511,
+          "speciesNet": false
+        },
+        {
+          "words": 675,
+          "speciesNet": false
+        },
+        {
+          "words": 1027,
+          "speciesNet": false
+        },
+        {
+          "words": 804,
+          "speciesNet": false
+        },
+        {
+          "words": 1216,
+          "speciesNet": true
+        },
+        {
+          "words": 1535,
+          "speciesNet": false
+        },
+        {
+          "words": 2992,
+          "speciesNet": false
+        },
+        {
+          "words": 2296,
+          "speciesNet": false
+        }
+      ]
+    },
+    {
+      "render": "webgl",
+      "mode": "exploration",
+      "tab": "Pitch chronométré",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury La vidéo d’ouverture (environ une minute) et le travelling vers la forêt précèdent le récit. Le récit dure ensuite cinq minutes, à deux voix (A et B). En mode présentation, la lecture continue démarre à l’arrivée en forêt ; Espace la met en pause, les flèches changent d’étape. Une répétition chronométrée reste nécessaire. 0:00–0:18 · 18 S Ce que l’on ne voit pasUne vie discrète s’organise autour de nous.A — Regardez cette forêt. Des arbres, quelques rayons de soleil. Rien d’extraordinaire, à première vue. Pourtant, une vie discrète s’organise autour de nous. Savons-nous vraiment qui habite ici ?À l’écran et transitionQui habite ici ?Amorce très lente depuis le cadrage initial de la forêt.Pause visuelle dans la forêt ; le chronomètre continue.Approche progressive de la litière.À 0:18, le regard descend sous la litière vers le sol vivant.0:18–0:42 · 24 S Sous nos pasUn projet d’aménagement peut perturber une vie que nous observons peu.B — Sous nos pas, des animaux circulent, se nourrissent, trouvent refuge. La plupart échappent à notre regard. Maintenant, imaginons qu’un projet d’aménagement soit prévu à cet endroit. Une route, une clôture, un éclairage. Comment savoir ce que nous risquons de perturber ?À l’écran et transitionUne route, une clôture, un éclairage · Que risquerions-nous de perturber ?Descente sous le sol, découverte des organismes, puis remontée progressive.À 0:42, retour à la surface et au cadrage forestier.Coupe pédagogique : les organismes représentés ne constituent pas un inventaire du lieu.0:42–0:50 · 8 S Des données à relierDes données existent. Encore faut-il les relier pour mieux décider.A — Les données existent. Mais elles sont dispersées. Alors, comment mieux décider ?À l’écran et transitionObservations dispersées · Comment mieux décider ?Retour à la surface, puis élévation douce au-dessus de la forêt.À 0:50, ouverture sur le ciel et révélation de l’identité Symbiose.0:50–1:07 · 17 S L’idée SymbioseRelier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix.B — C’est là que commence Symbiose. Notre ambition : rendre visible ce qui nous échappe, en reliant l’intelligence artificielle aux données environnementales ouvertes. Pas pour décider à notre place. Pour éclairer nos choix.Fonction documentéeÀ l’écran et transitionObserver la faune · Comprendre le territoire · Éclairer les projetsTravelling vers le ciel, puis suivi de la vallée vers la rivière.À 1:07, approche du piège photographique et démarrage de la chaîne de reconnaissance.1:07–1:27 · 20 S De la vidéo à l’observation validéeDétection, proposition d’espèce et validation humaine restent trois étapes distinctes.B — Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un classificateur PyTorch propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.Fonction documentéeÀ l’écran et transitionDétection · Identification proposée · Validation humaineApproche progressive du piège photographique.Cadrage stable près de la caméra pendant la démonstration en trois temps.Reprise lente vers la surface de l’eau.À 1:27, immersion sous l’eau : identifier ne suffit pas à comprendre le milieu.Écart explicite avec le script reçu : SpeciesNet y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le classificateur PyTorch existant ; SpeciesNet reste une piste à évaluer.1:27–1:43 · 16 S Comprendre le milieuUne présence observée ne dit pas encore ce qu’un aménagement pourrait changer.A — Mais reconnaître un animal, est-ce suffisant ? Non. Savoir qu’une espèce est présente ne nous dit ni comment elle utilise ce milieu, ni ce qu’un aménagement pourrait changer pour elle.À l’écran et transitionUne présence observée · Un milieu à comprendreImmersion sous l’eau puis approche lente des roseaux.À 1:43, remontée vers la zone humide et croisement des informations territoriales.1:43–2:15 · 32 S Croiser les donnéesSavoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier.B — Symbiose replace alors l’observation dans son territoire. Nous la croisons avec des données ouvertes : occupation des sols, parcelles, zonages environnementaux, zones humides lorsque l’information existe. Nous y associons des sources scientifiques consultables. Ce rapprochement ne remplace pas une étude écologique. Il permet de savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier sur le terrain.Fonction documentéeÀ l’écran et transitionObservations validées · Cadastre · RPG 2024 · IGN · DREAL Normandie · Publications scientifiquesRemontée lente dans les roseaux ; les quatre catégories apparaissent successivement.À 2:15, ouverture du bocage et stabilisation pour le cas d’usage.2:15–3:05 · 50 S Un projet d’éclairage à examinerUn cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes.A — Prenons un exemple. Une collectivité prévoit d’éclairer un chemin près de ce bocage. Sur une carte, elle voit l’emplacement. Avec Symbiose, elle découvre aussi les observations de faune disponibles et les caractéristiques du milieu. Des informations à examiner avant de décider. B — Peut-on éteindre à certaines heures ? Réduire l’intensité ? Déplacer l’installation ? Symbiose fait émerger des points de vigilance et des alternatives documentées, avec leurs sources consultables. Ces pistes restent à discuter avec les spécialistes. L’outil n’autorise rien, n’interdit rien : il aide à poser les bonnes questions, plus tôt.Bénéfice attendu · non mesuréÀ l’écran et transitionAménageurs · Acteurs de l’environnement · TerritoiresArrivée douce sur le bocage et installation du cas illustratif.Cadrage stable pendant le projet, les vigilances et les adaptations.Élévation progressive vers le survol du bocage.À 3:05, passage au survol et présentation de l’équipe ARQ.Scénario illustratif, bénéfices attendus non mesurés ; les propositions ne remplacent pas l’expertise écologique.3:05–3:35 · 30 S L’équipe ARQArden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données.B — Derrière Symbiose, il y a ARQ : une équipe qui réunit intelligence artificielle, développement logiciel et exploitation des données. Nous avons combiné ces compétences pour construire un démonstrateur fonctionnel, pensé pour les enjeux du territoire normand. A — Nous ne développons pas de la technologie pour la technologie. Nous voulons la rendre utile à ceux qui agissent sur le terrain.À l’écran et transitionIntelligence artificielle · Développement logiciel · Exploitation des donnéesSurvol du bocage ; six premières secondes sans panneau de compétence.Composition stable pendant la présentation des compétences d’ARQ.Reprise progressive du mouvement vers le littoral.À 3:35, ouverture sur Étretat et changement d’échelle.Survol illustratif ; le relevé par drone reste une piste d’évolution.3:35–3:48 · 13 S Du démonstrateur au terrainUn parcours démontré ; un impact réel sur le terrain encore à mesurer.A — Aujourd’hui, Symbiose est un démonstrateur. Nous avons montré un parcours possible, pas encore mesuré son impact réel sur le terrain.Perspective · non opérationnelleÀ l’écran et transitionDémonstrateur · Impact réel à mesurerOuverture sur les falaises d’Étretat puis préparation de la plongée.À 3:48, plongée vers les besoins à construire ensemble.3:48–4:18 · 30 S Ce qu’il reste à construire ensembleConfronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter.B — Pour aller plus loin, il nous faut des partenaires : collectivités, associations naturalistes, professionnels de l’aménagement. Leur regard permettra de confronter Symbiose à de vrais usages. Il nous faut aussi des données fiables, une expertise scientifique et des moyens d’expérimenter. Nous voulons mesurer ce qui fonctionne, ce qui doit être amélioré et le coût numérique de nos traitements.À l’écran et transitionPartenaires de terrain · Données fiables et expertise scientifique · Moyens d’expérimenterPlongée existante à Étretat ; apparition successive des trois besoins, puis remontée.À 4:18, retour apaisé à la surface, face au littoral.Évocation artistique du littoral ; besoins proposés et partenaires recherchés.4:18–4:30 · 12 S L’expertise au bon momentRendre l’expertise accessible lorsqu’une décision se prépare.A — Parce que l’enjeu n’est pas de remplacer l’expertise. Il est de la rendre accessible au moment où une décision se prépare.Perspective · non opérationnelleÀ l’écran et transitionÉclairer les choix · Préserver la place de l’expertiseRetour à la surface puis transition douce vers la forêt nocturne.À 4:30, retrouver la forêt du début, désormais de nuit.4:30–5:00 · 30 S La même forêt, un autre regardLa forêt est la même. Ce qui a changé, c’est ce que nous en savons.A — Regardez autour de vous. Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé. B — Elle est la même qu’il y a cinq minutes. Ce qui a changé, c’est ce que nous en savons. A — Et c’est peut-être là que commence une autre façon d’aménager nos territoires. Symbiose. Comprendre le vivant avant d’aménager.À l’écran et transitionSymbiose · Comprendre le vivant avant d’aménagerRalentir et retrouver de nuit un cadrage rappelant la forêt initiale.Cadrage final stable ; le chronomètre atteint 5:00 puis s’arrête.À 5:00, récit immobile, logo, signature et accès à l’application conservés.",
+      "archives": []
+    },
+    {
+      "render": "webgl",
+      "mode": "exploration",
+      "tab": "Attendus du jury",
+      "text": "CARNET DE PRÉSENTATION Les preuves, les mots,les prochaines étapes. Sources et technique Pitch chronométré Attendus du jury Correspondance avec les cinq questions fournies et les six critères du règlement (§ 5, p. 3), complétée par l’Open Data et l’ancrage normand. Les rôles individuels et les moyens financiers ne sont pas documentés. Attendus et scènes du pitch AttenduScènesÉléments présentésProblèmeForêt · Sous nos pasUn vivant qui passe inaperçu ; des données dispersées, difficiles à traduire en décisions.SolutionCiel · Rivières · Sous-marin · Zone humideDétection et proposition d’espèce, validation humaine, croisement avec les données officielles et alternatives sourcées.ImpactsPrairie et bocageBénéfices attendus pour aménageurs, acteurs de l’environnement et territoires ; impact réel à mesurer.ÉquipeL’équipe ARQARQ : Arden, Romain et Quentin ; IA, développement logiciel et données ; rôles individuels non détaillés.Besoins pour changer d’échelleLittoral · Changer d’échellePartenaires de terrain, données fiables et expertise scientifique, moyens d’expérimentation ; aucun partenariat annoncé.OriginalitéCiel · Zone humidePartir d’un projet concret et rendre visibles vérifications, alternatives et sources.InnovationRivières · Zone humideVision par ordinateur, validation humaine et contexte territorial reliés au projet d’aménagement.Données ouvertesZone humideZNIEFF, Natura 2000, zones humides DREAL, cadastre et RPG 2024 ; limites des consultations ponctuelles.FaisabilitéRivières · Prairie et bocageDémonstrateur fonctionnel, socle local existant et recettes techniques archivées.Numérique responsableRivières · Carnet de présentationTraitements locaux, GPU sérialisé ; consommation et utilité à mesurer.Pertinence territorialeZone humide · LittoralSources DREAL Normandie et archives de points normands ; usages proposés aux acteurs locaux.Qualité de la présentation oraleEnsemble du parcoursMode jury de cinq minutes à deux voix, sans prologue ; vidéo d’ouverture réservée à la découverte publique. Répétition à effectuer.",
+      "archives": []
+    }
+  ],
+  "prologues": [
+    {
+      "render": "2d",
+      "text": "00 / BUREAU D’ÉTUDES LE PROLOGUE Du bureau au vivant. Avant de rencontrer le vivant, prenons le temps de regarder. Découvrir Symbiose ▶ Position dans la vidéo de présentation 0:00 / 1:14 Son Volume de la vidéo Entrer dans le vivant ↗ Passer l’introduction Changer la vidéo"
+    },
+    {
+      "render": "webgl",
+      "text": "00 / BUREAU D’ÉTUDES LE PROLOGUE Du bureau au vivant. Avant de rencontrer le vivant, prenons le temps de regarder. Découvrir Symbiose ▶ Position dans la vidéo de présentation 0:00 / 1:14 Son Volume de la vidéo Entrer dans le vivant ↗ Passer l’introduction Changer la vidéo"
+    }
+  ],
+  "errors": []
+}

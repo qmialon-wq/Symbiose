@@ -1,11 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { openPublicLanding } from "./public-landing";
 
 async function open(page: Page) {
-  await page.goto("/jury/?render=2d");
-  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
-    timeout: 45000,
-  });
+  await openPublicLanding(page);
   await expect(page.getByTestId("landing-loading")).toHaveCount(0);
   await page
     .locator(".sx-prologue-poster")
@@ -140,9 +138,6 @@ test("le fondu 00 → 01 révèle le paysage préchargé et reste réversible", 
 }) => {
   await page.setViewportSize({ width: 1600, height: 900 });
   await open(page);
-  await page
-    .getByRole("button", { name: "Mode présentation", exact: false })
-    .click();
   await expect(
     page.getByRole("button", { name: "Mode exploration", exact: false }),
   ).toBeVisible();

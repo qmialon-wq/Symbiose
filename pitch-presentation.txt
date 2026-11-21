@@ -1,101 +1,157 @@
-SCÈNE 1 — CE QUE NOUS NE VOYONS PAS
-00:00 – 00:50 | Question 1 : Quel est le problème ?
-[VISUEL] Une forêt en plein écran. La caméra est immobile. Aucun panneau visible. On entend les oiseaux et le vent dans les arbres.
+SYMBIOSE — CONDUCTEUR ORAL À DEUX VOIX
+Source : frontend/src/experience/narrative-cues.ts
+Durée jury : 5:00. Vidéo et travelling réservés au parcours public, hors de ces cinq minutes.
+
+1. 0:00–0:18 — CE QUE L’ON NE VOIT PAS
+ÉCRAN : Une forêt ordinaire. Vraiment ?
+TEXTE SECONDAIRE : Une vie discrète s’organise autour de nous.
+CAMÉRA : 0:00–0:02 : Amorce très lente depuis le cadrage initial de la forêt.
+0:02–0:12 : Pause visuelle dans la forêt ; le chronomètre continue.
+0:12–0:18 : Approche progressive de la litière.
 INTERVENANT A
-« Regardez cette forêt.
-Des arbres, de la végétation, quelques rayons de soleil…
-À première vue, rien d’extraordinaire.
-Et pourtant, une question : que savons-nous réellement de ce qui vit ici ? »
-[CAMÉRA] La caméra avance lentement entre les arbres.
+Regardez cette forêt. Des arbres, quelques rayons de soleil. Rien d’extraordinaire, à première vue. Pourtant, une vie discrète s’organise autour de nous. Savons-nous vraiment qui habite ici ?
+TRANSITION : À 0:18, le regard descend sous la litière vers le sol vivant.
+
+────────────────────
+
+2. 0:18–0:42 — SOUS NOS PAS
+ÉCRAN : Ce qui vit ici nous échappe.
+TEXTE SECONDAIRE : Un projet d’aménagement peut perturber une vie que nous observons peu.
+CAMÉRA : 0:18–0:42 : Descente sous le sol, découverte des organismes, puis remontée progressive.
 INTERVENANT B
-« Des animaux se déplacent, se nourrissent, se reproduisent. Certains passent juste devant nous, sans que nous les remarquions.
-Mais imaginons que demain, un projet d’aménagement soit prévu à cet endroit.
-Comment savoir ce que nous risquons de perturber ? »
+Sous nos pas, des animaux circulent, se nourrissent, trouvent refuge. La plupart échappent à notre regard. Maintenant, imaginons qu’un projet d’aménagement soit prévu à cet endroit. Une route, une clôture, un éclairage. Comment savoir ce que nous risquons de perturber ?
+TRANSITION : À 0:42, retour à la surface et au cadrage forestier.
+LIMITE : Coupe pédagogique : les organismes représentés ne constituent pas un inventaire du lieu.
+
+────────────────────
+
+3. 0:42–0:50 — DES DONNÉES À RELIER
+ÉCRAN : Une forêt ordinaire. Vraiment ?
+TEXTE SECONDAIRE : Des données existent. Encore faut-il les relier pour mieux décider.
+CAMÉRA : 0:42–0:50 : Retour à la surface, puis élévation douce au-dessus de la forêt.
 INTERVENANT A
-« Les informations existent. Des observations animales, des inventaires, des données environnementales…
-Mais elles sont souvent dispersées, difficiles à exploiter et surtout difficiles à traduire en décisions concrètes.
-Alors, comment faire pour mieux comprendre ce territoire avant de le transformer ? »
-⸻
-SCÈNE 2 — RENDRE L’INVISIBLE VISIBLE
-00:50 – 02:15 | Question 2 : Quelle est la solution ?
-[VISUEL] La caméra s’arrête à proximité d’un piège photographique. Une courte vidéo montre un animal.
+Les données existent. Mais elles sont dispersées. Alors, comment mieux décider ?
+TRANSITION : À 0:50, ouverture sur le ciel et révélation de l’identité Symbiose.
+
+────────────────────
+
+4. 0:50–1:07 — L’IDÉE SYMBIOSE
+ÉCRAN : Rendre l’invisible visible.
+TEXTE SECONDAIRE : Relier l’intelligence artificielle aux données environnementales ouvertes pour éclairer les choix.
+CAMÉRA : 0:50–1:07 : Travelling vers le ciel, puis suivi de la vallée vers la rivière.
 INTERVENANT B
-« C’est pour répondre à cette question que nous avons imaginé Symbiose.
-Notre idée est simple : associer l’intelligence artificielle aux données environnementales ouvertes pour transformer des observations en informations utiles à l’aménagement.
-Tout commence ici, avec une caméra qui observe la faune. »
-[DÉMONSTRATION] Apparition de la détection sur la vidéo, puis de l’espèce proposée par le système.
-« Un premier modèle d’intelligence artificielle, MegaDetector, détecte les animaux.
-Un second, basé sur SpeciesNet, propose d’identifier leur espèce.
-L’observation est ensuite vérifiée et validée par un humain.
-Mais est-ce que reconnaître cet animal suffit pour comprendre les enjeux de ce territoire ? »
-INTERVENANT A
-« Non. Parce que savoir qu’un animal est présent ne nous dit pas encore ce que cela implique pour un projet d’aménagement.
-Il faut aussi comprendre l’environnement dans lequel il évolue. »
-[CAMÉRA] La caméra s’élève. Une vue du territoire apparaît, accompagnée de données cartographiques.
+C’est là que commence Symbiose. Notre ambition : rendre visible ce qui nous échappe, en reliant l’intelligence artificielle aux données environnementales ouvertes. Pas pour décider à notre place. Pour éclairer nos choix.
+TRANSITION : À 1:07, approche du piège photographique et démarrage de la chaîne de reconnaissance.
+
+────────────────────
+
+5. 1:07–1:27 — DE LA VIDÉO À L’OBSERVATION VALIDÉE
+ÉCRAN : L’IA détecte et propose. L’humain valide.
+TEXTE SECONDAIRE : Détection, proposition d’espèce et validation humaine restent trois étapes distinctes.
+CAMÉRA : 1:07–1:12 : Approche progressive du piège photographique.
+1:12–1:23 : Cadrage stable près de la caméra pendant la démonstration en trois temps.
+1:23–1:27 : Reprise lente vers la surface de l’eau.
 INTERVENANT B
-« Symbiose croise alors les observations avec des données officielles : zones naturelles d’intérêt écologique, sites Natura 2000, zones humides lorsque les données sont disponibles…
-Et nous allons encore plus loin.
-Imaginons un projet d’éclairage sur ce terrain. »
-[DÉMONSTRATION] Affichage du projet, des éléments territoriaux et des alternatives.
-« Symbiose met en évidence les informations à examiner, les vérifications nécessaires et des alternatives possibles.
-Adapter l’éclairage, déplacer une installation, modifier une intervention…
-Le tout accompagné de justifications et de sources consultables. »
+Tout part d’une caméra qui observe la faune. MegaDetector repère les animaux dans les images. Un classificateur PyTorch propose une identification. Puis un humain vérifie et valide l’observation. L’intelligence artificielle accélère le travail ; l’expertise reste indispensable.
+TRANSITION : À 1:27, immersion sous l’eau : identifier ne suffit pas à comprendre le milieu.
+LIMITE : Écart explicite avec le script reçu : SpeciesNet y était nommé, mais n’est pas intégré au pipeline actuel. La formulation orale décrit le classificateur PyTorch existant ; SpeciesNet reste une piste à évaluer.
+
+────────────────────
+
+6. 1:27–1:43 — COMPRENDRE LE MILIEU
+ÉCRAN : Reconnaître un animal ne suffit pas.
+TEXTE SECONDAIRE : Une présence observée ne dit pas encore ce qu’un aménagement pourrait changer.
+CAMÉRA : 1:27–1:43 : Immersion sous l’eau puis approche lente des roseaux.
 INTERVENANT A
-« L’objectif n’est donc pas de laisser une IA décider de ce que nous devons construire.
-C’est de nous aider à comprendre ce que nous devons prendre en compte avant de construire. »
-⸻
-SCÈNE 3 — DE L’OBSERVATION À LA DÉCISION
-02:15 – 03:05 | Question 3 : Quels impacts ?
-[VISUEL] La caméra prend de la hauteur. La forêt révèle progressivement un territoire plus vaste, où nature et activités humaines coexistent.
+Mais reconnaître un animal, est-ce suffisant ? Non. Savoir qu’une espèce est présente ne nous dit ni comment elle utilise ce milieu, ni ce qu’un aménagement pourrait changer pour elle.
+TRANSITION : À 1:43, remontée vers la zone humide et croisement des informations territoriales.
+
+────────────────────
+
+7. 1:43–2:15 — CROISER LES DONNÉES
+ÉCRAN : Le vivant, replacé dans son territoire.
+TEXTE SECONDAIRE : Savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier.
+CAMÉRA : 1:43–2:15 : Remontée lente dans les roseaux ; les quatre catégories apparaissent successivement.
 INTERVENANT B
-« Alors, qu’est-ce que cela change concrètement ?
-Aujourd’hui, observer une espèce, consulter les zonages environnementaux et étudier un projet peuvent être trois démarches distinctes.
-Avec Symbiose, nous les réunissons dans un même parcours. »
+Symbiose replace alors l’observation dans son territoire. Nous la croisons avec des données ouvertes : occupation des sols, parcelles, zonages environnementaux, zones humides lorsque l’information existe. Nous y associons des sources scientifiques consultables. Ce rapprochement ne remplace pas une étude écologique. Il permet de savoir ce que nous savons, d’où viennent les informations et ce qu’il reste à vérifier sur le terrain.
+TRANSITION : À 2:15, ouverture du bocage et stabilisation pour le cas d’usage.
+
+────────────────────
+
+8. 2:15–3:05 — UN PROJET D’ÉCLAIRAGE À EXAMINER
+ÉCRAN : Observer, situer, décider : un seul parcours.
+TEXTE SECONDAIRE : Un cas illustratif pour repérer les vigilances et discuter des adaptations avec les spécialistes.
+CAMÉRA : 2:15–2:25 : Arrivée douce sur le bocage et installation du cas illustratif.
+2:25–2:58 : Cadrage stable pendant le projet, les vigilances et les adaptations.
+2:58–3:05 : Élévation progressive vers le survol du bocage.
 INTERVENANT A
-« Pour un aménageur, c’est la possibilité d’identifier plus tôt des points de vigilance.
-Pour les acteurs de l’environnement, c’est une façon de mieux valoriser les connaissances disponibles.
-Et pour les territoires, c’est la perspective de décisions mieux éclairées.
-Nous avons construit un démonstrateur fonctionnel. Il reste à mesurer son impact réel sur le terrain.
-Mais nous défendons une conviction : mieux comprendre un territoire, c’est se donner les moyens de mieux le préserver. »
-⸻
-SCÈNE 4 — CEUX QUI ONT IMAGINÉ SYMBIOSE
-03:05 – 03:35 | Question 4 : Qui compose l’équipe ?
-[VISUEL] La caméra s’arrête dans une clairière. Une présentation discrète de l’équipe ARQ apparaît.
+Prenons un exemple. Une collectivité prévoit d’éclairer un chemin près de ce bocage. Sur une carte, elle voit l’emplacement. Avec Symbiose, elle découvre aussi les observations de faune disponibles et les caractéristiques du milieu. Des informations à examiner avant de décider.
+
 INTERVENANT B
-« Derrière cette idée, il y a notre équipe : ARQ.
-Nous avons réuni nos compétences en intelligence artificielle, développement logiciel et exploitation des données pour donner vie à Symbiose. »
-INTERVENANT A
-« Et surtout, nous avons partagé une même ambition : ne pas développer de la technologie pour la technologie.
-Mais construire un outil qui puisse un jour être utile à celles et ceux qui agissent sur nos territoires. »
-⸻
-SCÈNE 5 — ET DEMAIN ?
-03:35 – 04:30 | Question 5 : Quels sont les besoins pour changer d’échelle ?
-[VISUEL] La caméra reprend son mouvement et découvre un paysage plus vaste.
-INTERVENANT A
-« Aujourd’hui, Symbiose est un démonstrateur.
-Mais notre ambition va au-delà de cette première version.
-Alors, qu’est-ce qu’il nous manque pour aller plus loin ? »
+Peut-on éteindre à certaines heures ? Réduire l’intensité ? Déplacer l’installation ? Symbiose fait émerger des points de vigilance et des alternatives documentées, avec leurs sources consultables. Ces pistes restent à discuter avec les spécialistes. L’outil n’autorise rien, n’interdit rien : il aide à poser les bonnes questions, plus tôt.
+TRANSITION : À 3:05, passage au survol et présentation de l’équipe ARQ.
+LIMITE : Scénario illustratif, bénéfices attendus non mesurés ; les propositions ne remplacent pas l’expertise écologique.
+
+────────────────────
+
+9. 3:05–3:35 — L’ÉQUIPE ARQ
+ÉCRAN : Derrière Symbiose, l’équipe ARQ.
+TEXTE SECONDAIRE : Arden, Romain et Quentin réunissent intelligence artificielle, développement logiciel et données.
+CAMÉRA : 3:05–3:20 : Survol du bocage ; six premières secondes sans panneau de compétence.
+3:20–3:30 : Composition stable pendant la présentation des compétences d’ARQ.
+3:30–3:35 : Reprise progressive du mouvement vers le littoral.
 INTERVENANT B
-« D’abord, des partenaires de terrain : collectivités, associations naturalistes et professionnels de l’aménagement, pour confronter notre solution à leurs besoins réels.
-Ensuite, des données fiables et une expertise scientifique pour enrichir et valider nos analyses.
-Et enfin, des moyens pour expérimenter, améliorer et déployer Symbiose à plus grande échelle.
-Parce que notre objectif n’est pas de remplacer les experts de la biodiversité.
-C’est de rendre leurs connaissances plus accessibles au moment où les décisions se prennent. »
-⸻
-ÉPILOGUE — LA MÊME FORÊT
-04:30 – 05:00 | Conclusion
-[VISUEL] La caméra revient lentement vers le point de départ, avec exactement le même cadrage qu’à l’ouverture. Les interfaces disparaissent. La forêt occupe de nouveau tout l’écran.
-[SILENCE] Une courte pause. On n’entend plus que la nature.
+Derrière Symbiose, il y a ARQ : une équipe qui réunit intelligence artificielle, développement logiciel et exploitation des données. Nous avons combiné ces compétences pour construire un démonstrateur fonctionnel, pensé pour les enjeux du territoire normand.
+
 INTERVENANT A
-« Regardez autour de vous.
-Vous reconnaissez cet endroit ?
-C’est ici que notre voyage a commencé. »
-[PAUSE]
+Nous ne développons pas de la technologie pour la technologie. Nous voulons la rendre utile à ceux qui agissent sur le terrain.
+TRANSITION : À 3:35, ouverture sur Étretat et changement d’échelle.
+LIMITE : Survol illustratif ; le relevé par drone reste une piste d’évolution.
+
+────────────────────
+
+10. 3:35–3:48 — DU DÉMONSTRATEUR AU TERRAIN
+ÉCRAN : Rendre l’expertise accessible au bon moment.
+TEXTE SECONDAIRE : Un parcours démontré ; un impact réel sur le terrain encore à mesurer.
+CAMÉRA : 3:35–3:48 : Ouverture sur les falaises d’Étretat puis préparation de la plongée.
+INTERVENANT A
+Aujourd’hui, Symbiose est un démonstrateur. Nous avons montré un parcours possible, pas encore mesuré son impact réel sur le terrain.
+TRANSITION : À 3:48, plongée vers les besoins à construire ensemble.
+
+────────────────────
+
+11. 3:48–4:18 — CE QU’IL RESTE À CONSTRUIRE ENSEMBLE
+ÉCRAN : Ce qu’il reste à construire ensemble.
+TEXTE SECONDAIRE : Confronter Symbiose à de vrais usages avec des partenaires, des données fiables et des moyens d’expérimenter.
+CAMÉRA : 3:48–4:18 : Plongée existante à Étretat ; apparition successive des trois besoins, puis remontée.
 INTERVENANT B
-« Cette forêt est la même qu’il y a cinq minutes.
-Ce qui a changé, c’est ce que nous en savons. »
+Pour aller plus loin, il nous faut des partenaires : collectivités, associations naturalistes, professionnels de l’aménagement. Leur regard permettra de confronter Symbiose à de vrais usages. Il nous faut aussi des données fiables, une expertise scientifique et des moyens d’expérimenter. Nous voulons mesurer ce qui fonctionne, ce qui doit être amélioré et le coût numérique de nos traitements.
+TRANSITION : À 4:18, retour apaisé à la surface, face au littoral.
+LIMITE : Évocation artistique du littoral ; besoins proposés et partenaires recherchés.
+
+────────────────────
+
+12. 4:18–4:30 — L’EXPERTISE AU BON MOMENT
+ÉCRAN : Rendre l’expertise accessible au bon moment.
+TEXTE SECONDAIRE : Rendre l’expertise accessible lorsqu’une décision se prépare.
+CAMÉRA : 4:18–4:30 : Retour à la surface puis transition douce vers la forêt nocturne.
 INTERVENANT A
-« Et c’est peut-être là que commence une meilleure façon d’aménager nos territoires. »
-[VISUEL] La forêt s’efface progressivement. Le logo Symbiose apparaît, accompagné de la signature :
-SYMBIOSE
-Comprendre le vivant avant d’aménager.
+Parce que l’enjeu n’est pas de remplacer l’expertise. Il est de la rendre accessible au moment où une décision se prépare.
+TRANSITION : À 4:30, retrouver la forêt du début, désormais de nuit.
+
+────────────────────
+
+13. 4:30–5:00 — LA MÊME FORÊT, UN AUTRE REGARD
+ÉCRAN : Comprendre le vivant avant d’aménager.
+TEXTE SECONDAIRE : La forêt est la même. Ce qui a changé, c’est ce que nous en savons.
+CAMÉRA : 4:30–4:52 : Ralentir et retrouver de nuit un cadrage rappelant la forêt initiale.
+4:52–5:00 : Cadrage final stable ; le chronomètre atteint 5:00 puis s’arrête.
+INTERVENANT A
+Regardez autour de vous. Vous reconnaissez cette forêt ? C’est ici que notre voyage a commencé.
+
+INTERVENANT B
+Elle est la même qu’il y a cinq minutes. Ce qui a changé, c’est ce que nous en savons.
+
+INTERVENANT A
+Et c’est peut-être là que commence une autre façon d’aménager nos territoires. Symbiose. Comprendre le vivant avant d’aménager.
+TRANSITION : À 5:00, récit immobile, logo, signature et accès à l’application conservés.

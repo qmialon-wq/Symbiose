@@ -55,6 +55,11 @@ def main() -> None:
         "scenes": scenes,
         "poster": poster,
     }
+    previous_path = FRONTEND / "src" / "experience" / "content" / "runtime-assets.json"
+    if previous_path.exists():
+        previous = json.loads(previous_path.read_text(encoding="utf-8"))
+        if "excursions" in previous:
+            inventory["excursions"] = previous["excursions"]
     encoded = json.dumps(inventory, ensure_ascii=False, indent=2) + "\n"
     (PUBLIC / "experience-art" / "runtime-assets.json").write_text(encoded, encoding="utf-8")
     (FRONTEND / "src" / "experience" / "content" / "runtime-assets.json").write_text(

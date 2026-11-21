@@ -35,6 +35,9 @@ import {
 } from "./prologue/screen-projection";
 import { type ExcursionState } from "./excursions/route";
 import { sampleConnectedExcursion } from "./excursions/connected-camera";
+import { samplePresentationCamera } from "./presentation-camera";
+import { narrativeCueAt, signatureEvent } from "./narrative-cues";
+import { smoothstep } from "./journey";
 import { terrainY } from "./world-utils";
 import {
   deviceHints,
@@ -53,6 +56,7 @@ const props = defineProps<{
   prologueFocus?: boolean;
   excursion?: ExcursionState;
   qualityPreference?: QualityPreference;
+  presentationSeconds?: number;
 }>();
 const emit = defineEmits<{
   ready: [];
@@ -75,6 +79,7 @@ watch(
     props.prologueVideo,
     props.prologueFocus,
     props.excursion,
+    props.presentationSeconds,
   ],
   () => renderFrame?.(),
   { flush: "post" },
@@ -288,7 +293,14 @@ onMounted(async () => {
     if (props.prologue === undefined || props.prologue > 0.35)
       void ensureLandscape();
     let pose = camera.update(progress);
-    if (props.excursion) {
+    if (props.presentationSeconds !== undefined && !props.reducedMotion) {
+      pose = samplePresentationCamera(props.presentationSeconds);
+      camera.camera.position.set(...pose.position);
+      camera.camera.lookAt(...pose.target);
+      camera.camera.fov = pose.fov;
+      camera.camera.updateProjectionMatrix();
+      camera.camera.updateMatrixWorld(true);
+    } else if (props.excursion) {
       pose = sampleConnectedExcursion(
         props.excursion.id,
         props.reducedMotion ? 0.5 : props.excursion.local,
@@ -336,7 +348,25 @@ onMounted(async () => {
         office = undefined;
       }
     }
-    const state = world.apply(progress, camera.camera, layers, props.excursion);
+    const presentation =
+      props.presentationSeconds === undefined
+        ? undefined
+        : {
+            logo: smoothstep(
+              signatureEvent.start,
+              signatureEvent.end,
+              props.presentationSeconds,
+            ),
+            riverTrap:
+              narrativeCueAt(props.presentationSeconds).id === "rivers",
+          };
+    const state = world.apply(
+      progress,
+      camera.camera,
+      layers,
+      props.excursion,
+      presentation,
+    );
     atmosphere.update(renderer, state.effects.night);
     if (props.prologue !== undefined)
       renderer.toneMappingExposure =

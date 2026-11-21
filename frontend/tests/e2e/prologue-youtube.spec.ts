@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { openPublicLanding } from "./public-landing";
 
 // This API fixture exercises the integration contract without pretending to be
 // a presentation film. A separate manual audit uses the real supplied video.
@@ -47,10 +48,7 @@ async function setup(page: Page, fallback = true) {
       body: "<html lang='fr'><body>Lecteur API de test</body></html>",
     }),
   );
-  await page.goto(`/jury/${fallback ? "?render=2d" : ""}`);
-  await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
-    timeout: 45000,
-  });
+  await openPublicLanding(page, fallback);
   await expect(
     page.getByRole("button", { name: "Regarder sur YouTube", exact: true }),
   ).toBeVisible();
@@ -192,17 +190,13 @@ test("le lecteur est projeté dans l’écran après l’approche et reste cadr�
     timeout: 20000,
   });
   await expect(screen).toHaveCount(0);
-  // In presentation mode the five-minute narrative starts on arrival.
   await expect(page.locator(".sx-pitch-content")).toHaveAttribute(
     "data-chapter",
     "forest",
   );
-  await expect(
-    page.getByRole("button", { name: "Mettre en pause", exact: true }),
-  ).toBeVisible();
-  await expect
-    .poll(async () => Number(await root(page).getAttribute("data-progress")))
-    .toBeGreaterThan(0);
+  await expect(root(page)).toHaveAttribute("data-mode", "exploration");
+  await page.waitForTimeout(400);
+  await expect(root(page)).toHaveAttribute("data-progress", "0.000000");
 });
 
 test("une intégration YouTube refusée garde le passage et le lien vers la vidéo utilisables", async ({

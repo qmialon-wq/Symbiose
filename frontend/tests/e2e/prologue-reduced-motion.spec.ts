@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openPublicLanding } from "./public-landing";
 
 for (const fixture of [true, false]) {
   test(`le film WebGL ${fixture ? "de test" : "MP4 officiel"} reste animé avec les mouvements réduits et le rendu dort après la pause`, async ({
@@ -6,17 +7,7 @@ for (const fixture of [true, false]) {
   }) => {
     test.setTimeout(90000);
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.route("**/api/**", (route) =>
-      route.fulfill(
-        new URL(route.request().url()).pathname.endsWith("/auth/me")
-          ? { status: 401, json: { detail: "Connexion requise" } }
-          : { json: { setup_required: false, registration_open: true } },
-      ),
-    );
-    await page.goto("/jury/");
-    await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/, {
-      timeout: 45000,
-    });
+    await openPublicLanding(page, false);
     const canvas = page.locator(".sx-canvas");
     test.skip(
       (await canvas.count()) === 0,

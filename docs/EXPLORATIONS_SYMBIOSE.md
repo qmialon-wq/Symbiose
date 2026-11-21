@@ -6,6 +6,13 @@ plus lent. Sa distance de scroll passe de **24 à 42 hauteurs d’écran**, soit
 **5 minutes**, hors prologue et vidéo d’introduction, calée sur le pitch à deux
 voix (voir le [guide du présentateur](PRESENTER_GUIDE.md)).
 
+Le [conducteur actuel](CONDUCTEUR_SYMBIOSE.md) fixe treize séquences exactes.
+L’entrée `/jury/` utilise **39 hauteurs**, commence directement dans la forêt
+et attend **Démarrer le pitch** ; l’entrée publique `/` garde le bureau et ses
+trois hauteurs supplémentaires. Les pauses de caméra du jury ne suspendent pas
+l’horloge. Les trois explorations conservent leurs géométries et le parcours
+libre réversible.
+
 ## Les nouveaux passages
 
 | Passage | Emplacement | Contenu |
@@ -21,8 +28,8 @@ de Petection. Le passage marin est une évocation artistique, pas une captation.
 
 Le scroll, le curseur et les commandes précédent/suivant parcourent les nouvelles
 scènes dans les deux sens. Trois raccourcis permettent de les ouvrir directement.
-**Poursuivre le voyage** retrouve le parcours principal. Le bureau et son écran
-YouTube restent accessibles par `00` ; les huit chapitres d’origine gardent leurs
+**Poursuivre le voyage** retrouve le parcours principal. Dans le parcours public,
+le bureau et sa vidéo officielle restent accessibles par `00` ; les huit chapitres d’origine gardent leurs
 boutons. Les mouvements réduits utilisent un point de vue fixe par exploration.
 Le repli sans WebGL fournit trois diagrammes explicitement signalés.
 

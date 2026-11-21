@@ -67,6 +67,8 @@ export function juryBuild() {
       for (const asset of Object.values(spatial.assets)) files.add(asset.url);
       for (const scene of Object.values(inventory.scenes))
         files.add(scene.primary.url);
+      for (const image of Object.values(inventory.excursions || {}))
+        files.add(image.url);
       const media = await readdir(path.join(directory, "experience-media"));
       const demos = media
         .filter((name) => /^demo\.(mp4|webm)$/.test(name))
@@ -160,7 +162,7 @@ self.addEventListener('fetch', event => {
 `;
       await writeFile(path.join(directory, "jury/sw.js"), worker);
       console.log(
-        `Jury offline: ${records.length} assets, ${(report.totalBytes / 1024 / 1024).toFixed(2)} MiB; intro ${report.intro.available ? "present" : "MISSING"}; product demo ${report.demo.available ? "present" : "MISSING"}.`,
+        `Jury offline: ${records.length} assets, ${(report.totalBytes / 1024 / 1024).toFixed(2)} MiB; conductor 5:00; public intro ${report.intro.available ? "present" : "not bundled"}.`,
       );
     },
   };

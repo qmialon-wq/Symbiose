@@ -233,9 +233,12 @@ export function createJourneyWorld(
     camera: T.PerspectiveCamera,
     layers: JourneyLayers,
     excursion?: { id: string; local: number },
+    presentation?: { logo: number; riverTrap: boolean },
   ) {
     const fx = sampleEffects(progress, camera.position.y),
       z = camera.position.z;
+    if (presentation) fx.logo = presentation.logo;
+    observation.setRiverTrapVisible(!!presentation?.riverTrap);
     if (excursion?.id === "marine")
       fx.immersion = 1 - smoothstep(-0.55, 0.45, camera.position.y);
     const open = excursion?.id === "soil";

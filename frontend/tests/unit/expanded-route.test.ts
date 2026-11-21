@@ -19,6 +19,7 @@ import {
   expandedDuration,
   expandedScrollScreens,
   expandedUnits,
+  narrativeRouteLandmarks,
   excursions,
   excursionProgress,
   expandedTime,
@@ -53,9 +54,9 @@ describe("the longer continuous journey", () => {
     const starts = excursions.map(
       (e) => sampleRoute(excursionProgress(e.id, 0)).seconds,
     );
-    expect(starts[0]).toBeCloseTo((26 * 12) / 17.5, 9);
+    expect(starts[0]).toBeCloseTo(18, 9);
     expect(starts[1]).toBeCloseTo(185, 9);
-    expect(starts[2]).toBeCloseTo(227.5, 9);
+    expect(starts[2]).toBeCloseTo(228, 9);
     expect(excursions.map((e) => e.seconds)).toEqual([24, 30, 30]);
     // Pitch sections: problem, solution, impacts, team, needs, epilogue.
     const sections = [0, 50, 135, 185, 215, 270, 300];
@@ -65,6 +66,32 @@ describe("the longer continuous journey", () => {
     expect(expandedTime(pitchChapters[6].start)).toBe(sections[4]);
     expect(expandedTime(pitchChapters[7].start)).toBe(sections[5]);
     expect(expandedTime(pitchDuration)).toBe(sections[6]);
+  });
+
+  it("places all thirteen scene boundaries on their exact clock times without moving world anchors", () => {
+    const seconds = [
+      0, 18, 42, 50, 67, 87, 103, 135, 185, 215, 228, 258, 270, 300,
+    ];
+    for (const [index, second] of seconds.entries()) {
+      const route = routeAtSeconds(second);
+      expect(route * expandedUnits).toBeCloseTo(
+        narrativeRouteLandmarks[index],
+        10,
+      );
+      expect(sampleRoute(route).seconds).toBeCloseTo(second, 10);
+    }
+    for (const [id, start, end] of [
+      ["soil", 18, 42],
+      ["drone", 185, 215],
+      ["marine", 228, 258],
+    ] as const) {
+      expect(sampleRoute(routeAtSeconds(start)).excursion?.id).toBe(id);
+      expect(sampleRoute(routeAtSeconds(end)).excursion).toBeUndefined();
+      expect(sampleRoute(excursionProgress(id, 1)).seconds).toBeCloseTo(
+        end,
+        10,
+      );
+    }
   });
 
   it("maps all original chapters and camera anchors back to their unchanged coordinates", () => {
@@ -141,6 +168,12 @@ describe("the longer continuous journey", () => {
   });
 
   it("lets previous and next reach each added excursion as well as each historical chapter", () => {
+    const stops = [
+      0, 18, 42, 50, 67, 87, 103, 135, 185, 215, 228, 258, 270, 300,
+    ];
+    expect(routeStops).toHaveLength(stops.length);
+    for (const [index, stop] of routeStops.entries())
+      expect(sampleRoute(stop).seconds).toBeCloseTo(stops[index], 10);
     expect(routeStops[0]).toBe(0);
     expect(routeStops.at(-1)).toBe(1);
     for (const excursion of excursions)

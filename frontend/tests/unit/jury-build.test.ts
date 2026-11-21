@@ -30,6 +30,7 @@ async function build(
     "experience-art/runtime-assets.json": JSON.stringify({
       poster: { url: "/poster.webp" },
       scenes: {},
+      excursions: { soil: { url: "/experience-art/excursions/soil.webp" } },
     }),
     "experience-models/inventory.json": JSON.stringify({ assets: {} }),
     "jury/index.html": "<html></html>",
@@ -37,6 +38,7 @@ async function build(
     "favicon.ico": "icon fixture",
     "experience-art/shared/symbiose-logo.png": "logo fixture",
     "poster.webp": "poster fixture",
+    "experience-art/excursions/soil.webp": "excursion fixture",
     ...media,
   };
   await mkdir(path.join(root, "experience-media"), { recursive: true });
@@ -74,6 +76,15 @@ it("includes intro in the offline package without presenting it as the product d
     }),
   );
   expect(await output.worker()).toContain('"/experience-media/intro.mp4"');
+  expect(manifest.files).toContainEqual(
+    expect.objectContaining({
+      url: "/experience-art/excursions/soil.webp",
+      bytes: 17,
+    }),
+  );
+  expect(await output.worker()).toContain(
+    '"/experience-art/excursions/soil.webp"',
+  );
 });
 
 it("packages configured intro and captions separately from the 90 second demo", async () => {

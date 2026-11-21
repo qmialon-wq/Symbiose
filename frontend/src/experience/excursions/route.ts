@@ -1,9 +1,18 @@
 import { clamp01, smoothstep } from "../journey";
-import { pitchDuration, pitchSeconds, progressAtSeconds } from "../pitch";
+import { progressAtSeconds } from "../pitch";
+import {
+  narrativeCues,
+  narrativeDurationSeconds,
+  normalizeNarrativeSeconds,
+} from "../narrative-cues";
 import type { Vec3 } from "../config";
 
 export type ExcursionId = "soil" | "drone" | "marine";
 export const expandedScrollScreens = 39;
+function excursionSeconds(id: ExcursionId): number {
+  const cue = narrativeCues.find((cue) => cue.excursion === id)!;
+  return cue.end - cue.start;
+}
 // `seconds` pace each exploration on the five-minute presentation clock;
 // `units` keep their scroll share and camera path unchanged.
 export const excursions = [
@@ -11,7 +20,7 @@ export const excursions = [
     id: "soil",
     anchor: 12,
     units: 35,
-    seconds: 24,
+    seconds: excursionSeconds("soil"),
     name: "Le sol vivant",
     label: "Sous nos pas",
     color: "#9a704e",
@@ -20,7 +29,7 @@ export const excursions = [
     id: "drone",
     anchor: 165,
     units: 30,
-    seconds: 30,
+    seconds: excursionSeconds("drone"),
     name: "Survol du bocage",
     label: "L’équipe ARQ",
     color: "#7eaa70",
@@ -29,15 +38,38 @@ export const excursions = [
     id: "marine",
     anchor: 180,
     units: 40,
-    seconds: 30,
+    seconds: excursionSeconds("marine"),
     name: "Plongée à Étretat",
     label: "Changer d’échelle",
     color: "#4e979b",
   },
 ] as const;
 export const expandedUnits = 210 + excursions.reduce((n, e) => n + e.units, 0);
-export const expandedDuration =
-  pitchDuration + excursions.reduce((n, e) => n + e.seconds, 0);
+export const expandedDuration = narrativeDurationSeconds;
+// Scroll distance and world anchors stay unchanged. Only the presentation
+// clock is reparameterized, with exact cue boundaries from the shared script.
+export const narrativeRouteLandmarks = [
+  0, 12, 47, 52.5, 82.5, 112.5, 140, 167.5, 200, 230, 245, 285, 300, 315,
+] as const;
+const narrativeTimes = [
+  ...narrativeCues.map((cue) => cue.start),
+  expandedDuration,
+];
+
+function interpolate(
+  value: number,
+  from: readonly number[],
+  to: readonly number[],
+) {
+  const index = from.findIndex((end, i) => i > 0 && value < end);
+  if (index === -1) return to[to.length - 1];
+  const previous = index - 1;
+  return (
+    to[previous] +
+    ((value - from[previous]) / (from[index] - from[previous])) *
+      (to[index] - to[previous])
+  );
+}
 export interface ExcursionState {
   id: ExcursionId;
   local: number;
@@ -77,16 +109,18 @@ export function sampleRoute(progress: number): {
   seconds: number;
 } {
   const time = clamp01(progress) * expandedUnits;
-  let added = 0,
-    seconds = 0;
+  const seconds = normalizeNarrativeSeconds(
+    interpolate(time, narrativeRouteLandmarks, narrativeTimes),
+  );
+  let added = 0;
   for (const e of excursions) {
     const start = e.anchor + added;
-    if (time < start) break;
-    if (time < start + e.units) {
+    if (time < start - 1e-9) break;
+    if (time < start + e.units - 1e-9) {
       const local = clamp01((time - start) / e.units);
       return {
         progress: e.anchor / 210,
-        seconds: pitchSeconds(e.anchor / 210) + seconds + local * e.seconds,
+        seconds,
         excursion: {
           id: e.id,
           local,
@@ -95,32 +129,19 @@ export function sampleRoute(progress: number): {
       };
     }
     added += e.units;
-    seconds += e.seconds;
   }
   const original = clamp01((time - added) / 210);
-  return { progress: original, seconds: pitchSeconds(original) + seconds };
+  return { progress: original, seconds };
 }
 export function routeAtSeconds(seconds: number) {
-  const value = Math.max(
-    0,
-    Math.min(expandedDuration, Number.isFinite(seconds) ? seconds : 0),
+  const value = normalizeNarrativeSeconds(seconds);
+  return (
+    interpolate(value, narrativeTimes, narrativeRouteLandmarks) / expandedUnits
   );
-  let added = 0;
-  for (const e of excursions) {
-    const start = pitchSeconds(e.anchor / 210) + added;
-    if (value < start) break;
-    if (value < start + e.seconds)
-      return excursionProgress(e.id, (value - start) / e.seconds);
-    added += e.seconds;
-  }
-  return routeAtOriginal(progressAtSeconds(value - added));
 }
-const boundaries = [0, 17.5, 47.5, 77.5, 105, 132.5, 165, 195];
-export const routeStops = [
-  ...boundaries.map((p) => routeAtOriginal(p / 210)),
-  ...excursions.map((e) => excursionProgress(e.id, 0)),
-  1,
-].sort((a, b) => a - b);
+export const routeStops = narrativeRouteLandmarks.map(
+  (units) => units / expandedUnits,
+);
 export function adjacentStop(progress: number, direction: number) {
   return direction > 0
     ? (routeStops.find((p) => p > progress + 1e-5) ?? 1)

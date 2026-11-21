@@ -31,9 +31,20 @@ async function open(page: Page, publicLanding = false) {
     );
   await page.goto(`${publicLanding ? "/" : "/jury/"}?render=2d`);
   await expect(page.locator(".sx-stage")).toHaveClass(/sx-stage--ready/);
-  await page
-    .getByRole("button", { name: "Passer l’introduction", exact: true })
-    .click();
+  if (publicLanding) {
+    await page
+      .getByRole("button", { name: "Passer l’introduction", exact: true })
+      .click();
+  } else {
+    await expect(page.locator(".sx-experience")).toHaveAttribute(
+      "data-prologue-active",
+      "false",
+    );
+    // Keep exact eight-image and blend checks on the original discovery path.
+    await page
+      .getByRole("button", { name: "Mode présentation", exact: true })
+      .click();
+  }
   await fullChapter(page, 0);
 }
 async function fullChapter(page: Page, index: number) {
@@ -152,9 +163,9 @@ test("curseur, molette et lecture de présentation partagent un fondu court et r
   await expect(scene(page).locator("img").first()).toHaveCSS("opacity", "1");
   for (const image of await scene(page).locator("img").all())
     await expect(image).toHaveCSS("clip-path", "none");
-  await page
-    .getByRole("button", { name: "Mode présentation", exact: true })
-    .click();
+  await expect(
+    page.getByRole("button", { name: "Mode exploration", exact: true }),
+  ).toBeVisible();
   await page.mouse.move(5, 420);
   await page.mouse.wheel(0, -200);
   await expect

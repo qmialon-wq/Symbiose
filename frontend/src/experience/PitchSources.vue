@@ -2,44 +2,35 @@
 import { ref } from "vue";
 import { sources, producers } from "./sources";
 import { pitchChapters, juryCoverage, clock, statusLabels } from "./pitch";
+import { narrativeCues } from "./narrative-cues";
 import {
-  excursions,
-  excursionProgress,
-  expandedTime,
-  routeClock,
-} from "./excursions/route";
-import { excursionCopy } from "./excursions/copy";
+  editorialFacts,
+  notebookEditorial,
+  evidenceDefinitions,
+  sceneEditorial,
+} from "./editorial-content";
 const props = defineProps<{ chapterId: string }>();
 const tab = ref<"sources" | "speaker" | "jury">("sources");
-// The eight chapters and three explorations, in the order of the five-minute clock.
-const steps = [
-  ...pitchChapters.map((chapter) => ({
-    id: chapter.id,
-    title: chapter.subject,
-    start: expandedTime(chapter.start),
-    end: expandedTime(chapter.start + chapter.duration),
-    message: chapter.message,
-    oral: chapter.oral,
-    status: chapter.status,
-    screen: chapter.screen,
-    details: [chapter.interaction, chapter.transition],
-  })),
-  ...excursions.map((excursion) => {
-    const copy = excursionCopy[excursion.id],
-      start = routeClock.seconds(excursionProgress(excursion.id, 0));
-    return {
-      id: excursion.id,
-      title: `${excursion.label} · ${excursion.name}`,
-      start,
-      end: start + excursion.seconds,
-      message: copy.body,
-      oral: copy.oral,
-      status: undefined,
-      screen: copy.notes,
-      details: [copy.disclaimer],
-    };
-  }),
-].sort((a, b) => a.start - b.start);
+const steps = narrativeCues.map((cue) => ({
+  id: cue.id,
+  title: cue.title,
+  start: cue.start,
+  end: cue.end,
+  message: cue.message,
+  exploration: sceneEditorial(cue).exploration,
+  oral: cue.speeches
+    .map((speech) => `${speech.speaker} — ${speech.text}`)
+    .join("\n\n"),
+  status: cue.excursion
+    ? undefined
+    : pitchChapters.find((chapter) => chapter.id === cue.chapter)?.status,
+  screen: cue.screen,
+  details: [
+    ...cue.camera.map((span) => span.description),
+    cue.transition,
+    ...(cue.note ? [cue.note] : []),
+  ],
+}));
 </script>
 <template>
   <div class="sx-source-book">
@@ -64,34 +55,17 @@ const steps = [
         parcours. Les textes ci-dessous sont embarqués localement et restent
         consultables sans Internet.
       </p>
+      <p class="sx-source-limit">{{ notebookEditorial.archives }}</p>
+      <p class="sx-source-limit">{{ editorialFacts.classifier }}</p>
       <p class="sx-source-limit">
         <strong>Attendus vérifiés :</strong> les cinq questions de l’image
         fournie, les sept rubriques du descriptif et les six critères du
         règlement (§ 5, p. 3).
       </p>
       <dl class="sx-evidence-key">
-        <div>
-          <dt>Fonction documentée</dt>
-          <dd>
-            Capacité décrite dans les livrables ; configuration locale requise
-            pour l’exécuter.
-          </dd>
-        </div>
-        <div>
-          <dt>Résultat technique vérifié</dt>
-          <dd>
-            Recette ou archive datée ; aucune efficacité écologique déduite.
-          </dd>
-        </div>
-        <div>
-          <dt>Bénéfice attendu</dt>
-          <dd>
-            Utilité visée ; aucun gain de temps ou de biodiversité mesuré.
-          </dd>
-        </div>
-        <div>
-          <dt>Perspective</dt>
-          <dd>Développement ou évaluation à venir.</dd>
+        <div v-for="definition in evidenceDefinitions" :key="definition.status">
+          <dt>{{ statusLabels[definition.status] }}</dt>
+          <dd>{{ definition.description }}</dd>
         </div>
       </dl>
       <h3>Documents examinés</h3>
@@ -145,13 +119,7 @@ const steps = [
       </p>
     </template>
     <template v-else-if="tab === 'speaker'">
-      <p>
-        La vidéo d’ouverture (environ une minute) et le travelling vers la forêt
-        précèdent le récit. Le récit dure ensuite cinq minutes, à deux voix (A
-        et B). En mode présentation, la lecture continue démarre à l’arrivée en
-        forêt ; Espace la met en pause, les flèches changent d’étape. Une
-        répétition chronométrée reste nécessaire.
-      </p>
+      <p>{{ notebookEditorial.timing }}</p>
       <section v-for="step in steps" :key="step.id" class="sx-speaker-chapter">
         <p class="sx-eyebrow">
           {{ clock(step.start) }}–{{ clock(step.end) }} ·
@@ -165,6 +133,7 @@ const steps = [
         <small v-if="step.status">{{ statusLabels[step.status] }}</small>
         <details>
           <summary>À l’écran et transition</summary>
+          <p>{{ step.exploration }}</p>
           <p>{{ step.screen.join(" · ") }}</p>
           <p v-for="line in step.details" :key="line">{{ line }}</p>
         </details>

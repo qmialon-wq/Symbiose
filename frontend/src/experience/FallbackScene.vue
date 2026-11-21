@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { editorialFacts } from "./editorial-content";
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { fallbackFrame } from "./fallback-frame";
 import { sceneAsset } from "./runtime-assets";
@@ -126,7 +127,7 @@ onBeforeUnmount(() => {
       alt=""
       :style="{ opacity: frame.opacity }"
     />
-    <p>VERSION SIMPLIFIÉE 2D · IMAGES GÉNÉRÉES · FONDU ENTRE PAYSAGES</p>
+    <p>{{ editorialFacts.fallback }}</p>
     <span v-if="loading" role="status">Chargement du prochain paysage…</span
     ><span v-if="failure" role="alert"
       >Un paysage est indisponible. Le récit et la navigation restent
